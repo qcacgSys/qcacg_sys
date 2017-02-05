@@ -1,0 +1,10 @@
+//发送获取审核的数据请求
+<script type="text/javascript" src="js/libs/doShtml.js"></script>
+<script type="text/javascript">
+	$(getBookForCheck(1,10));
+</script>
+//发送获取签约的数据请求
+<script type="text/javascript" src="js/libs/doShtml.js"></script>
+<script type="text/javascript">
+	$(getBookSign(1,10));
+</script>

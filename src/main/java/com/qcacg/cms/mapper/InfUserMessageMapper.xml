@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qcacg.cms.dao.InfUserMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.qcacg.cms.entity.InfUserMessage" >
+    <id column="MessageId" property="messageid" jdbcType="INTEGER" />
+    <result column="UserId" property="userid" jdbcType="INTEGER" />
+    <result column="MessageTitle" property="messagetitle" jdbcType="VARCHAR" />
+    <result column="MessageCreateDate" property="messagecreatedate" jdbcType="TIMESTAMP" />
+    <result column="MessageType" property="messagetype" jdbcType="CHAR" />
+    <result column="MessageStatus" property="messagestatus" jdbcType="CHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.qcacg.cms.entity.InfUserMessage" extends="BaseResultMap" >
+    <result column="Message" property="message" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    MessageId, UserId, MessageTitle, MessageCreateDate, MessageType, MessageStatus
+  </sql>
+  <sql id="Blob_Column_List" >
+    Message
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.qcacg.cms.entity.InfUserMessageExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from inf_user_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.qcacg.cms.entity.InfUserMessageExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from inf_user_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null" >
+      <if test="offset != null" >
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null" >
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from inf_user_message
+    where MessageId = #{messageid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from inf_user_message
+    where MessageId = #{messageid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qcacg.cms.entity.InfUserMessageExample" >
+    delete from inf_user_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qcacg.cms.entity.InfUserMessage" >
+    insert into inf_user_message (MessageId, UserId, MessageTitle, 
+      MessageCreateDate, MessageType, MessageStatus, 
+      Message)
+    values (#{messageid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{messagetitle,jdbcType=VARCHAR}, 
+      #{messagecreatedate,jdbcType=TIMESTAMP}, #{messagetype,jdbcType=CHAR}, #{messagestatus,jdbcType=CHAR}, 
+      #{message,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qcacg.cms.entity.InfUserMessage" >
+    insert into inf_user_message
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="messageid != null" >
+        MessageId,
+      </if>
+      <if test="userid != null" >
+        UserId,
+      </if>
+      <if test="messagetitle != null" >
+        MessageTitle,
+      </if>
+      <if test="messagecreatedate != null" >
+        MessageCreateDate,
+      </if>
+      <if test="messagetype != null" >
+        MessageType,
+      </if>
+      <if test="messagestatus != null" >
+        MessageStatus,
+      </if>
+      <if test="message != null" >
+        Message,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="messageid != null" >
+        #{messageid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="messagetitle != null" >
+        #{messagetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="messagecreatedate != null" >
+        #{messagecreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messagetype != null" >
+        #{messagetype,jdbcType=CHAR},
+      </if>
+      <if test="messagestatus != null" >
+        #{messagestatus,jdbcType=CHAR},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qcacg.cms.entity.InfUserMessageExample" resultType="java.lang.Integer" >
+    select count(*) from inf_user_message
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update inf_user_message
+    <set >
+      <if test="record.messageid != null" >
+        MessageId = #{record.messageid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null" >
+        UserId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.messagetitle != null" >
+        MessageTitle = #{record.messagetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.messagecreatedate != null" >
+        MessageCreateDate = #{record.messagecreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.messagetype != null" >
+        MessageType = #{record.messagetype,jdbcType=CHAR},
+      </if>
+      <if test="record.messagestatus != null" >
+        MessageStatus = #{record.messagestatus,jdbcType=CHAR},
+      </if>
+      <if test="record.message != null" >
+        Message = #{record.message,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update inf_user_message
+    set MessageId = #{record.messageid,jdbcType=INTEGER},
+      UserId = #{record.userid,jdbcType=INTEGER},
+      MessageTitle = #{record.messagetitle,jdbcType=VARCHAR},
+      MessageCreateDate = #{record.messagecreatedate,jdbcType=TIMESTAMP},
+      MessageType = #{record.messagetype,jdbcType=CHAR},
+      MessageStatus = #{record.messagestatus,jdbcType=CHAR},
+      Message = #{record.message,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update inf_user_message
+    set MessageId = #{record.messageid,jdbcType=INTEGER},
+      UserId = #{record.userid,jdbcType=INTEGER},
+      MessageTitle = #{record.messagetitle,jdbcType=VARCHAR},
+      MessageCreateDate = #{record.messagecreatedate,jdbcType=TIMESTAMP},
+      MessageType = #{record.messagetype,jdbcType=CHAR},
+      MessageStatus = #{record.messagestatus,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qcacg.cms.entity.InfUserMessage" >
+    update inf_user_message
+    <set >
+      <if test="userid != null" >
+        UserId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="messagetitle != null" >
+        MessageTitle = #{messagetitle,jdbcType=VARCHAR},
+      </if>
+      <if test="messagecreatedate != null" >
+        MessageCreateDate = #{messagecreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="messagetype != null" >
+        MessageType = #{messagetype,jdbcType=CHAR},
+      </if>
+      <if test="messagestatus != null" >
+        MessageStatus = #{messagestatus,jdbcType=CHAR},
+      </if>
+      <if test="message != null" >
+        Message = #{message,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where MessageId = #{messageid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.qcacg.cms.entity.InfUserMessage" >
+    update inf_user_message
+    set UserId = #{userid,jdbcType=INTEGER},
+      MessageTitle = #{messagetitle,jdbcType=VARCHAR},
+      MessageCreateDate = #{messagecreatedate,jdbcType=TIMESTAMP},
+      MessageType = #{messagetype,jdbcType=CHAR},
+      MessageStatus = #{messagestatus,jdbcType=CHAR},
+      Message = #{message,jdbcType=LONGVARCHAR}
+    where MessageId = #{messageid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qcacg.cms.entity.InfUserMessage" >
+    update inf_user_message
+    set UserId = #{userid,jdbcType=INTEGER},
+      MessageTitle = #{messagetitle,jdbcType=VARCHAR},
+      MessageCreateDate = #{messagecreatedate,jdbcType=TIMESTAMP},
+      MessageType = #{messagetype,jdbcType=CHAR},
+      MessageStatus = #{messagestatus,jdbcType=CHAR}
+    where MessageId = #{messageid,jdbcType=INTEGER}
+  </update>
+</mapper>

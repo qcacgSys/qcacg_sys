@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>后台所有审核数据管理</title>
+<title>后台所有签约数据管理</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath }/css/common.css" />
 <link rel="stylesheet" type="text/css"
@@ -20,6 +19,8 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/conf.js"></script>
 <script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/libs/init.js"></script>
+<script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/doShtml.js"></script>
 </head>
 <body>
@@ -30,8 +31,8 @@
 					<a href="index.html" class="navbar-brand">后台管理</a>
 				</h1>
 				<ul class="navbar-list clearfix">
-					<li><a class="on" href="#">首页</a></li>
-					<li><a href="#" target="_blank">网站首页</a></li>
+					<li><a class="on" href="index.html">首页</a></li>
+					<li><a href="http://www.aspku.com/" target="_blank">网站首页</a></li>
 				</ul>
 			</div>
 			<div class="top-info-wrap">
@@ -111,29 +112,41 @@
 				<form name="myform" id="myform" method="post">
 					<div class="result-title">
 						<div class="result-list">
-							<a href="#"><i class="icon-font"></i>显示状态(无)</a> <a
-								id="batchDel" href="javascript:void(0)"><i class="icon-font"></i>批量删除(无)</a>
-							<a id="updateOrd" href="javascript:void(0)"><i
-								class="icon-font"></i>更新排序(无)</a>
+							<i class="icon-font"></i>说明:审理成功前台评论或回复替换为"您的内容中存在违规信息!".
 						</div>
 					</div>
 					<div class="result-content">
 						<table class="result-tab" width="100%">
 							<thead>
 								<tr>
-									<th class="tc" width="5%"><input class="allChoose" name=""
-										type="checkbox"></th>
-									<th>作品id</th>
-									<th>作品名</th>
-									<th>第几次申请</th>
-									<th>对编辑说的话</th>
-									<th>编辑的回复</th>
+									<th>举报ID</th>
+									<th>举报类型</th>
+									<th>举报内容</th>
+									<th>举报文本</th>
+									<th>举报人ID</th>
+									<th>举报时间</th>
+									<th>状态</th>
+									<th>操作</th>
 								</tr>
 							</thead>
-							<tbody id="tbodyId">
+							<tbody id="tbo">
+								<tr>
+									<td>aaaa</td>
+									<td>aaaa</td>
+									<td>aaaa</td>
+									<td>aaaa</td>
+									<td>aaaa</td>
+									<td>aaaa</td>
+									<td>aaaa</td>
+									<td><a id="shenli" href="#">审理</a>&nbsp;&nbsp;<a id="bushenli" href="#">不审理</a></td>
+								</tr>
 							</tbody>
 						</table>
 						<div id="fenyed" class="list-page">
+							<span id="fenyes"><input type="hidden" id="pageNum"
+								value="0"> <input type="hidden" id="pageSize" value="10">
+								<span id="fenyes"><a id="lastPage">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+									id="nextPage">下一页</a></span></span>
 						</div>
 					</div>
 				</form>
@@ -143,19 +156,16 @@
 	</div>
 </body>
 <script type="text/javascript">
-	var bookReviewMsgFormData = JSON.parse(localStorage.getItem("bookReviewMsgData"));
-	var bookFormData = JSON.parse(localStorage.getItem("bookData"));
-	console.log(bookFormData.bookId);
-	var newTr = '';
-	for(var x=0;x<bookReviewMsgFormData.length;x++){
-		newTr = '<tr><td></td>'
-		var bookIdTd = '<td>'+bookFormData.bookId+'</td>';
-		var bookNameTd = '<td>'+bookFormData.bookName+'</td>';
-		var numTd = '<td>'+(x+1)+'</td>';
-		var messgaeTd = '<td>'+bookReviewMsgFormData[x].message+'</td>';
-		var replyTd = '<td>'+bookReviewMsgFormData[x].reply+'</td>';
-		newTr = newTr + bookIdTd + bookNameTd + numTd + messgaeTd + replyTd + '</tr>';
-		$('#tbodyId').append(newTr);
-	}
+$(getReportList(0, 10));
+
+$("#nextPage").click(function() {
+	$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
+	getReportList($("#pageNum").val(), $("#pageSize").val());
+});
+
+$("#lastPage").click(function() {
+	$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
+	getReportList($("#pageNum").val(), $("#pageSize").val());
+});
 </script>
 </html>

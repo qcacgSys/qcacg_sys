@@ -1,3 +1,92 @@
+/*举报功能开始*/
+function getReportList(pageNum, size) {
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminListReport,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateReportView(result);
+		}
+	});
+};
+
+updateReportView=function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{reportId}</td>'+
+						'<td>#{reportTypeName}</td>'+
+						'<td>#{reportContent}</td>'+
+						'<td>#{reportText}</td>'+
+						'<td>#{reporterId}</td>'+
+						'<td>#{reportDate}</td>'+
+						'<td>#{reportStatus}</td>'+
+						'<td><a id="shenli" href="#">审理</a>&nbsp;&nbsp;<a id="bushenli" href="#2">不审理</a></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		console.log(data);
+		//console.log(tr);
+		var tr=template.replace('#{reportId}',data.reportId)
+		.replace('#{reportTypeName}',data.reportTypeName)
+		.replace('#{reportContent}',data.reportContent)
+		.replace('#{reportText}',data.reportText)
+		.replace('#{reporterId}',data.reporterId)
+		.replace('#{reportDate}',data.reportDate)
+		.replace('#{reportStatus}',data.reportStatus);
+		tbody.append(tr);
+	}
+	//处理审理
+	$('a').click(function() {
+		// 获取父元素取下标
+		tr = $(this).parent().parent();
+		index = tr.index();
+		reportId = result[index].reportId;
+		console.log(reportId);
+		var param = {
+			reportId : Number(reportId),
+			status : Number(1)
+		};
+		var paramJSON = JSON.stringify(param);
+		updateReport(paramJSON);
+	});
+	//不处理审理
+	$('a').next().click(function() {
+		// 获取父元素取下标
+		tr = $(this).parent().parent();
+		index = tr.index();
+		reportId = result[index].reportId;
+		console.log(reportId);
+		var param = {
+			reportId : Number(reportId),
+			status : Number(2)
+		};
+		var paramJSON = JSON.stringify(param);
+		updateReport(paramJSON);
+	});
+}
+
+updateReport=function(paramJSON){
+	$.ajax({
+		type : "POST",
+		data : paramJSON,
+		contentType : 'application/json',
+		dataType : 'json',
+		url : PathList.adminUpdateReport,
+		success : function(result) {
+			console.log(result.msg);
+			history.go(0);
+		}
+	});
+}
+/*举报功能结束*/
+
 displayDate=function(id){
 	localStorage.setItem("bookReviewMsgData", JSON.stringify(bookReviewMsg[id]));
 	localStorage.setItem("bookData", JSON.stringify(bookList[id]));

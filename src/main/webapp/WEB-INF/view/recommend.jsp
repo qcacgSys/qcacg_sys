@@ -20,8 +20,6 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/conf.js"></script>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath }/js/my.js"></script>
-<script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/doShtml.js"></script>
 </head>
 <body>
@@ -64,7 +62,9 @@
 								href="${pageContext.request.contextPath}/admin/allSign"><i
 									class="icon-font">&#xe006;</i>作品管理</a></li>
 							<li><a href="#"><i class="icon-font">&#xe004;</i>用户管理</a></li>
-							<li><a href="#"><i class="icon-font">&#xe012;</i>评论管理</a></li>
+							<li><a
+								href="${pageContext.request.contextPath}/admin/allReport"><i
+									class="icon-font">&#xe012;</i>评论管理</a></li>
 							<li><a href="#"><i class="icon-font">&#xe052;</i>友情链接</a></li>
 							<li><a href="#"><i class="icon-font">&#xe033;</i>广告管理</a></li>
 						</ul></li>

@@ -17,6 +17,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/libs/conf.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/libs/json2.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/libs/doShtml.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/libs/init.js"></script>
 </head>
 <body>
 	<div class="topbar-wrap white">
@@ -52,7 +54,9 @@
 							<li><a href="${pageContext.request.contextPath}/admin/allStatus"><i class="icon-font">&#xe005;</i>审核管理</a></li>
 							<li><a href="${pageContext.request.contextPath}/admin/allSign"><i class="icon-font">&#xe006;</i>作品管理</a></li>
 							<li><a href="design.jsp"><i class="icon-font">&#xe004;</i>用户管理</a></li>
-							<li><a href="design.jsp"><i class="icon-font">&#xe012;</i>评论管理</a></li>
+							<li><a
+								href="${pageContext.request.contextPath}/admin/allReport"><i
+									class="icon-font">&#xe012;</i>评论管理</a></li>
 							<li><a href="design.jsp"><i class="icon-font">&#xe052;</i>友情链接</a></li>
 							<li><a href="design.jsp"><i class="icon-font">&#xe033;</i>广告管理</a></li>
 						</ul></li>
@@ -97,6 +101,9 @@
 								class="res-info"><a id="aId" target="view_window">${bookDTO.bookName}书本详情</a></span></li>
 						<form method="post" action="#">
 							<input type="hidden" value="${bookDTO.bookId}" id="bookId" name="bookId">
+							<li><label class="res-lab">对作者说的话</label><span
+								class="res-info"><textarea id="signReply" style="width: 400" rows="5"
+										name="reply"></textarea></span></li>
 							<li><label class="res-lab">是否签约</label><span
 								class="res-info"><input type="radio" id="status2" name="status"
 									value="2">签约通过&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" id="status3" name="status"
@@ -139,7 +146,8 @@
 	$("#submitId").click(function() {
 		var formData = {
 			bookId : $("#bookId").val(),
-			status : status
+			status : status,
+			reply : $("#signReply").val()
 		};
 		var data = formData;
 		var url = PathList.adminUpdateBookSign;

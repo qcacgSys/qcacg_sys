@@ -10,6 +10,15 @@ import com.qcacg.cms.dto.BookDTO;
 @Controller
 @RequestMapping("/admin")
 public class SystemController {
+	
+	/**
+	 * 查看所有举报数据
+	 */
+	@RequestMapping("/allReport")
+	public String allReport(){
+		return "/WEB-INF/view/report.jsp";
+	}
+	
 	/**
 	 * 查看所有签约数据
 	 * @return

@@ -226,7 +226,7 @@ var updateSignView = function(signData) {
 			.replace('#{phone}', s.phone)
 			.replace('#{address}', s.address)
 			.replace('#{message}', s.message)
-			.replace('href="#"', 'href="' + adminPath + '/admin/sign?bookId=' + s.bookId + '"')
+			.replace('href="#"', 'href="' + adminPath + 'admin/sign?bookId=' + s.bookId + '"')
 		tb.append(tr);
 	}
 }

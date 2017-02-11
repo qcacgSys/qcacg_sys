@@ -38,7 +38,7 @@ updateReportView=function(result){
 		.replace('#{reportContent}',data.reportContent)
 		.replace('#{reportText}',data.reportText)
 		.replace('#{reporterId}',data.reporterId)
-		.replace('#{reportDate}',data.reportDate)
+		.replace('#{reportDate}',getMyDate(data.reportDate))
 		.replace('#{reportStatus}',data.reportStatus);
 		tbody.append(tr);
 	}
@@ -185,6 +185,7 @@ var updateSignView = function(signData) {
 		'<td>#{lastTime}</td>' +
 		'<td>#{updateType}</td>' +
 		'<td>#{status}</td>' +
+		'<td>#{signLevel}</td>' +
 		'<td>#{qq}</td>' +
 		'<td>#{email}</td>' +
 		'<td>#{phone}</td>' +
@@ -219,6 +220,7 @@ var updateSignView = function(signData) {
 			.replace('#{lastTime}', getMyDate(s.lastTime))
 			.replace('#{updateType}', s.updateType)
 			.replace('#{status}', s.status)
+			.replace('#{signLevel}', s.signLevel)
 			.replace('#{qq}', s.qq)
 			.replace('#{email}', s.email)
 			.replace('#{phone}', s.phone)

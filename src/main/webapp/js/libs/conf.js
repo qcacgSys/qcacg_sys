@@ -5,14 +5,14 @@ var htmlPath ;
 var adminPath ;
 
 //本项目端口路径
-//adminPath = 'http://127.0.0.1:777/qcacg_sys/';
-adminPath = 'http://127.0.0.1:8090/qcacg_sys/';
+adminPath = 'http://127.0.0.1:777/qcacg_sys/';
+//adminPath = 'http://127.0.0.1:8090/qcacg_sys/';
 //adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
 //adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
 
 //调用跳转项目html域名与端口
-//htmlPath = 'http://127.0.0.1:3000/';
-htmlPath = 'http://127.0.0.1:8080/';
+htmlPath = 'http://127.0.0.1:3000/';
+//htmlPath = 'http://127.0.0.1:8080/';
 //htmlPath = 'http://121.196.194.211:8080/';
 //htmlPath = 'http://www.qcacg.com:8080/';
 

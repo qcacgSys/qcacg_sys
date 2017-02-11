@@ -21,12 +21,19 @@
 			<jsp:include page="/common/right_head.jsp"></jsp:include>
 			<div class="result-wrap">
 				<div class="result-title">
-					<h1></h1>
+					<h1>HHHHH</h1>
 				</div>
 				<div class="result-content">
 					<ul class="sys-info-list">
-						<li><label class="res-lab">操作信息</label><span class="res-info"><a
-								id="aId" target="view_window">${message}</a></span></li>
+						<li><label class="res-lab">AAAAA</label><span
+							class="res-info">BBBB</span></li>
+						<li><label class="res-lab">CCCCC</label><span
+							class="res-info"><textarea id="signReply"
+									style="width: 400" rows="5" name="reply"></textarea></span></li>
+						<li><label class="res-lab">DDDDD</label><span
+							class="res-info"></span></li>
+						<li><label class="res-lab">EEEEE</label><span
+							class="res-info"></span></li>
 					</ul>
 				</div>
 			</div>

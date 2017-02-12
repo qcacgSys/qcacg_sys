@@ -25,10 +25,10 @@
 								class="icon-font">&#xe008;</i>公告管理</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/admin/allStatus"><i
-								class="icon-font">&#xe005;</i>审核管理</a></li>
+								class="icon-font">&#xe005;</i>作品管理</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/admin/allSign"><i
-								class="icon-font">&#xe006;</i>作品管理</a></li>
+								class="icon-font">&#xe006;</i>作品签约</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/admin/allReport"><i
 								class="icon-font">&#xe012;</i>评论管理</a></li>

@@ -40,6 +40,7 @@
 									<th>最后申请时间</th>
 									<th>签约方式</th>
 									<th>签约状态</th>
+									<th>签约等级</th>
 									<th>QQ</th>
 									<th>邮箱</th>
 									<th>手机</th>
@@ -50,6 +51,7 @@
 							</thead>
 							<tbody id="tbo">
 								<tr>
+									<td>aaaa</td>
 									<td>aaaa</td>
 									<td>aaaa</td>
 									<td>aaaa</td>

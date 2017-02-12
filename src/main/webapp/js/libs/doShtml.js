@@ -27,23 +27,23 @@ updateReportView=function(result){
 						'<td>#{reporterId}</td>'+
 						'<td>#{reportDate}</td>'+
 						'<td>#{reportStatus}</td>'+
-						'<td><a id="shenli" href="#">审理</a>&nbsp;&nbsp;<a id="bushenli" href="#2">不审理</a></td>'+
+						'<td><button type="button">审理</button>&nbsp;&nbsp;<button type="button">不审理</button></td>'+
 					'</tr>';
 	for(var i=0;i<result.length;i++){
 		var data=result[i];
-		console.log(data);
+		//console.log(data);
 		//console.log(tr);
 		var tr=template.replace('#{reportId}',data.reportId)
 		.replace('#{reportTypeName}',data.reportTypeName)
 		.replace('#{reportContent}',data.reportContent)
 		.replace('#{reportText}',data.reportText)
 		.replace('#{reporterId}',data.reporterId)
-		.replace('#{reportDate}',data.reportDate)
+		.replace('#{reportDate}',getMyDate(data.reportDate))
 		.replace('#{reportStatus}',data.reportStatus);
 		tbody.append(tr);
 	}
 	//处理审理
-	$('a').click(function() {
+	$('button').click(function() {
 		// 获取父元素取下标
 		tr = $(this).parent().parent();
 		index = tr.index();
@@ -57,7 +57,7 @@ updateReportView=function(result){
 		updateReport(paramJSON);
 	});
 	//不处理审理
-	$('a').next().click(function() {
+	$('button').next().click(function() {
 		// 获取父元素取下标
 		tr = $(this).parent().parent();
 		index = tr.index();
@@ -185,6 +185,7 @@ var updateSignView = function(signData) {
 		'<td>#{lastTime}</td>' +
 		'<td>#{updateType}</td>' +
 		'<td>#{status}</td>' +
+		'<td>#{signLevel}</td>' +
 		'<td>#{qq}</td>' +
 		'<td>#{email}</td>' +
 		'<td>#{phone}</td>' +
@@ -219,6 +220,7 @@ var updateSignView = function(signData) {
 			.replace('#{lastTime}', getMyDate(s.lastTime))
 			.replace('#{updateType}', s.updateType)
 			.replace('#{status}', s.status)
+			.replace('#{signLevel}', s.signLevel)
 			.replace('#{qq}', s.qq)
 			.replace('#{email}', s.email)
 			.replace('#{phone}', s.phone)

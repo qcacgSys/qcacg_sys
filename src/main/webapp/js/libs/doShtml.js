@@ -280,3 +280,12 @@ var getUserlist = function(pageNum,pageSize){
 		}
 	});
 };
+
+//日志相关
+var getLogList = function(pageNum,pageSize){
+	var sendData = {
+			pageNum : pageNum,
+			pageSize : pageSize
+	};
+	
+}

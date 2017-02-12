@@ -40,7 +40,9 @@ var PathList = {
 		//管理员发送系统消息或者官方公告
 		saveInfo : rootPath + 'info/saveInfo.shtml',
 		//管理员撤销系统消息或者官方公告
-		cancelSend : rootPath + 'info/cancelSend.shtml'
+		cancelSend : rootPath + 'info/cancelSend.shtml',
+		//管理员查看日志
+		adminQueryBookSign : rootPath + 'log/list.shtml'
 };
 var HtmlList = {
 		//跳转到书页面

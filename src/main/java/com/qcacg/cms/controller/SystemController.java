@@ -73,4 +73,12 @@ public class SystemController {
 	public String sysInfoView(){
 		return "/WEB-INF/view/sysInfo.jsp";
 	}
+	/**
+	 * 查看所有日志
+	 * @return
+	 */
+	@RequestMapping("/allLog")
+	public String sysLogView(){
+		return "/WEB-INF/view/log.jsp";
+	}
 }

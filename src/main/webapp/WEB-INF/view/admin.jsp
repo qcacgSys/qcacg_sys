@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>XXXXX</title>
+<title>欢迎进入后台管理</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
 </head>
 <body>

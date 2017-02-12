@@ -64,7 +64,7 @@
 		<!--/sidebar-->
 		<div class="main-wrap">
 			<jsp:include page="/common/right_head.jsp"></jsp:include>
-			<div>
+			<div class="result-wrap">
 				<div class="result-title">
 					<h1>发送作品相关</h1>
 				</div>

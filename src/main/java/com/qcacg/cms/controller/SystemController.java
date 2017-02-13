@@ -12,6 +12,24 @@ import com.qcacg.cms.dto.BookDTO;
 public class SystemController {
 	
 	/**
+	 * 查看当月签约等级核算
+	 * @return
+	 */
+	@RequestMapping("/mouthLevelAccounts")
+	public String mouthLevelAccounts(){
+		return "/WEB-INF/view/book_accounts.jsp";
+	}
+	
+	/**
+	 * 查看历史签约等级核算
+	 * @return
+	 */
+	@RequestMapping("/allLevelAccounts")
+	public String allLevelAccounts(){
+		return "/WEB-INF/view/all_book_accounts.jsp";
+	}
+	
+	/**
 	 * 查看所有举报数据
 	 */
 	@RequestMapping("/allReport")

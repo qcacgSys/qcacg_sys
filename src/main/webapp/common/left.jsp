@@ -35,6 +35,10 @@
 						<li><a><i class="icon-font">&#xe004;</i>用户管理</a></li>
 						<li><a><i class="icon-font">&#xe052;</i>友情链接</a></li>
 						<li><a><i class="icon-font">&#xe033;</i>广告管理</a></li>
+						<li><a href="${pageContext.request.contextPath}/admin/mouthLevelAccounts"><i
+								class="icon-font">&#xe005;</i>等级核算</a></li>
+						<li><a><i class="icon-font">&#xe005;</i>日更统计</a></li>
+						<li><a><i class="icon-font">&#xe005;</i>月更统计</a></li>
 					</ul></li>
 				<li><a><i class="icon-font">&#xe018;</i>系统管理</a>
 					<ul class="sub-menu">

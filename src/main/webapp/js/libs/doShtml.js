@@ -1,3 +1,142 @@
+/*推荐功能开始*/
+function getBookRecomList(pageNum, size){
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryBookRecom,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateBookRecomView(result);
+		}
+	});
+}
+
+updateBookRecomView = function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{userId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{bookName}</td>'+
+						'<td>#{bookIsSign}</td>'+
+						'<td>#{isRecommended}</td>'+
+						'<td>#{bookOnIndex}</td>'+
+						'<td><button id="" name="tuijian" type="button">推荐</button> <button id="" name="qxtuijian" type="button">取消推荐</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		if(data.bookIsSign==1){
+			data.bookIsSign='已签约';
+		}
+		if(data.bookIsSign==0){
+			data.bookIsSign='未签约';
+		}
+		if(data.isRecommended==1){
+			data.isRecommended='已推荐';
+		}
+		if(data.isRecommended==0){
+			data.isRecommended='未推荐';
+		}
+		var tr=template.replace('#{userId}',data.userId)
+					.replace('#{bookId}',data.bookId)
+					.replace('#{bookName}',data.bookName)
+					.replace('#{bookIsSign}',data.bookIsSign)
+					.replace('#{isRecommended}',data.isRecommended)
+					.replace('#{bookOnIndex}',data.bookOnIndex);
+		tbody.append(tr);
+	}
+	$('button[name="tuijian"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		var param={
+			"bookId":Number(id),
+			"isRecommended":'1'
+			};
+		var param=JSON.stringify(param);
+		$.ajax({
+			type : "POST",
+			url : PathList.adminUpdateBookRecom,
+			contentType : "application/json; charset=utf-8",
+			data : param,
+			dataType : "json",
+			success : function(result) {
+				alert(result.msg);
+				history.go(0);
+			}
+		});
+	});
+	$('button[name="qxtuijian"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		var param={
+			"bookId":Number(id),
+			"isRecommended":'0'
+			};
+		var param=JSON.stringify(param);
+		$.ajax({
+			type : "POST",
+			url : PathList.adminUpdateBookRecom,
+			contentType : "application/json; charset=utf-8",
+			data : param,
+			dataType : "json",
+			success : function(result) {
+				alert(result.msg);
+				history.go(0);
+			}
+		});
+	});
+	$('button[name="xianshi"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		var param={
+			"bookId":Number(id),
+			"bookOnIndex":'1'
+			};
+		var param=JSON.stringify(param);
+		$.ajax({
+			type : "POST",
+			url : PathList.adminUpdateBookRecom,
+			contentType : "application/json; charset=utf-8",
+			data : param,
+			dataType : "json",
+			success : function(result) {
+				alert(result.msg);
+				history.go(0);
+			}
+		});
+	});
+	$('button[name="buxianshi"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		var param={
+			"bookId":Number(id),
+			"bookOnIndex":'0'
+			};
+		var param=JSON.stringify(param);
+		$.ajax({
+			type : "POST",
+			url : PathList.adminUpdateBookRecom,
+			contentType : "application/json; charset=utf-8",
+			data : param,
+			dataType : "json",
+			success : function(result) {
+				alert(result.msg);
+				history.go(0);
+			}
+		});
+	});
+}
+/*推荐功能结束*/
+
 /*月更统计功能开始*/
 function getMouthBookAccountsList(pageNum, size){
 	var pageData = {

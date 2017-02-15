@@ -12,6 +12,15 @@ import com.qcacg.cms.dto.BookDTO;
 public class SystemController {
 	
 	/**
+	 * 推荐管理
+	 * @return
+	 */
+	@RequestMapping("/allRecom")
+	public String allRecom(){
+		return "/WEB-INF/view/book_recom.jsp";
+	}
+	
+	/**
 	 * 管理员日更统计
 	 * @return
 	 */
@@ -19,6 +28,7 @@ public class SystemController {
 	public String daysUpdateAccounts(){
 		return "/WEB-INF/view/days_update_accounts.jsp";
 	}
+	
 	/**
 	 * 管理员月更统计
 	 * @return

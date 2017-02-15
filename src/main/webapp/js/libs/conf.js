@@ -25,6 +25,10 @@ rootPath = 'http://127.0.0.1:8080/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
+		//推荐作品界面
+		adminQueryBookRecom : rootPath + 'book/adminQueryBookRecom.shtml',
+		//推荐操作
+		adminUpdateBookRecom : rootPath + 'book/adminUpdateBookRecom.shtml',
 		//取消签约等级
 		adminCancelSignLevel : rootPath + 'account/adminCancelSignLevel.shtml',
 		//管理员日更统计界面

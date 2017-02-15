@@ -12,6 +12,23 @@ import com.qcacg.cms.dto.BookDTO;
 public class SystemController {
 	
 	/**
+	 * 管理员日更统计
+	 * @return
+	 */
+	@RequestMapping("/daysUpdateAccounts")
+	public String daysUpdateAccounts(){
+		return "/WEB-INF/view/days_update_accounts.jsp";
+	}
+	/**
+	 * 管理员月更统计
+	 * @return
+	 */
+	@RequestMapping("/mouthUpdateAccounts")
+	public String mouthUpdateAccounts(){
+		return "/WEB-INF/view/mouth_update_accounts.jsp";
+	}
+	
+	/**
 	 * 查看当月签约等级核算
 	 * @return
 	 */

@@ -25,6 +25,12 @@ rootPath = 'http://127.0.0.1:8080/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
+		//取消签约等级
+		adminCancelSignLevel : rootPath + 'account/adminCancelSignLevel.shtml',
+		//管理员日更统计界面
+		adminQueryDaysUpdateCount : rootPath + 'account/adminQueryDaysUpdateCount.shtml',
+		//管理员月更统计界面
+		adminQueryMonthUpdateCount : rootPath + 'account/adminQueryMonthUpdateCount.shtml',
 		//签约等级核算界面
 		adminListBookAccounts : rootPath + 'account/adminQueryBookAccounts.shtml',
 		//签约等级核算历史

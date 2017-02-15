@@ -1,3 +1,118 @@
+/*月更统计功能开始*/
+function getMouthBookAccountsList(pageNum, size){
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryMonthUpdateCount,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateMouthBookAccountsView(result);
+		}
+	});
+}
+
+updateMouthBookAccountsView = function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{mouthUpdateCountId}</td>'+
+						'<td>#{userId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{signLevel}</td>'+
+						'<td>#{totalWords}</td>'+
+						'<td>#{countDay}</td>'+
+						'<td><button id="" name="qxdjy" type="button">取消等级</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		var tr=template.replace('#{mouthUpdateCountId}',data.mouthUpdateCountId)
+					.replace('#{userId}',data.userId)
+					.replace('#{bookId}',data.bookId)
+					.replace('#{signLevel}',data.signLevel)
+					.replace('#{totalWords}',data.totalWords)
+					.replace('#{countDay}',getMyDate(data.countDay));
+		tbody.append(tr);
+	}
+	$('button[name="qxdjy"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		//发送作品ID
+		var url=PathList.adminCancelSignLevel;
+		var param={"bookId":id};
+		$.post(url, param, function(result){
+			alert(result.msg);
+			history.go(0);
+		});
+	});
+}
+/*月更统计功能结束*/
+
+/*日更统计功能开始*/
+function getDaysBookAccountsList(pageNum, size){
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryDaysUpdateCount,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateDaysBookAccountsView(result);
+		}
+	});
+}
+
+updateDaysBookAccountsView = function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{daysUpdateCountId}</td>'+
+						'<td>#{userId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{signLevel}</td>'+
+						'<td>#{factDaysNum}</td>'+
+						'<td>#{supplementNum}</td>'+
+						'<td>#{totalWords}</td>'+
+						'<td>#{countDay}</td>'+
+						'<td><button id="" name="qxdj" type="button">取消等级</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		var tr=template.replace('#{daysUpdateCountId}',data.daysUpdateCountId)
+					.replace('#{userId}',data.userId)
+					.replace('#{bookId}',data.bookId)
+					.replace('#{signLevel}',data.signLevel)
+					.replace('#{factDaysNum}',data.factDaysNum)
+					.replace('#{supplementNum}',data.supplementNum)
+					.replace('#{totalWords}',data.totalWords)
+					.replace('#{countDay}',getMyDate(data.countDay));
+		tbody.append(tr);
+	}
+	$('button[name="qxdj"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		//发送作品ID
+		var url=PathList.adminCancelSignLevel;
+		var param={"bookId":id};
+		$.post(url, param, function(result){
+			alert(result.msg);
+			history.go(0);
+		});
+	});
+}
+/*日更统计功能结束*/
+
+
 /*历史核算功能开始*/
 function getAllBookAccountsList() {
 	var pageData = {
@@ -71,7 +186,7 @@ updateBookAccountsView=function(result){
 							.replace('#{drawWelfare}',data.drawWelfare)
 							.replace('#{fullWelfare}',data.fullWelfare)
 							.replace('#{accountsDate}',getDateYM(data.accountsDate))
-							.replace('#{status}',data.status)
+							.replace('#{status}','已打款')
 							.replace('id=""','disabled="disabled"');
 							tbody.append(tr);
 		}else{
@@ -84,7 +199,7 @@ updateBookAccountsView=function(result){
 							.replace('#{drawWelfare}',data.drawWelfare)
 							.replace('#{fullWelfare}',data.fullWelfare)
 							.replace('#{accountsDate}',getDateYM(data.accountsDate))
-							.replace('#{status}',data.status);
+							.replace('#{status}','未打款');
 			tbody.append(tr);
 		}
 

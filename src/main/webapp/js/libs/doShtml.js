@@ -1,3 +1,392 @@
+/*推荐功能开始*/
+function getBookRecomList(pageNum, size){
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryBookRecom,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateBookRecomView(result);
+		}
+	});
+}
+
+updateBookRecomView = function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{userId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{bookName}</td>'+
+						'<td>#{bookIsSign}</td>'+
+						'<td>#{isRecommended}</td>'+
+						'<td>#{bookOnIndex}</td>'+
+						'<td><button id="" name="tuijian" type="button">推荐</button> <button id="" name="qxtuijian" type="button">取消推荐</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		if(data.bookIsSign==1){
+			data.bookIsSign='已签约';
+		}
+		if(data.bookIsSign==0){
+			data.bookIsSign='未签约';
+		}
+		if(data.isRecommended==1){
+			data.isRecommended='已推荐';
+		}
+		if(data.isRecommended==0){
+			data.isRecommended='未推荐';
+		}
+		var tr=template.replace('#{userId}',data.userId)
+					.replace('#{bookId}',data.bookId)
+					.replace('#{bookName}',data.bookName)
+					.replace('#{bookIsSign}',data.bookIsSign)
+					.replace('#{isRecommended}',data.isRecommended)
+					.replace('#{bookOnIndex}',data.bookOnIndex);
+		tbody.append(tr);
+	}
+	$('button[name="tuijian"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		var param={
+			"bookId":Number(id),
+			"isRecommended":'1'
+			};
+		var param=JSON.stringify(param);
+		$.ajax({
+			type : "POST",
+			url : PathList.adminUpdateBookRecom,
+			contentType : "application/json; charset=utf-8",
+			data : param,
+			dataType : "json",
+			success : function(result) {
+				alert(result.msg);
+				history.go(0);
+			}
+		});
+	});
+	$('button[name="qxtuijian"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		var param={
+			"bookId":Number(id),
+			"isRecommended":'0'
+			};
+		var param=JSON.stringify(param);
+		$.ajax({
+			type : "POST",
+			url : PathList.adminUpdateBookRecom,
+			contentType : "application/json; charset=utf-8",
+			data : param,
+			dataType : "json",
+			success : function(result) {
+				alert(result.msg);
+				history.go(0);
+			}
+		});
+	});
+	$('button[name="xianshi"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		var param={
+			"bookId":Number(id),
+			"bookOnIndex":'1'
+			};
+		var param=JSON.stringify(param);
+		$.ajax({
+			type : "POST",
+			url : PathList.adminUpdateBookRecom,
+			contentType : "application/json; charset=utf-8",
+			data : param,
+			dataType : "json",
+			success : function(result) {
+				alert(result.msg);
+				history.go(0);
+			}
+		});
+	});
+	$('button[name="buxianshi"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		var param={
+			"bookId":Number(id),
+			"bookOnIndex":'0'
+			};
+		var param=JSON.stringify(param);
+		$.ajax({
+			type : "POST",
+			url : PathList.adminUpdateBookRecom,
+			contentType : "application/json; charset=utf-8",
+			data : param,
+			dataType : "json",
+			success : function(result) {
+				alert(result.msg);
+				history.go(0);
+			}
+		});
+	});
+}
+/*推荐功能结束*/
+
+/*月更统计功能开始*/
+function getMouthBookAccountsList(pageNum, size){
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryMonthUpdateCount,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateMouthBookAccountsView(result);
+		}
+	});
+}
+
+updateMouthBookAccountsView = function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{mouthUpdateCountId}</td>'+
+						'<td>#{userId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{signLevel}</td>'+
+						'<td>#{totalWords}</td>'+
+						'<td>#{countDay}</td>'+
+						'<td><button id="" name="qxdjy" type="button">取消等级</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		var tr=template.replace('#{mouthUpdateCountId}',data.mouthUpdateCountId)
+					.replace('#{userId}',data.userId)
+					.replace('#{bookId}',data.bookId)
+					.replace('#{signLevel}',data.signLevel)
+					.replace('#{totalWords}',data.totalWords)
+					.replace('#{countDay}',getMyDate(data.countDay));
+		tbody.append(tr);
+	}
+	$('button[name="qxdjy"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		//发送作品ID
+		var url=PathList.adminCancelSignLevel;
+		var param={"bookId":id};
+		$.post(url, param, function(result){
+			alert(result.msg);
+			history.go(0);
+		});
+	});
+}
+/*月更统计功能结束*/
+
+/*日更统计功能开始*/
+function getDaysBookAccountsList(pageNum, size){
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryDaysUpdateCount,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateDaysBookAccountsView(result);
+		}
+	});
+}
+
+updateDaysBookAccountsView = function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{daysUpdateCountId}</td>'+
+						'<td>#{userId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{signLevel}</td>'+
+						'<td>#{factDaysNum}</td>'+
+						'<td>#{supplementNum}</td>'+
+						'<td>#{totalWords}</td>'+
+						'<td>#{countDay}</td>'+
+						'<td><button id="" name="qxdj" type="button">取消等级</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		var tr=template.replace('#{daysUpdateCountId}',data.daysUpdateCountId)
+					.replace('#{userId}',data.userId)
+					.replace('#{bookId}',data.bookId)
+					.replace('#{signLevel}',data.signLevel)
+					.replace('#{factDaysNum}',data.factDaysNum)
+					.replace('#{supplementNum}',data.supplementNum)
+					.replace('#{totalWords}',data.totalWords)
+					.replace('#{countDay}',getMyDate(data.countDay));
+		tbody.append(tr);
+	}
+	$('button[name="qxdj"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		//发送作品ID
+		var url=PathList.adminCancelSignLevel;
+		var param={"bookId":id};
+		$.post(url, param, function(result){
+			alert(result.msg);
+			history.go(0);
+		});
+	});
+}
+/*日更统计功能结束*/
+
+
+/*历史核算功能开始*/
+function getAllBookAccountsList() {
+	var pageData = {
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryAllBookAccounts,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateBookAccountsView(result);
+		}
+	});
+};
+/*历史核算功能结束*/
+
+
+/*默认显示: 当月核算功能开始*/
+function getBookAccountsList(pageNum, size) {
+	//当月 未打款
+	$('#weidakuan').click(function(){
+		//getMouthAllBookAccountsListNo(0,10);
+	});
+	//当月 已打款
+	$('#yidakuan').click(function(){
+		//getMouthAllBookAccountsListOk(0,10);
+	});
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminListBookAccounts,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateBookAccountsView(result);
+		}
+	});
+};
+
+updateBookAccountsView=function(result){
+	//console.log(2);
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td><input type="checkbox" name="sc" value="xzid"></td>'+
+						'<td>#{bookAccountsId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{userId}</td>'+
+						'<td>#{signLevel}</td>'+
+						'<td>#{state}</td>'+
+						'<td>#{drawWelfare}</td>'+
+						'<td>#{fullWelfare}</td>'+
+						'<td>#{accountsDate}</td>'+
+						'<td>#{status}</td>'+
+						'<td><button id="" type="button">打款</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		if(data.status==1){
+			var tr=template.replace('xzid',data.bookAccountsId)
+							.replace('#{bookAccountsId}',data.bookAccountsId)
+							.replace('#{bookId}',data.bookId)
+							.replace('#{userId}',data.userId)
+							.replace('#{signLevel}',data.signLevel)
+							.replace('#{state}',data.state)
+							.replace('#{drawWelfare}',data.drawWelfare)
+							.replace('#{fullWelfare}',data.fullWelfare)
+							.replace('#{accountsDate}',getDateYM(data.accountsDate))
+							.replace('#{status}','已打款')
+							.replace('id=""','disabled="disabled"');
+							tbody.append(tr);
+		}else{
+			var tr=template.replace('xzid',data.bookAccountsId)
+							.replace('#{bookAccountsId}',data.bookAccountsId)
+							.replace('#{bookId}',data.bookId)
+							.replace('#{userId}',data.userId)
+							.replace('#{signLevel}',data.signLevel)
+							.replace('#{state}',data.state)
+							.replace('#{drawWelfare}',data.drawWelfare)
+							.replace('#{fullWelfare}',data.fullWelfare)
+							.replace('#{accountsDate}',getDateYM(data.accountsDate))
+							.replace('#{status}','未打款');
+			tbody.append(tr);
+		}
+
+	}
+	$('button:contains("打款")').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		updateCashAndWelfare(result[index].bookAccountsId);
+	});
+	$('#idstj').click(function(){
+		var obj=document.getElementsByName('sc');
+		var result = [];
+		var option = null;
+		for(var i=0;i<obj.length;i++){
+			option=obj[i];
+			if(option.checked){
+				result.push(Number(option.value));
+			}
+		}
+		updateManyCashAndWelfare(result);
+	});
+}
+//单用户打款打款
+updateCashAndWelfare=function(bookAccountsId){
+	console.log(bookAccountsId);
+	var url=PathList.adminRemitBookAccounts;
+	var result = [];
+	result.push(bookAccountsId);
+	var param={"bookAccountsIds":result};
+	$.post(url, param, function(result){
+		alert(result.msg);
+		history.go(0);
+	});
+}
+//批量打款
+updateManyCashAndWelfare=function(result){
+	var url=PathList.adminRemitBookAccounts;
+	var param={"bookAccountsIds":result};
+	$.post(url, param, function(result){
+		alert(result.msg);
+		history.go(0);
+	});
+}
+/*当月核算功能结束*/
+
+
+
+
 /*举报功能开始*/
 function getReportList(pageNum, size) {
 	var pageData = {
@@ -43,7 +432,7 @@ updateReportView=function(result){
 		tbody.append(tr);
 	}
 	//处理审理
-	$('button').click(function() {
+	$('button:contains("审理")').click(function() {
 		// 获取父元素取下标
 		tr = $(this).parent().parent();
 		index = tr.index();
@@ -57,7 +446,7 @@ updateReportView=function(result){
 		updateReport(paramJSON);
 	});
 	//不处理审理
-	$('button').next().click(function() {
+	$('button:contains("不审理")').click(function() {
 		// 获取父元素取下标
 		tr = $(this).parent().parent();
 		index = tr.index();
@@ -97,6 +486,20 @@ function getzf(num) {
 		num = '0' + num;
 	}
 	return num;
+};
+function getDateNow() {
+	var oDate = new Date,
+		oYear = oDate.getFullYear(),
+		oMonth = oDate.getMonth() + 1,
+		oTime = oYear + '-' + getzf(oMonth); //最后拼接时间  
+	return oTime;
+};
+function getDateYM(str) {
+	var oDate = new Date(str),
+		oYear = oDate.getFullYear(),
+		oMonth = oDate.getMonth() + 1,
+		oTime = oYear + '-' + getzf(oMonth); //最后拼接时间  
+	return oTime;
 };
 function getMyDate(str) {
 	var oDate = new Date(str),
@@ -175,6 +578,42 @@ var updateReviewView = function(review) {
 	console.log(bookList);
 }
 
+var getBookForCheck = function(pageNum, size) {
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.queryBookForCheck,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			review = result.data;
+			updateReviewView(review);
+		}
+	});
+};
+
+/*签约开始*/
+var getBookSign = function(pageNum, size) {
+	var pageData = {
+		pageNum : pageNum,
+		size : size
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryBookSign,
+		contentType : "application/json; charset=utf-8",
+		data : pageData,
+		dataType : "json",
+		success : function(result) {
+			updateSignView(result);
+		}
+	});
+};
+
 var updateSignView = function(signData) {
 	var tb = $('#tbo').empty();
 	var template = '<tr>' +
@@ -186,6 +625,7 @@ var updateSignView = function(signData) {
 		'<td>#{updateType}</td>' +
 		'<td>#{status}</td>' +
 		'<td>#{signLevel}</td>' +
+		'<td>#{isEntry}</td>' +
 		'<td>#{qq}</td>' +
 		'<td>#{email}</td>' +
 		'<td>#{phone}</td>' +
@@ -195,6 +635,12 @@ var updateSignView = function(signData) {
 		'</tr>';
 	for (var i = 0; i < signData.length; i++) {
 		var s = signData[i];
+		if(s.isEntry == 0){
+			s.isEntry = '未申请';
+		}
+		if(s.isEntry == 1){
+			s.isEntry = '申请中';
+		}
 		if(s.updateType == 1){
 			s.updateType = '日更';
 		}
@@ -221,6 +667,7 @@ var updateSignView = function(signData) {
 			.replace('#{updateType}', s.updateType)
 			.replace('#{status}', s.status)
 			.replace('#{signLevel}', s.signLevel)
+			.replace('#{isEntry}', s.isEntry)
 			.replace('#{qq}', s.qq)
 			.replace('#{email}', s.email)
 			.replace('#{phone}', s.phone)
@@ -231,41 +678,7 @@ var updateSignView = function(signData) {
 	}
 }
 
-
-var getBookForCheck = function(pageNum, size) {
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.queryBookForCheck,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			review = result.data;
-			updateReviewView(review);
-		}
-	});
-};
-
-var getBookSign = function(pageNum, size) {
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminQueryBookSign,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			updateSignView(result);
-		}
-	});
-};
+/*签约结束*/
 var getUserlist = function(pageNum,pageSize){
 	var sendData = {
 		pageNum : pageNum,

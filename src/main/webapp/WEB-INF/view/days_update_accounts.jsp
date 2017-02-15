@@ -9,11 +9,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>后台签约管理</title>
+<title>日更统计管理</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
-<script type="text/javascript">
-	$(getBookSign(0, 10));
-</script>
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
@@ -26,27 +23,21 @@
 				<form name="myform" id="myform" method="post">
 					<div class="result-title">
 						<div class="result-list">
-							<a href="${pageContext.request.contextPath}/admin/recommend"><i class="icon-font"></i>选择签约推荐</a>
+							说明:日更>=2000字,实更天数+1天,补签次数=实更天数.<a href="#"><i class="icon-font"></i></a>
 						</div>
 					</div>
 					<div class="result-content">
 						<table class="result-tab" width="100%">
 							<thead>
 								<tr>
+									<th>统计ID</th>
+									<th>用户ID</th>
 									<th>作品ID</th>
-									<th>姓名</th>
-									<th>作品名</th>
-									<th>申请次数</th>
-									<th>最后申请时间</th>
-									<th>签约方式</th>
-									<th>签约状态</th>
 									<th>签约等级</th>
-									<th>等级申请</th>
-									<th>QQ</th>
-									<th>邮箱</th>
-									<th>手机</th>
-									<th>地址</th>
-									<th>申请原因</th>
+									<th>实更天数</th>
+									<th>补签次数</th>
+									<th>总字数</th>
+									<th>统计时间</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -60,22 +51,11 @@
 									<td>aaaa</td>
 									<td>aaaa</td>
 									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td><a id="aaaa" href="#">通过</a> <a id="bbbb" href="#">拒绝</a></td>
+									<td><button id="qxdj" type="button">取消等级</button></td>
 								</tr>
 							</tbody>
 						</table>
-						<div id="fenyed" class="list-page">
-							<span id="fenyes"><input type="hidden" id="pageNum"
-								value="0"> <input type="hidden" id="pageSize" value="10">
-								<span id="fenyes"><a id="lastPage">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-									id="nextPage">下一页</a></span></span>
-						</div>
+						<jsp:include page="/common/fenyed.jsp"></jsp:include>
 					</div>
 				</form>
 			</div>
@@ -85,13 +65,14 @@
 	</div>
 </body>
 <script type="text/javascript">
+	$(getDaysBookAccountsList(0, 10));
 	$("#nextPage").click(function() {
 		$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
-		getBookSign($("#pageNum").val(), $("#pageSize").val());
+		getDaysBookAccountsList($("#pageNum").val(), $("#pageSize").val());
 	});
 	$("#lastPage").click(function() {
 		$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
-		getBookSign($("#pageNum").val(), $("#pageSize").val());
+		getDaysBookAccountsList($("#pageNum").val(), $("#pageSize").val());
 	});
 </script>
 </html>

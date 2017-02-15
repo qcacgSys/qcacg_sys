@@ -9,11 +9,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>后台签约管理</title>
+<title>签约等级核算统计</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
-<script type="text/javascript">
-	$(getBookSign(0, 10));
-</script>
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
@@ -24,34 +21,27 @@
 			<jsp:include page="/common/right_head.jsp"></jsp:include>
 			<div class="result-wrap">
 				<form name="myform" id="myform" method="post">
-					<div class="result-title">
-						<div class="result-list">
-							<a href="${pageContext.request.contextPath}/admin/recommend"><i class="icon-font"></i>选择签约推荐</a>
-						</div>
-					</div>
+					<jsp:include page="/common/remit_bolting.jsp"></jsp:include>
 					<div class="result-content">
 						<table class="result-tab" width="100%">
 							<thead>
 								<tr>
+									<th>选择</th>
+									<th>核算ID</th>
 									<th>作品ID</th>
-									<th>姓名</th>
-									<th>作品名</th>
-									<th>申请次数</th>
-									<th>最后申请时间</th>
-									<th>签约方式</th>
-									<th>签约状态</th>
+									<th>用户ID</th>
 									<th>签约等级</th>
-									<th>等级申请</th>
-									<th>QQ</th>
-									<th>邮箱</th>
-									<th>手机</th>
-									<th>地址</th>
-									<th>申请原因</th>
+									<th>等级说明</th>
+									<th>插画补贴</th>
+									<th>固定金额</th>
+									<th>核算时间</th>
+									<th>状态</th>
 									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody id="tbo">
 								<tr>
+									<td><input type="checkbox"></td>
 									<td>aaaa</td>
 									<td>aaaa</td>
 									<td>aaaa</td>
@@ -61,12 +51,7 @@
 									<td>aaaa</td>
 									<td>aaaa</td>
 									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td>aaaa</td>
-									<td><a id="aaaa" href="#">通过</a> <a id="bbbb" href="#">拒绝</a></td>
+									<td><a id="a" href="#">a</a>&nbsp;&nbsp;<a id="bushenli" href="#">a</a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -79,19 +64,23 @@
 					</div>
 				</form>
 			</div>
+			</div>
 			<jsp:include page="/common/right_foot.jsp"></jsp:include>
 		</div>
 		<!--/main-->
 	</div>
 </body>
 <script type="text/javascript">
-	$("#nextPage").click(function() {
-		$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
-		getBookSign($("#pageNum").val(), $("#pageSize").val());
-	});
-	$("#lastPage").click(function() {
-		$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
-		getBookSign($("#pageNum").val(), $("#pageSize").val());
-	});
+$(getBookAccountsList(0, 10));
+
+$("#nextPage").click(function() {
+	$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
+	getBookAccountsList($("#pageNum").val(), $("#pageSize").val());
+});
+
+$("#lastPage").click(function() {
+	$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
+	getBookAccountsList($("#pageNum").val(), $("#pageSize").val());
+});
 </script>
 </html>

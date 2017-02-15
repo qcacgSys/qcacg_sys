@@ -5,8 +5,8 @@ var htmlPath ;
 var adminPath ;
 
 //本项目端口路径
-adminPath = 'http://127.0.0.1:777/qcacg_sys/';
-//adminPath = 'http://127.0.0.1:8090/qcacg_sys/';
+//adminPath = 'http://127.0.0.1:777/qcacg_sys/';
+adminPath = 'http://127.0.0.1:8090/qcacg_sys/';
 //adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
 //adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
 
@@ -23,6 +23,24 @@ rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
+		//推荐作品界面
+		adminQueryBookRecom : rootPath + 'book/adminQueryBookRecom.shtml',
+		//推荐操作
+		adminUpdateBookRecom : rootPath + 'book/adminUpdateBookRecom.shtml',
+		//取消签约等级
+		adminCancelSignLevel : rootPath + 'account/adminCancelSignLevel.shtml',
+		//管理员日更统计界面
+		adminQueryDaysUpdateCount : rootPath + 'account/adminQueryDaysUpdateCount.shtml',
+		//管理员月更统计界面
+		adminQueryMonthUpdateCount : rootPath + 'account/adminQueryMonthUpdateCount.shtml',
+		//签约等级核算界面
+		adminListBookAccounts : rootPath + 'account/adminQueryBookAccounts.shtml',
+		//签约等级核算历史
+		adminQueryAllBookAccounts : rootPath + 'account/adminQueryAllBookAccounts.shtml',
+		//签约等级处理
+		adminUpdateSignLevel : rootPath + 'book/adminUpdateSignLevel.shtml',
+		//管理员签约等级核算打款
+		adminRemitBookAccounts : rootPath + 'account/adminRemitBookAccounts.shtml',
 		//评论操作界面
 		adminListReport : rootPath + 'report/adminListReport.shtml',
 		//评论操作

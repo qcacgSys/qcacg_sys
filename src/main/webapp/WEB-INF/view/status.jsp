@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>XXXXX</title>
+<title>后台审核管理</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
 </head>
 <body>
@@ -50,7 +50,7 @@
 </body>
 <script type="text/javascript"> 
 	var status ;
-	$("#aId").attr("href", HtmlList.catalog + "?bookId=${bookDTO.bookId}");
+	$("#aId").attr("href", htmlList.catalog + "?bookId=${bookDTO.bookId}");
 	$("#status2").click(function(){
 		status=2;
 	});

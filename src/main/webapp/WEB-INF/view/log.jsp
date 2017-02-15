@@ -12,6 +12,11 @@
 <title>后台日志管理</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
 </head>
+<script type="text/javascript">
+	var pageNum = 1;
+	var pageSize = 10;
+	$(getLogList(pageNum,pageSize));
+</script>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
 	<div class="container clearfix">
@@ -21,20 +26,19 @@
 			<jsp:include page="/common/right_head.jsp"></jsp:include>
 			<div class="result-wrap">
 				<div class="result-title">
-					<h1>HHHHH</h1>
+					<h1>日志一览</h1>
 				</div>
 				<div class="result-content">
 						<table class="result-tab" width="100%">
 							<thead>
 								<tr>
-									<th>A</th>
-									<th>B</th>
-									<th>C</th>
-									<th>D</th>
-									<th>E</th>
-									<th>F</th>
-									<th>G</th>
-									<th>H</th>
+									<th>日志编号</th>
+									<th>日志一级分类</th>
+									<th>日志二级分类</th>
+									<th>日志概述</th>
+									<th>时间</th>
+									<th>详情</th>
+									<th>查看</th>
 								</tr>
 							</thead>
 							<tbody id="tbo">
@@ -46,15 +50,19 @@
 									<td>aaaa</td>
 									<td>aaaa</td>
 									<td>aaaa</td>
-									<td><a id="shenli" href="#">审理</a>&nbsp;&nbsp;<a id="bushenli" href="#">不审理</a></td>
 								</tr>
 							</tbody>
 						</table>
 						<div id="fenyed" class="list-page">
-							<span id="fenyes"><input type="hidden" id="pageNum"
-								value="0"> <input type="hidden" id="pageSize" value="10">
+							<span id="fenyes">
 								<span id="fenyes"><a id="lastPage">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
 									id="nextPage">下一页</a></span></span>
+						</div>
+						<div class="result-content">
+							<table class="result-tab" id="t" width="100%">
+							</table>
+							<div id="f" class="list-page">
+							</div>
 						</div>
 					</div>
 			</div>
@@ -63,4 +71,16 @@
 		<!--/main-->
 	</div>
 </body>
+<script type="text/javascript">
+	$("#nextPage").click(function(){
+		pageNum ++;
+		pageSize ++;
+		getLogList(pageNum,pageSize);
+	});
+	$("#lastPage").click(function(){
+		pageNum --;
+		pageSize --;
+		getLogList(pageNum,pageSize);
+	});
+</script>
 </html>

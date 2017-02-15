@@ -20,7 +20,10 @@ public class SysAdminController {
 	 * @return
 	 */
 	@RequestMapping("/loginView")
-	public String loginView(){
+	public String loginView(HttpSession session){
+		if(session.getAttribute("sysAdmin")!=null){
+			return "redirect:/admin/adminView";
+		}
 		return "/WEB-INF/view/login.jsp";
 	}
 	/**

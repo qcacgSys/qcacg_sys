@@ -21,7 +21,7 @@
 		</div>
 		<div class="result-content">
 			<div class="short-wrap">
-				<a href="#"><i class="icon-font">&#xe001;</i>*</a> <a><i
+				<a><i class="icon-font">&#xe001;</i>*</a> <a><i
 					class="icon-font">&#xe005;</i>*</a> <a><i class="icon-font">&#xe048;</i>*</a>
 				<a><i class="icon-font">&#xe041;</i>*</a> <a><i
 					class="icon-font">&#xe01e;</i>*</a>

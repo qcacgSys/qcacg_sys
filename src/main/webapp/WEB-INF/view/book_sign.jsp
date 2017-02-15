@@ -26,7 +26,7 @@
 				<form name="myform" id="myform" method="post">
 					<div class="result-title">
 						<div class="result-list">
-							<a href="#"><i class="icon-font"></i>选择签约推荐</a>
+							<a href="${pageContext.request.contextPath}/admin/recommend"><i class="icon-font"></i>选择签约推荐</a>
 						</div>
 					</div>
 					<div class="result-content">

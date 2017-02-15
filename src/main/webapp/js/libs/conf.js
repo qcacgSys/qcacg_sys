@@ -11,17 +11,15 @@ adminPath = 'http://127.0.0.1:777/qcacg_sys/';
 //adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
 
 //调用跳转项目html域名与端口
-htmlPath = 'http://127.0.0.1:3000/';
+//htmlPath = 'http://127.0.0.1:3000/';
 //htmlPath = 'http://127.0.0.1:8080/';
-//htmlPath = 'http://121.196.194.211:8080/';
+htmlPath = 'http://121.196.194.211:8080/';
 //htmlPath = 'http://www.qcacg.com:8080/';
 
 //调用shtml域名与端口
 //rootPath = '/Controller';
-rootPath = 'http://127.0.0.1:8080/';
-//rootPath = 'http://192.168.126.25:8080/';
-//rootPath = 'http://127.0.0.1:8080/Controller/';
-//rootPath = 'http://121.196.194.211:8080/Controller/';
+//rootPath = 'http://127.0.0.1:8080/';
+rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
@@ -42,9 +40,11 @@ var PathList = {
 		//管理员撤销系统消息或者官方公告
 		cancelSend : rootPath + 'info/cancelSend.shtml',
 		//管理员查看日志
-		adminQueryBookSign : rootPath + 'log/list.shtml'
+		adminQueryLog : rootPath + 'log/list.shtml',
+		//查看日志详情
+		logDetail : rootPath + 'log/detail.shtml'
 };
-var HtmlList = {
+var htmlList = {
 		//跳转到书页面
 		catalog : htmlPath + 'view/catalog.html'
 };

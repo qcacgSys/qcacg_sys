@@ -289,5 +289,163 @@ var getLogList = function(pageNum,pageSize){
 			pageNum : pageNum,
 			pageSize : pageSize
 	};
-	
-}
+	$.post(PathList.adminQueryLog,sendData,function(result){
+		var tbo = $("#tbo");
+		tbo.empty();
+		var template = '<tr><td>日志编号</td><td>日志一级分类</td><td>日志二级分类</td><td>日志概述</td><td>时间</td><td>查看</td><td>详情</td></tr>';
+		var list = result.data.list;
+		console.log(list);
+		for(var x=0;x<list.length;x++){
+			var s = list[x];
+			var logFirstType = '';
+			if(s.logFirstType==1){
+				logFirstType = '系统日志';
+			}else if(s.logFirstType==2){
+				logFirstType = '财务日志';
+			}else if(s.logFirstType==3){
+				logFirstType = '操作日志';
+			}
+			var logSecondType = '';
+			if(s.logSecondType==21){
+				logSecondType = '钱包日志';
+			}else if(s.logSecondType==22){
+				logSecondType = '好人卡日志';
+			}else if(s.logSecondType==23){
+				logSecondType = '结算日志';
+			}
+			var typeDescription = '';
+			if(s.typeDescription==2100){
+				typeDescription = '用户提现';
+			}else if(s.typeDescription==2101){
+				typeDescription = '钱包模块充值';
+			}else if(s.typeDescription==2102){
+				typeDescription = '购买好人卡';
+			}else if(s.typeDescription==2103){
+				typeDescription = '画师模块充值';
+			}else if(s.typeDescription==2105){
+				typeDescription = '系统结算稿费';
+			}else if(s.typeDescription==2107){
+				typeDescription = '购买画作';
+			}else if(s.typeDescription==2109){
+				typeDescription = '系统结算福利补贴';
+			}else if(s.typeDescription==2200){
+				typeDescription = '用户签到';
+			}else if(s.typeDescription==2201){
+				typeDescription = '用户打赏作品';
+			}else if(s.typeDescription==2202){
+				typeDescription = '购买好人卡';
+			}else if(s.typeDescription==2203){
+				typeDescription = '系统结算福利补贴';
+			}else if(s.typeDescription==2205){
+				typeDescription = '改名消耗好人卡';
+			}
+			console.log(typeof(s.logId));
+			var trtd = template.replace('日志编号',s.logId)
+			.replace('日志一级分类',logFirstType)
+			.replace('日志二级分类',logSecondType)
+			.replace('时间',getMyDate(s.createTime))
+			.replace('日志概述',typeDescription)
+			.replace('查看', s.logExplain)
+			.replace('详情','<a onclick="getLogDetail('+'\''+s.logId+'\''+','+s.logSecondType+')">查看</a>');
+			tbo.append(trtd);
+		}
+	});
+};
+
+var getLogDetail = function(logId,logSecondType){
+	console.log(typeof(logId));
+	var sendData = {
+			logId : logId
+	};
+	console.log(sendData);
+	$.post(PathList.logDetail,sendData,function(result){
+		console.log(result);
+		var s = result.data;
+		var t = $("#t");
+		var f = $("#f");
+		t.empty();
+		f.empty();
+		if(logSecondType==21){
+			if(s.typeDescription==2100){
+				s.typeDescription = '用户提现';
+			}else if(s.typeDescription==2101){
+				s.typeDescription = '钱包模块充值';
+				var urlUl;
+				if(s.tradeNo!=null){
+					urlUl = '<ul class="sys-info-list">'
+					+'<li><label class="res-lab"></label><span class="res-info"></span></li>'
+					+'<li><label class="res-lab">交易订单号:'+s.tradeNo+'</label><span class="res-info"></span></li>'
+					+'<li><label class="res-lab"><a href="'+s.payUrl+'" target="view_window">支付链接</a></label><span class="res-info"></span></li></ul>';
+				}else{
+					urlUl = '<ul class="sys-info-list">'
+						+'<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+'<li><label class="res-lab">交易订单号:未生成</label><span class="res-info"></span></li>'
+						+'<li><label class="res-lab"><a href="'+s.payUrl+'" target="view_window">支付链接</a></label><span class="res-info"></span></li></ul>';
+				}
+				f.append(urlUl);
+			}else if(s.typeDescription==2102){
+				s.typeDescription = '购买好人卡';
+				var urlUl= '<ul class="sys-info-list">'
+					+'<li><label class="res-lab"></label><span class="res-info"></span></li>'
+					+'<li><label class="res-lab"><a onclick="getLogDetail('+'\''+s.infCardLogId+'\''+',22'+')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
+				f.append(urlUl);
+			}else if(s.typeDescription==2103){
+				s.typeDescription = '画师模块充值';
+			}else if(s.typeDescription==2105){
+				s.typeDescription = '作者稿费';
+			}else if(s.typeDescription==2107){
+				s.typeDescription = '购买画册';
+			}else if(s.typeDescription==2109){
+				s.typeDescription = '每月福利补贴';
+			}
+			if(s.orderStatus == 0){
+				s.orderStatus = "交易未完成";
+			}else if(s.orderStatus == 1){
+				s.orderStatus = "交易已完成";
+			}else if(s.orderStatus == 2){
+				s.orderStatus = "交易已取消";
+			}
+			var trth = '<thead><tr><th>日志编号</th><th>支付用户</th><th>接受支付用户</th><th>可兑换金额</th><th>不可兑换金额</th><th>福利补贴金额</th><th>交易状态</th><th>创建时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+			var template = '<tbody><tr><td>日志编号</td><td>支付用户</td><td>接受支付用户</td><td>可兑换金额</td><td>不可兑换金额</td><td>福利补贴金额</td><td>交易状态</td><td>创建时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+			var trtd = template.replace('日志编号',s.logId)
+			.replace('支付用户',s.payUserName)
+			.replace('接受支付用户',s.paiedUserName)
+			.replace('可兑换金额',s.exchangeableCashAmount)
+			.replace('不可兑换金额',s.unexchangeableCashAmount)
+			.replace('福利补贴金额',s.welfareCashAmount)
+			.replace('交易状态',s.orderStatus)
+			.replace('创建时间',getMyDate(s.createTime))
+			.replace('IP地址',s.ip)
+			.replace('使用详情',s.typeDescription);
+			t.append(trth).append(trtd);
+			}else if(logSecondType==22){
+				if(s.typeDescription==2200){
+					s.typeDescription = '签到获得好人卡';
+				}else if(s.typeDescription==2201){
+					s.typeDescription = '打赏:<a href="?bookId='+s.bookId+'" target="view_window">作品</a>';
+				}else if(s.typeDescription==2202){
+					s.typeDescription = '购买好人卡';
+					var urlUl= '<ul class="sys-info-list">'
+						+'<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+'<li><label class="res-lab"><a onclick="getLogDetail('+'\''+s.infCashLogId+'\''+',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+					f.append(urlUl);
+				}else if(s.typeDescription==2203){
+					s.typeDescription = '好人卡提现';
+				}else if(s.typeDescription==2205){
+					s.typeDescription = '改名消耗好人卡';
+				}
+				var trth = '<thead><tr><th>日志编号</th><th>支付好人卡用户</th><th>接受支付好人卡用户</th><th>充值好人卡数</th><th>福利好人卡数</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+				var template = '<tbody><tr><td>日志编号</td><td>支付好人卡用户</td><td>接受支付好人卡用户</td><td>充值好人卡数</td><td>福利好人卡数</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+				var trtd = template.replace('日志编号',s.logId)
+				.replace('支付好人卡用户',s.payUserName)
+				.replace('接受支付好人卡用户',s.paiedUserName)
+				.replace('充值好人卡数',s.payCardAmount)
+				.replace('福利好人卡数',s.welfareCardAmount)
+				.replace('时间',getMyDate(s.createTime))
+				.replace('IP地址',s.ip)
+				.replace('使用详情',s.typeDescription);
+				t.append(trth).append(trtd);
+			}
+		}
+	);
+};

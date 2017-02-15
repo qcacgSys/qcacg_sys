@@ -48,7 +48,7 @@
 	</div>
 </body>
 <script type="text/javascript"> 
-	$("#aId").attr("href", HtmlList.catalog + "?bookId=${bookDTO.bookId}");
+	$("#aId").attr("href", htmlList.catalog + "?bookId=${bookDTO.bookId}");
 	var status ;
 	$("#status2").click(function(){
 		status = 2;

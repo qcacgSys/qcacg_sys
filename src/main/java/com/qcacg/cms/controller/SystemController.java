@@ -3,6 +3,7 @@ package com.qcacg.cms.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.qcacg.cms.dto.BookDTO;
 
 
@@ -78,7 +79,25 @@ public class SystemController {
 	 * @return
 	 */
 	@RequestMapping("/allLog")
-	public String sysLogView(){
+	public String logView(){
 		return "/WEB-INF/view/log.jsp";
+	}
+	/**
+	 * 查看日志详情
+	 * @param model
+	 * @param orderId
+	 * @return
+	 */
+	@RequestMapping("logDetail")
+	public String logDetail(Model model,String logId,Integer logSecondType){
+		model.addAttribute("logId", logId);
+		if(logSecondType.equals(21)){
+			return "/WEB-INF/view/log_detail_1.jsp";
+		}else if(logSecondType.equals(22)){
+			return "/WEB-INF/view/log_detail_2.jsp";			
+		}else if(logSecondType.equals(23)){
+			return "/WEB-INF/view/log_detail_3.jsp";
+		}
+		return null;
 	}
 }

@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -25,15 +26,10 @@
 				</div>
 				<div class="result-content">
 					<ul class="sys-info-list">
-						<li><label class="res-lab">AAAAA</label><span
-							class="res-info">BBBB</span></li>
-						<li><label class="res-lab">CCCCC</label><span
-							class="res-info"><textarea id="signReply"
-									style="width: 400" rows="5" name="reply"></textarea></span></li>
-						<li><label class="res-lab">DDDDD</label><span
-							class="res-info"></span></li>
-						<li><label class="res-lab">EEEEE</label><span
-							class="res-info"></span></li>
+						<c:forEach items="${recommendBook}" var="book">
+							<li><label class="res-lab">${book.bookname}</label><span
+							class="res-info"><a href="?bookId=${book.bookid}">作品详情</a></span></li>
+						</c:forEach>
 					</ul>
 				</div>
 			</div>

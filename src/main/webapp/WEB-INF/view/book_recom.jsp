@@ -23,7 +23,8 @@
 				<form name="myform" id="myform" method="post">
 					<div class="result-title">
 						<div class="result-list">
-							说明: 界面为已通过审核的! 主页显示状态: 1? 2? 3? 4? 5? 6?<a href="#"><i class="icon-font"></i></a>
+							<!--  主页显示状态: 1? 2? 3? 4? 5? 6? -->
+							说明: 界面为已通过审核的!<a href="#"><i class="icon-font"></i></a>
 						</div>
 					</div>
 					<div class="result-content">

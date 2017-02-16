@@ -736,11 +736,11 @@ var getLogList = function(pageNum,pageSize){
 			}else if(s.typeDescription==2103){
 				typeDescription = '画师模块充值';
 			}else if(s.typeDescription==2105){
-				typeDescription = '系统结算稿费';
+				typeDescription = '钱包到账稿费';
 			}else if(s.typeDescription==2107){
 				typeDescription = '购买画作';
 			}else if(s.typeDescription==2109){
-				typeDescription = '系统结算福利补贴';
+				typeDescription = '钱包到账福利';
 			}else if(s.typeDescription==2200){
 				typeDescription = '用户签到';
 			}else if(s.typeDescription==2201){
@@ -751,6 +751,10 @@ var getLogList = function(pageNum,pageSize){
 				typeDescription = '系统结算福利补贴';
 			}else if(s.typeDescription==2205){
 				typeDescription = '改名消耗好人卡';
+			}else if(s.typeDescription==2305){
+				typeDescription = '系统结算保底补贴';
+			}else if(s.typeDescription==2307){
+				typeDescription = '系统结算福利补贴';
 			}
 			console.log(typeof(s.logId));
 			var trtd = template.replace('日志编号',s.logId)

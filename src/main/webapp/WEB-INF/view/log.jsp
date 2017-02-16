@@ -74,12 +74,10 @@
 <script type="text/javascript">
 	$("#nextPage").click(function(){
 		pageNum ++;
-		pageSize ++;
 		getLogList(pageNum,pageSize);
 	});
 	$("#lastPage").click(function(){
 		pageNum --;
-		pageSize --;
 		getLogList(pageNum,pageSize);
 	});
 </script>

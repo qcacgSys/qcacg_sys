@@ -311,7 +311,7 @@ updateBookAccountsView=function(result){
 						'<td>#{fullWelfare}</td>'+
 						'<td>#{accountsDate}</td>'+
 						'<td>#{status}</td>'+
-						'<td><button id="" type="button">打款</button></td>'+
+						'<td><button id="" type="button" class="btn btn-primary btn-check">打款</button></td>'+
 					'</tr>';
 	for(var i=0;i<result.length;i++){
 		var data=result[i];
@@ -324,7 +324,7 @@ updateBookAccountsView=function(result){
 							.replace('#{state}',data.state)
 							.replace('#{drawWelfare}',data.drawWelfare)
 							.replace('#{fullWelfare}',data.fullWelfare)
-							.replace('#{accountsDate}',getDateYM(data.accountsDate))
+							.replace('#{accountsDate}',getMyDate(data.accountsDate))
 							.replace('#{status}','已打款')
 							.replace('id=""','disabled="disabled"');
 							tbody.append(tr);
@@ -337,12 +337,20 @@ updateBookAccountsView=function(result){
 							.replace('#{state}',data.state)
 							.replace('#{drawWelfare}',data.drawWelfare)
 							.replace('#{fullWelfare}',data.fullWelfare)
-							.replace('#{accountsDate}',getDateYM(data.accountsDate))
+							.replace('#{accountsDate}',getMyDate(data.accountsDate))
 							.replace('#{status}','未打款');
 			tbody.append(tr);
 		}
 
 	}
+	$('#year_and_mouth').click(function(){
+		var yearAndMouthStart=$('#datetimeStart').val();
+		var yearAndMouthEnd=$('#datetimeEnd').val();
+		/////////////////////////////////////////////////////////////////////////////////////////
+		//发送年月时间
+		alert(yearAndMouthStart+","+yearAndMouthEnd);
+		/////////////////////////////////////////////////////////////////////////////////////////
+	});
 	$('button:contains("打款")').click(function(){
 		tr = $(this).parent().parent();
 		index = tr.index();
@@ -371,6 +379,7 @@ updateCashAndWelfare=function(bookAccountsId){
 	$.post(url, param, function(result){
 		alert(result.msg);
 		history.go(0);
+		
 	});
 }
 //批量打款
@@ -383,9 +392,6 @@ updateManyCashAndWelfare=function(result){
 	});
 }
 /*当月核算功能结束*/
-
-
-
 
 /*举报功能开始*/
 function getReportList(pageNum, size) {

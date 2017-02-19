@@ -14,7 +14,8 @@
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
-	<div class="container clearfix">
+	<div class="container-fluid clearfix">
+	  <div class="row">
 		<jsp:include page="/common/left.jsp"></jsp:include>
 		<!--/sidebar-->
 		<div class="main-wrap">
@@ -64,10 +65,10 @@
 					</div>
 				</form>
 			</div>
-			</div>
 			<jsp:include page="/common/right_foot.jsp"></jsp:include>
 		</div>
 		<!--/main-->
+	  </div>
 	</div>
 </body>
 <script type="text/javascript">
@@ -81,6 +82,30 @@ $("#nextPage").click(function() {
 $("#lastPage").click(function() {
 	$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
 	getBookAccountsList($("#pageNum").val(), $("#pageSize").val());
+});
+
+$("#datetimeStart").datetimepicker({
+	language: 'zh-CN',
+	format: 'yyyy-mm',
+	autoclose: true,
+	todayBtn: true,
+	startView: 'year',
+	minView:'year',
+	maxView:'decade'
+}).on("click",function(){
+    $("#datetimeStart").datetimepicker("setEndDate",$("#datetimeEnd").val())
+});
+
+$("#datetimeEnd").datetimepicker({
+	language: 'zh-CN',
+	format: 'yyyy-mm',
+	autoclose: true,
+	todayBtn: true,
+	startView: 'year',
+	minView:'year',
+	maxView:'decade'
+}).on("click",function(){
+    $("#datetimeEnd").datetimepicker("setStartDate",$("#datetimeStart".val()))
 });
 </script>
 </html>

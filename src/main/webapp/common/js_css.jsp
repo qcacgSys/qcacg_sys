@@ -22,6 +22,10 @@
 	-->
 
 <link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath }/css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath }/css/common.css" />
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath }/css/main.css" />
@@ -29,6 +33,12 @@
 	src="${pageContext.request.contextPath }/js/libs/modernizr.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/jquery-3.1.1.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/libs/bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/libs/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/libs/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/conf.js"></script>
 <script type="text/javascript"

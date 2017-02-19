@@ -37,6 +37,8 @@
 								class="icon-font">&#xe012;</i>评论管理</a></li>
 						<li><a href="${pageContext.request.contextPath}/admin/allLog"><i
 								class="icon-font">&#xe004;</i>日志管理</a></li>
+						<li><a href="${pageContext.request.contextPath}/admin/allWithdrawals"><i
+								class="icon-font">&#xe004;</i>提现管理</a></li>
 						<li><a><i class="icon-font">&#xe052;</i>友情链接</a></li>
 						<li><a><i class="icon-font">&#xe033;</i>广告管理</a></li>
 						<li><a href="${pageContext.request.contextPath}/admin/mouthLevelAccounts"><i

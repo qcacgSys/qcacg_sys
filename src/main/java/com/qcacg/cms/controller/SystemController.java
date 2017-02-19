@@ -128,21 +128,11 @@ public class SystemController {
 		return "/WEB-INF/view/log.jsp";
 	}
 	/**
-	 * 查看日志详情
-	 * @param model
-	 * @param orderId
+	 * 查看所有提现
 	 * @return
 	 */
-	@RequestMapping("logDetail")
-	public String logDetail(Model model,String logId,Integer logSecondType){
-		model.addAttribute("logId", logId);
-		if(logSecondType.equals(21)){
-			return "/WEB-INF/view/log_detail_1.jsp";
-		}else if(logSecondType.equals(22)){
-			return "/WEB-INF/view/log_detail_2.jsp";			
-		}else if(logSecondType.equals(23)){
-			return "/WEB-INF/view/log_detail_3.jsp";
-		}
-		return null;
+	@RequestMapping("/allWithdrawals")
+	public String withdrawalsView(){
+		return "/WEB-INF/view/withdrawals.jsp";
 	}
 }

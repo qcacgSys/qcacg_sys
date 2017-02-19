@@ -734,6 +734,8 @@ var getLogList = function(pageNum,pageSize){
 				logSecondType = '好人卡日志';
 			}else if(s.logSecondType==23){
 				logSecondType = '结算日志';
+			}else if(s.logSecondType==24){
+				logSecondType = '提现日志';
 			}
 			var typeDescription = '';
 			if(s.typeDescription==2100){
@@ -757,13 +759,23 @@ var getLogList = function(pageNum,pageSize){
 			}else if(s.typeDescription==2202){
 				typeDescription = '购买好人卡';
 			}else if(s.typeDescription==2203){
-				typeDescription = '系统结算福利补贴';
+				typeDescription = '好人卡提现';
 			}else if(s.typeDescription==2205){
 				typeDescription = '改名消耗好人卡';
+<<<<<<< HEAD
+			}else if(s.typeDescription==2111){
+				typeDescription = '好人卡转化到钱包';
+=======
+>>>>>>> 6e1b643ccdee4a5a9b3e9179aefcc7b2706656bd
 			}else if(s.typeDescription==2305){
 				typeDescription = '系统结算保底补贴';
 			}else if(s.typeDescription==2307){
 				typeDescription = '系统结算福利补贴';
+<<<<<<< HEAD
+			}else if(s.typeDescription==2400){
+				typeDescription = '用户提现';
+=======
+>>>>>>> 6e1b643ccdee4a5a9b3e9179aefcc7b2706656bd
 			}
 			console.log(typeof(s.logId));
 			var trtd = template.replace('日志编号',s.logId)
@@ -823,6 +835,12 @@ var getLogDetail = function(logId,logSecondType){
 				s.typeDescription = '购买画册';
 			}else if(s.typeDescription==2109){
 				s.typeDescription = '每月福利补贴';
+			}else if(s.typeDescription==2111){
+				s.typeDescription = '好人转换钱包';
+				var urlUl= '<ul class="sys-info-list">'
+					+'<li><label class="res-lab"></label><span class="res-info"></span></li>'
+					+'<li><label class="res-lab"><a onclick="getLogDetail('+'\''+s.infCardLogId+'\''+',22'+')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
+				f.append(urlUl);
 			}
 			if(s.orderStatus == 0){
 				s.orderStatus = "交易未完成";
@@ -857,6 +875,10 @@ var getLogDetail = function(logId,logSecondType){
 					f.append(urlUl);
 				}else if(s.typeDescription==2203){
 					s.typeDescription = '好人卡提现';
+					var urlUl= '<ul class="sys-info-list">'
+						+'<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+'<li><label class="res-lab"><a onclick="getLogDetail('+'\''+s.infCashLogId+'\''+',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+					f.append(urlUl);
 				}else if(s.typeDescription==2205){
 					s.typeDescription = '改名消耗好人卡';
 				}
@@ -871,7 +893,108 @@ var getLogDetail = function(logId,logSecondType){
 				.replace('IP地址',s.ip)
 				.replace('使用详情',s.typeDescription);
 				t.append(trth).append(trtd);
+			}else if(logSecondType==23){
+				if(s.typeDescription==2304){
+					s.typeDescription = '清空上月福利金额';
+				}else if(s.typeDescription==2305){
+					s.typeDescription = '发放稿费';
+				}else if(s.typeDescription==2307){
+					s.typeDescription = '发放福利补贴';
+				}
+				var trth = '<thead><tr><th>日志编号</th><th>作品名</th><th>用户名</th><th>稿费金额</th><th>福利金额</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+				var template = '<tbody><tr><td>日志编号</td><td>作品名</td><td>用户名</td><td>稿费金额</td><td>福利金额</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+				var trtd = template.replace('日志编号',s.logId)
+				.replace('作品名',s.bookName)
+				.replace('用户名',s.userName)
+				.replace('稿费金额',s.exchangeableCashAmount)
+				.replace('福利金额',s.welfareCashAmount)
+				.replace('时间',getMyDate(s.createTime))
+				.replace('IP地址',s.ip)
+				.replace('使用详情',s.typeDescription);
+				t.append(trth).append(trtd);
 			}
 		}
 	);
+	$("#tDiv").show();
+};
+
+//提现相关
+var getWithdrawals = function(pageNum,pageSize){
+	var sendData = {
+			pageNum : pageNum,
+			pageSize : pageSize
+	};
+	$.post(PathList.withdrawals,sendData,function(result){
+		var tbo = $("#tbo");
+		tbo.empty();
+		var list = result.data.list;
+		var template = '<tr><td>提现申请编号</td><td>提现金额</td><td>用户名</td><td>用户手机号</td><td>用户邮箱</td><td>提现时间</td><td>交易状态</td></tr>';
+		for(x=0;x<list.length;x++){
+			var s = list[x];
+			if(s.orderStatus == 0){
+				s.orderStatus = '<a onclick="getSysCashAccount('+s.userId+','+s.cashAmount+','+'\''+s.logId+'\''+')">处理<a>';
+			}else if(s.orderStatus == 1){
+				s.orderStatus = '已处理';
+			}else if(s.orderStatus == 2){
+				s.orderStatus = '已拒绝';
+			}
+			var trtd = template.replace('提现申请编号',s.logId)
+			.replace('提现金额',s.cashAmount)
+			.replace('用户名',s.username)
+			.replace('用户手机号',s.telphone)
+			.replace('用户邮箱',s.email)
+			.replace('提现时间',getMyDate(s.createTime))
+			.replace('交易状态',s.orderStatus);
+			tbo.append(trtd);
+		}
+	});
+};
+
+var getSysCashAccount = function(userId,exchangeableCashAmount,logId){
+	var sendData = {
+		userId : userId	
+	};
+	$.post(PathList.sysCashAccount,sendData,function(result){
+		console.log(result);
+		var s = result.data;
+		var t = $("#t");
+		t.empty();
+		var trth = '<thead><tr><th>用户编号</th><th>用户名</th><th>支付宝账号</th><th>真实姓名</th><th>提现金额</th><th>处理结果</th></tr></thead>';
+		t.append(trth);
+		var template = '<tbody><tr><td>用户编号</td><td>用户名</td><td>支付宝账号</td><td>真实姓名</td><td>提现金额</td><td>处理结果</td></tr></tbody>';
+		var trtd = template.replace('用户编号', s.userId)
+		.replace('用户名', s.userName)
+		.replace('支付宝账号', s.alipayAccount)
+		.replace('真实姓名', s.realName)
+		.replace('提现金额', exchangeableCashAmount)
+		.replace('处理结果','<a onclick="finishWithdrawals('+'\''+logId+'\''+',1,null)">已打款</a>');
+		t.append(trtd);
+	});
+	
+};
+
+var finishWithdrawals = function(logId,flag,str){
+	var f = $("#f");
+	f.empty();
+	var sendData = {
+			logId : logId,
+			flag : flag,
+			str : str
+	};
+	$.post(PathList.finishWithdrawals,sendData,function(result){
+		console.log(result);
+	});
+	location.reload();
+};
+
+var doRefuseWithdrawals = function(logId){
+	var str = $("#refuse").val();
+	finishWithdrawals(logId,2,str);
+}
+
+var refuseWithdrawals = function(logId){
+	var f = $("#f");
+	f.empty();
+	var inputText = '拒绝理由：<input id="refuse"><input type="button" onclick="doRefuseWithdrawals('+'\''+logId+'\''+')" value="确定">';
+	f.append(inputText);
 };

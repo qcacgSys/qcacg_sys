@@ -60,7 +60,7 @@ public class SysAdminController {
 	 */
 	@RequestMapping("/logout")
 	public String logout(HttpSession session){
-		session.removeAttribute("sysUser");
+		session.removeAttribute("sysAdmin");
 		session.setAttribute("message","未登录");
 		return "redirect:/loginView";
 	}

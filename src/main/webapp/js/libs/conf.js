@@ -11,13 +11,16 @@ adminPath = 'http://127.0.0.1:8090/qcacg_sys/';
 //adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
 
 //调用跳转项目html域名与端口
-//htmlPath = 'http://127.0.0.1:3000/';
+htmlPath = 'http://127.0.0.1:3000/';
 //htmlPath = 'http://127.0.0.1:8080/';
-htmlPath = 'http://121.196.194.211:8080/';
+//htmlPath = 'http://121.196.194.211:8080/';
 //htmlPath = 'http://www.qcacg.com:8080/';
 
 //调用shtml域名与端口
+<<<<<<< HEAD
+=======
 //rootPath = '/Controller';
+>>>>>>> 6e1b643ccdee4a5a9b3e9179aefcc7b2706656bd
 rootPath = 'http://127.0.0.1:8080/';
 //rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
@@ -60,7 +63,13 @@ var PathList = {
 		//管理员查看日志
 		adminQueryLog : rootPath + 'log/list.shtml',
 		//查看日志详情
-		logDetail : rootPath + 'log/detail.shtml'
+		logDetail : rootPath + 'log/detail.shtml',
+		//管理员查看提现
+		withdrawals : rootPath + 'pay/findWithdrawals.shtml',
+		//管理员查看单个用户账户信息
+		sysCashAccount : rootPath + 'pay/findSysCashAccount.shtml',
+		//管理员处理提现结果
+		finishWithdrawals : rootPath + 'pay/finishWithdrawals.shtml'
 };
 var htmlList = {
 		//跳转到书页面

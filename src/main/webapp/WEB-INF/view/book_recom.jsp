@@ -14,7 +14,8 @@
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
-	<div class="container clearfix">
+	<div class="container-fluid clearfix">
+	  <div class="row">
 		<jsp:include page="/common/left.jsp"></jsp:include>
 		<!--/sidebar-->
 		<div class="main-wrap">
@@ -23,7 +24,8 @@
 				<form name="myform" id="myform" method="post">
 					<div class="result-title">
 						<div class="result-list">
-							说明: 界面为已通过审核的! 主页显示状态: 1? 2? 3? 4? 5? 6?<a href="#"><i class="icon-font"></i></a>
+							<!--  主页显示状态: 1? 2? 3? 4? 5? 6? -->
+							说明: 界面为已通过审核的!<a href="#"><i class="icon-font"></i></a>
 						</div>
 					</div>
 					<div class="result-content">
@@ -58,6 +60,7 @@
 			<jsp:include page="/common/right_foot.jsp"></jsp:include>
 		</div>
 		<!--/main-->
+	  </div>
 	</div>
 </body>
 <script type="text/javascript">

@@ -311,7 +311,7 @@ updateBookAccountsView=function(result){
 						'<td>#{fullWelfare}</td>'+
 						'<td>#{accountsDate}</td>'+
 						'<td>#{status}</td>'+
-						'<td><button id="" type="button">打款</button></td>'+
+						'<td><button id="" type="button" class="btn btn-primary btn-check">打款</button></td>'+
 					'</tr>';
 	for(var i=0;i<result.length;i++){
 		var data=result[i];
@@ -324,7 +324,7 @@ updateBookAccountsView=function(result){
 							.replace('#{state}',data.state)
 							.replace('#{drawWelfare}',data.drawWelfare)
 							.replace('#{fullWelfare}',data.fullWelfare)
-							.replace('#{accountsDate}',getDateYM(data.accountsDate))
+							.replace('#{accountsDate}',getMyDate(data.accountsDate))
 							.replace('#{status}','已打款')
 							.replace('id=""','disabled="disabled"');
 							tbody.append(tr);
@@ -337,12 +337,20 @@ updateBookAccountsView=function(result){
 							.replace('#{state}',data.state)
 							.replace('#{drawWelfare}',data.drawWelfare)
 							.replace('#{fullWelfare}',data.fullWelfare)
-							.replace('#{accountsDate}',getDateYM(data.accountsDate))
+							.replace('#{accountsDate}',getMyDate(data.accountsDate))
 							.replace('#{status}','未打款');
 			tbody.append(tr);
 		}
 
 	}
+	$('#year_and_mouth').click(function(){
+		var yearAndMouthStart=$('#datetimeStart').val();
+		var yearAndMouthEnd=$('#datetimeEnd').val();
+		/////////////////////////////////////////////////////////////////////////////////////////
+		//发送年月时间
+		alert(yearAndMouthStart+","+yearAndMouthEnd);
+		/////////////////////////////////////////////////////////////////////////////////////////
+	});
 	$('button:contains("打款")').click(function(){
 		tr = $(this).parent().parent();
 		index = tr.index();
@@ -371,6 +379,7 @@ updateCashAndWelfare=function(bookAccountsId){
 	$.post(url, param, function(result){
 		alert(result.msg);
 		history.go(0);
+		
 	});
 }
 //批量打款
@@ -383,9 +392,6 @@ updateManyCashAndWelfare=function(result){
 	});
 }
 /*当月核算功能结束*/
-
-
-
 
 /*举报功能开始*/
 function getReportList(pageNum, size) {
@@ -738,11 +744,11 @@ var getLogList = function(pageNum,pageSize){
 			}else if(s.typeDescription==2103){
 				typeDescription = '画师模块充值';
 			}else if(s.typeDescription==2105){
-				typeDescription = '系统结算稿费';
+				typeDescription = '钱包到账稿费';
 			}else if(s.typeDescription==2107){
 				typeDescription = '购买画作';
 			}else if(s.typeDescription==2109){
-				typeDescription = '系统结算福利补贴';
+				typeDescription = '钱包到账福利';
 			}else if(s.typeDescription==2200){
 				typeDescription = '用户签到';
 			}else if(s.typeDescription==2201){
@@ -753,14 +759,20 @@ var getLogList = function(pageNum,pageSize){
 				typeDescription = '好人卡提现';
 			}else if(s.typeDescription==2205){
 				typeDescription = '改名消耗好人卡';
+<<<<<<< HEAD
 			}else if(s.typeDescription==2111){
 				typeDescription = '好人卡转化到钱包';
+=======
+>>>>>>> 6e1b643ccdee4a5a9b3e9179aefcc7b2706656bd
 			}else if(s.typeDescription==2305){
 				typeDescription = '系统结算保底补贴';
 			}else if(s.typeDescription==2307){
 				typeDescription = '系统结算福利补贴';
+<<<<<<< HEAD
 			}else if(s.typeDescription==2400){
 				typeDescription = '用户提现';
+=======
+>>>>>>> 6e1b643ccdee4a5a9b3e9179aefcc7b2706656bd
 			}
 			console.log(typeof(s.logId));
 			var trtd = template.replace('日志编号',s.logId)

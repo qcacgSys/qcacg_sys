@@ -762,20 +762,14 @@ var getLogList = function(pageNum,pageSize){
 				typeDescription = '好人卡提现';
 			}else if(s.typeDescription==2205){
 				typeDescription = '改名消耗好人卡';
-<<<<<<< HEAD
 			}else if(s.typeDescription==2111){
 				typeDescription = '好人卡转化到钱包';
-=======
->>>>>>> 6e1b643ccdee4a5a9b3e9179aefcc7b2706656bd
 			}else if(s.typeDescription==2305){
 				typeDescription = '系统结算保底补贴';
 			}else if(s.typeDescription==2307){
 				typeDescription = '系统结算福利补贴';
-<<<<<<< HEAD
 			}else if(s.typeDescription==2400){
 				typeDescription = '用户提现';
-=======
->>>>>>> 6e1b643ccdee4a5a9b3e9179aefcc7b2706656bd
 			}
 			console.log(typeof(s.logId));
 			var trtd = template.replace('日志编号',s.logId)

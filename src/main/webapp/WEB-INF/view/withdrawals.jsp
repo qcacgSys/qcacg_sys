@@ -19,7 +19,8 @@
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
-	<div class="container clearfix">
+	<div class="container-fluid clearfix">
+	  <div class="row">
 		<jsp:include page="/common/left.jsp"></jsp:include>
 		<!--/sidebar-->
 		<div class="main-wrap">
@@ -69,6 +70,7 @@
 			<jsp:include page="/common/right_foot.jsp"></jsp:include>
 		</div>
 		<!--/main-->
+	  </div>
 	</div>
 </body>
 <script type="text/javascript">

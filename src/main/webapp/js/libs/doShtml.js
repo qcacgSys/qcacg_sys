@@ -352,9 +352,12 @@ updateBookAccountsView=function(result){
 		/////////////////////////////////////////////////////////////////////////////////////////
 	});
 	$('button:contains("打款")').click(function(){
+		$(this).attr("id","dakuan");
 		tr = $(this).parent().parent();
 		index = tr.index();
 		updateCashAndWelfare(result[index].bookAccountsId);
+		$(this).addClass('disabled'); // Disables visually
+		console.log($(this).parent());
 	});
 	$('#idstj').click(function(){
 		var obj=document.getElementsByName('sc');

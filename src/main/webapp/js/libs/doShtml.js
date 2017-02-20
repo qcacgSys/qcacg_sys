@@ -644,10 +644,14 @@ var getUserlist = function(pageNum,pageSize){
 };
 
 //日志相关
-var getLogList = function(pageNum,pageSize){
+var getLogList = function(pageNum,pageSize,logData){
 	var sendData = {
 			pageNum : pageNum,
-			pageSize : pageSize
+			pageSize : pageSize,
+			beginTime : logData.beginTime,
+			endTime : logData.endTime,
+			logFirstType : logData.logFirstType,
+			logSecondType : logData.logSecondType
 	};
 	$.post(PathList.adminQueryLog,sendData,function(result){
 		var tbo = $("#tbo");
@@ -684,6 +688,8 @@ var getLogList = function(pageNum,pageSize){
 				typeDescription = '购买好人卡';
 			}else if(s.typeDescription==2103){
 				typeDescription = '画师模块充值';
+			}else if(s.typeDescription==2104){
+				typeDescription = '清空福利补贴';
 			}else if(s.typeDescription==2105){
 				typeDescription = '钱包到账稿费';
 			}else if(s.typeDescription==2107){
@@ -702,6 +708,8 @@ var getLogList = function(pageNum,pageSize){
 				typeDescription = '改名消耗好人卡';
 			}else if(s.typeDescription==2111){
 				typeDescription = '好人卡转化到钱包';
+			}else if(s.typeDescription==2304){
+				typeDescription = '系统清空福利补贴';
 			}else if(s.typeDescription==2305){
 				typeDescription = '系统结算保底补贴';
 			}else if(s.typeDescription==2307){
@@ -719,8 +727,38 @@ var getLogList = function(pageNum,pageSize){
 			.replace('详情','<a onclick="getLogDetail('+'\''+s.logId+'\''+','+s.logSecondType+')">查看</a>');
 			tbo.append(trtd);
 		}
+		var paginationUl = $("#paginationUl");
+		paginationUl.empty();
+		paginationUl.append('<li><a onclick="lastPage()">&laquo;</a></li>');
+		var pageTemplate = '<li><a onclick="setPageNum(页数)">页数</a></li>';
+		var navigatepageNums = result.data.navigatepageNums;
+		for(var x=0;x<navigatepageNums.length;x++){
+			var s = navigatepageNums[x];
+			var pageLi = pageTemplate.replace('页数',s).replace('页数',s);
+			paginationUl.append(pageLi);
+		}
+		paginationUl.append('<li><a onclick="nextPage()">&raquo;</a></li><input id="pages" type="hidden" value='+result.data.pages+'>');
 	});
 };
+
+var getLogGrade = function(firstType){
+	var sendData = {
+			firstType : firstType
+	};
+	$.post(PathList.findLogGrade,sendData,function(result){
+		var list = result.data;
+		var secondTypeSelect = $("#secondType");
+		secondTypeSelect.empty();
+		var template = '<option value=0>二级分类</option>';
+		secondTypeSelect.append(template);
+		for(var x=0;x<list.length;x++){
+			var s = list[x];
+			var o = template.replace('0', s.secondType)
+			.replace('二级分类', s.logName);
+			secondTypeSelect.append(o);
+		}
+	});
+}
 
 var getLogDetail = function(logId,logSecondType){
 	console.log(typeof(logId));
@@ -879,6 +917,17 @@ var getWithdrawals = function(pageNum,pageSize){
 			.replace('交易状态',s.orderStatus);
 			tbo.append(trtd);
 		}
+		var paginationUl = $("#paginationUl");
+		paginationUl.empty();
+		paginationUl.append('<li><a onclick="lastPage()">&laquo;</a></li>');
+		var pageTemplate = '<li><a onclick="setPageNum(页数)">页数</a></li>';
+		var navigatepageNums = result.data.navigatepageNums;
+		for(var x=0;x<navigatepageNums.length;x++){
+			var s = navigatepageNums[x];
+			var pageLi = pageTemplate.replace('页数',s).replace('页数',s);
+			paginationUl.append(pageLi);
+		}
+		paginationUl.append('<li><a onclick="nextPage()">&raquo;</a></li><input id="pages" type="hidden" value='+result.data.pages+'>');
 	});
 };
 

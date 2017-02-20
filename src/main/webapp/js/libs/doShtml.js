@@ -54,18 +54,7 @@ updateBookAccountsView=function(result){
 		$(this).addClass('disabled'); // Disables visually
 		console.log($(this).parent());
 	});
-	$('#idstj').click(function(){
-		var obj=document.getElementsByName('sc');
-		var result = [];
-		var option = null;
-		for(var i=0;i<obj.length;i++){
-			option=obj[i];
-			if(option.checked){
-				result.push(Number(option.value));
-			}
-		}
-		updateManyCashAndWelfare(result);
-	});
+
 }
 //单用户打款打款
 updateCashAndWelfare=function(bookAccountsId){

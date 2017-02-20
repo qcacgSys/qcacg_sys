@@ -23,7 +23,11 @@
 							  
 							<button type="button" id="xianshidangyue" class="btn btn-default" value="显示当月">显示当月</button>
 							  
-							<button type="button" id="xuanzhongweidaqian" class="btn btn-default" value="选中未打钱">选择未打钱</button>
+							<button type="button" id="quanxuan" class="btn btn-default" value="全选">全选</button>
+														  
+							<button type="button" id="quxiaoquanxuan" class="btn btn-default" value="取消全选">取消全选</button>
+																					  
+							<button type="button" id="piliangdaqian" class="btn btn-default" value="批量打钱">批量打钱</button>
 							
 
 						 	

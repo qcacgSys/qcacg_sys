@@ -230,10 +230,29 @@ $('#xianshidangyue').click(function(){
 	history.go(0);
 });
 
-//选择全部未打款多选框
-$('#xuanzhongweidaqian').click(function(){
-	var aa=$('#tbo');
-	console.log(aa);
+//全选
+$('#quanxuan').click(function(){
+	$('input[name="sc"]').attr("checked","checked"); 
+});
+
+//取消全选
+$('#quxiaoquanxuan').click(function(){
+	$('input[name="sc"]').removeAttr("checked"); 
+});
+
+//批量打钱
+$('#piliangdaqian').click(function(){
+	var obj=document.getElementsByName('sc');//input集合
+	var result = [];//空集合
+	var option = null;
+	for(var i=0;i<obj.length;i++){
+		option=obj[i];//input
+		//console.log(option);
+		if(option.checked){//
+			result.push(Number(option.value));
+		}
+	}
+	//updateManyCashAndWelfare(result);
 });
 </script>
 </html>

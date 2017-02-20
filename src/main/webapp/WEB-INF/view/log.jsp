@@ -14,13 +14,15 @@
 </head>
 <script type="text/javascript">
 	var pageNum = 1;
-	var pageSize = 10;
+	var pageSize = 100;
+	var clear = undefined;
 	var logData = {
 		beginTime : undefined,
 		endTime : undefined,
-		firstType : undefined,
-		secondType : undefined
+		logFirstType : undefined,
+		logSecondType : undefined
 	};
+	$(getLogGrade(undefined));
 	$(getLogList(pageNum, pageSize, logData));
 </script>
 <body>
@@ -41,7 +43,8 @@
 								筛选: <input size="16" type="text" id="datetimeStart" readonly
 									class="form_datetime"> -- <input size="16" type="text"
 									id="datetimeEnd" readonly class="form_datetime">
-								<button type="button" id="year_and_mouth"
+								<button type="button"
+									onclick="getLogList(pageNum, pageSize, logData)"
 									class="btn btn-default" value="提交">提交</button>
 							</div>
 						</div>
@@ -51,8 +54,18 @@
 							<thead class="myThead">
 								<tr id="topic">
 									<th>日志编号</th>
-									<th>一级分类</th>
-									<th>二级分类</th>
+									<th><div class="btn-group">
+											<select id="firstType" onchange="setFirstType()">
+												<option value=0>一级分类</option>
+												<option value=1>系统日志</option>
+												<option value=2>财务日志</option>
+												<option value=3>操作日志</option>
+											</select>
+										</div></th>
+									<th><div class="btn-group">
+											<select id="secondType" onchange="setSecondType()">
+											</select>
+										</div></th>
 									<th>日志概述</th>
 									<th>时间</th>
 									<th>详情</th>
@@ -71,14 +84,10 @@
 								</tr>
 							</tbody>
 						</table>
-						<!-- 
-					 -->
-					<div id="fenyed" class="list-page">
-						<span id="fenyes"> <span id="fenyes"><a
-								id="lastPage">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-								id="nextPage">下一页</a></span></span>
-					</div>
-						<jsp:include page="/common/fenyed.jsp"></jsp:include>
+						<div id="fenyed" class="list-page">
+							<span id="fenyes"><ul class="pagination" id="paginationUl">
+								</ul></span>
+						</div>
 					</div>
 				</div>
 				<jsp:include page="/common/right_foot.jsp"></jsp:include>
@@ -120,14 +129,39 @@ body {
 </style>
 </body>
 <script type="text/javascript">
-	$("#nextPage").click(function() {
-		pageNum++;
+	var setFirstType = function() {
+		var firstTypeSelect = $("#firstType");
+		logData.logFirstType = firstTypeSelect.val();
+		pageNum = 1;
+		getLogGrade(logData.logFirstType);
 		getLogList(pageNum, pageSize, logData);
-	});
-	$("#lastPage").click(function() {
-		pageNum--;
+	};
+	var setSecondType = function(s) {
+		var secondTypeSelect = $("#secondType");
+		logData.logSecondType = secondTypeSelect.val();
+		pageNum = 1;
 		getLogList(pageNum, pageSize, logData);
-	});
+	};
+</script>
+<script type="text/javascript">
+	var nextPage = function() {
+		if(pageNum<$("#pages").val()){
+			pageNum++;
+			getLogList(pageNum, pageSize, logData);
+			$('body,html').animate({ scrollTop: 0 }, 200);
+		}
+	};
+	var lastPage = function() {
+		if(pageNum>1){
+			pageNum--;
+			getLogList(pageNum, pageSize, logData);
+			$('body,html').animate({ scrollTop: 0 }, 200);
+		}
+	};
+	var setPageNum = function(s){
+		pageNum = s;
+		getLogList(pageNum, pageSize, logData);
+	};
 </script>
 <script type="text/javascript">
 	var closeBottomNav = function() {
@@ -145,6 +179,7 @@ body {
 		autoclose : true
 	}).on("changeDate", function() {
 		logData.beginTime = $("#datetimeStart").val();
+		$("#datetimeEnd").datetimepicker("setStartDate", $("#datetimeStart").val());
 	});
 	$("#datetimeEnd").datetimepicker({
 		format : 'yyyy-mm-dd',
@@ -153,6 +188,7 @@ body {
 		autoclose : true
 	}).on("changeDate", function() {
 		logData.endTime = $("#datetimeEnd").val();
+		$("#datetimeStart").datetimepicker("setEndDate", $("#datetimeEnd").val());
 	});
 
 	//分页控件

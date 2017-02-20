@@ -5,21 +5,21 @@ var htmlPath ;
 var adminPath ;
 
 //本项目端口路径
-adminPath = 'http://127.0.0.1:777/qcacg_sys/';
+//adminPath = 'http://127.0.0.1:777/qcacg_sys/';
 //adminPath = 'http://127.0.0.1:8090/qcacg_sys/';
-//adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
+adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
 //adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
 
 //调用跳转项目html域名与端口
-htmlPath = 'http://127.0.0.1:3000/';
+//htmlPath = 'http://127.0.0.1:3000/';
 //htmlPath = 'http://127.0.0.1:8080/';
-//htmlPath = 'http://121.196.194.211:8080/';
+htmlPath = 'http://121.196.194.211:8080/';
 //htmlPath = 'http://www.qcacg.com:8080/';
 
 //调用shtml域名与端口
 //rootPath = '/Controller';
-rootPath = 'http://127.0.0.1:8080/';
-//rootPath = 'http://121.196.194.211:8080/Controller/';
+//rootPath = 'http://127.0.0.1:8080/';
+rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
@@ -66,7 +66,9 @@ var PathList = {
 		//管理员查看单个用户账户信息
 		sysCashAccount : rootPath + 'pay/findSysCashAccount.shtml',
 		//管理员处理提现结果
-		finishWithdrawals : rootPath + 'pay/finishWithdrawals.shtml'
+		finishWithdrawals : rootPath + 'pay/finishWithdrawals.shtml',
+		//获取日志等级分类
+		findLogGrade : rootPath + 'log/grade.shtml'
 };
 var htmlList = {
 		//跳转到书页面

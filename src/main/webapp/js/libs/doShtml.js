@@ -661,8 +661,8 @@ var getLogList = function(pageNum,pageSize,logData){
 			pageSize : pageSize,
 			beginTime : logData.beginTime,
 			endTime : logData.endTime,
-			firstType : logData.firstType,
-			secondType : logData.secondType
+			logFirstType : logData.logFirstType,
+			logSecondType : logData.logSecondType
 	};
 	$.post(PathList.adminQueryLog,sendData,function(result){
 		var tbo = $("#tbo");
@@ -738,8 +738,38 @@ var getLogList = function(pageNum,pageSize,logData){
 			.replace('详情','<a onclick="getLogDetail('+'\''+s.logId+'\''+','+s.logSecondType+')">查看</a>');
 			tbo.append(trtd);
 		}
+		var paginationUl = $("#paginationUl");
+		paginationUl.empty();
+		paginationUl.append('<li><a onclick="lastPage()">&laquo;</a></li>');
+		var pageTemplate = '<li><a onclick="setPageNum(页数)">页数</a></li>';
+		var navigatepageNums = result.data.navigatepageNums;
+		for(var x=0;x<navigatepageNums.length;x++){
+			var s = navigatepageNums[x];
+			var pageLi = pageTemplate.replace('页数',s).replace('页数',s);
+			paginationUl.append(pageLi);
+		}
+		paginationUl.append('<li><a onclick="nextPage()">&raquo;</a></li><input id="pages" type="hidden" value='+result.data.pages+'>');
 	});
 };
+
+var getLogGrade = function(firstType){
+	var sendData = {
+			firstType : firstType
+	};
+	$.post(PathList.findLogGrade,sendData,function(result){
+		var list = result.data;
+		var secondTypeSelect = $("#secondType");
+		secondTypeSelect.empty();
+		var template = '<option value=0>二级分类</option>';
+		secondTypeSelect.append(template);
+		for(var x=0;x<list.length;x++){
+			var s = list[x];
+			var o = template.replace('0', s.secondType)
+			.replace('二级分类', s.logName);
+			secondTypeSelect.append(o);
+		}
+	});
+}
 
 var getLogDetail = function(logId,logSecondType){
 	console.log(typeof(logId));
@@ -898,6 +928,17 @@ var getWithdrawals = function(pageNum,pageSize){
 			.replace('交易状态',s.orderStatus);
 			tbo.append(trtd);
 		}
+		var paginationUl = $("#paginationUl");
+		paginationUl.empty();
+		paginationUl.append('<li><a onclick="lastPage()">&laquo;</a></li>');
+		var pageTemplate = '<li><a onclick="setPageNum(页数)">页数</a></li>';
+		var navigatepageNums = result.data.navigatepageNums;
+		for(var x=0;x<navigatepageNums.length;x++){
+			var s = navigatepageNums[x];
+			var pageLi = pageTemplate.replace('页数',s).replace('页数',s);
+			paginationUl.append(pageLi);
+		}
+		paginationUl.append('<li><a onclick="nextPage()">&raquo;</a></li><input id="pages" type="hidden" value='+result.data.pages+'>');
 	});
 };
 

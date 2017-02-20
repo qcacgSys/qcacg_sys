@@ -706,10 +706,14 @@ var getUserlist = function(pageNum,pageSize){
 };
 
 //日志相关
-var getLogList = function(pageNum,pageSize){
+var getLogList = function(pageNum,pageSize,logData){
 	var sendData = {
 			pageNum : pageNum,
-			pageSize : pageSize
+			pageSize : pageSize,
+			beginTime : logData.beginTime,
+			endTime : logData.endTime,
+			firstType : logData.firstType,
+			secondType : logData.secondType
 	};
 	$.post(PathList.adminQueryLog,sendData,function(result){
 		var tbo = $("#tbo");
@@ -746,6 +750,8 @@ var getLogList = function(pageNum,pageSize){
 				typeDescription = '购买好人卡';
 			}else if(s.typeDescription==2103){
 				typeDescription = '画师模块充值';
+			}else if(s.typeDescription==2104){
+				typeDescription = '清空福利补贴';
 			}else if(s.typeDescription==2105){
 				typeDescription = '钱包到账稿费';
 			}else if(s.typeDescription==2107){
@@ -764,6 +770,8 @@ var getLogList = function(pageNum,pageSize){
 				typeDescription = '改名消耗好人卡';
 			}else if(s.typeDescription==2111){
 				typeDescription = '好人卡转化到钱包';
+			}else if(s.typeDescription==2304){
+				typeDescription = '系统清空福利补贴';
 			}else if(s.typeDescription==2305){
 				typeDescription = '系统结算保底补贴';
 			}else if(s.typeDescription==2307){

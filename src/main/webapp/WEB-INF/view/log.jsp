@@ -15,7 +15,13 @@
 <script type="text/javascript">
 	var pageNum = 1;
 	var pageSize = 10;
-	$(getLogList(pageNum, pageSize));
+	var logData = {
+		beginTime : undefined,
+		endTime : undefined,
+		firstType : undefined,
+		secondType : undefined
+	};
+	$(getLogList(pageNum, pageSize,logData));
 </script>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
@@ -29,6 +35,29 @@
 				<div class="result-title">
 					<h1>日志一览</h1>
 				</div>
+				<div class="result-title">
+						<div class="result-list">
+
+							<!-- 
+							<i class="icon-font"></i>筛选:
+								<button id="weidakuan" type="button">未打</button>
+								<button id="yidakuan" type="button">已打</button> 
+								输入用户ID:<input id="sryhid" type="text" value=""><input id="sryhidtj" type="button" value="确定">
+								<br><br>
+						 	-->
+						 	
+						 	<div class="datetime_datetime">
+						 		筛选:
+								<input size="16" type="text" id="datetimeStart" readonly class="form_datetime">
+								--
+								<input size="16" type="text" id="datetimeEnd" readonly class="form_datetime">
+								<button type="button" id="year_and_mouth" class="btn btn-default" value="提交">提交</button>
+							</div>
+						 	
+								<input id="idstj" type="button" value="批量打款">
+								<a href="${pageContext.request.contextPath}/admin/allLevelAccounts">历史记录</a>
+						</div>
+					</div>
 				<div class="result-content">
 					<table class="result-tab" width="100%">
 						<thead class="myThead">
@@ -102,11 +131,11 @@ body {
 <script type="text/javascript">
 	$("#nextPage").click(function() {
 		pageNum++;
-		getLogList(pageNum, pageSize);
+		getLogList(pageNum, pageSize,logData);
 	});
 	$("#lastPage").click(function() {
 		pageNum--;
-		getLogList(pageNum, pageSize);
+		getLogList(pageNum, pageSize,logData);
 	});
 </script>
 <script type="text/javascript">

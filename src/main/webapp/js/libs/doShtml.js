@@ -1,3 +1,97 @@
+/*核算统计功能开始*/
+updateBookAccountsView=function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td><input type="checkbox" name="sc" value="xzid"></td>'+
+						'<td>#{bookAccountsId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{userId}</td>'+
+						'<td>#{signLevel}</td>'+
+						'<td>#{state}</td>'+
+						'<td>#{drawWelfare}</td>'+
+						'<td>#{fullWelfare}</td>'+
+						'<td>#{accountsDate}</td>'+
+						'<td>#{status}</td>'+
+						'<td><button id="" type="button" class="btn btn-primary btn-check">打款</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		if(data.status==1){
+			var tr=template.replace('xzid',data.bookAccountsId)
+							.replace('#{bookAccountsId}',data.bookAccountsId)
+							.replace('#{bookId}',data.bookId)
+							.replace('#{userId}',data.userId)
+							.replace('#{signLevel}',data.signLevel)
+							.replace('#{state}',data.state)
+							.replace('#{drawWelfare}',data.drawWelfare)
+							.replace('#{fullWelfare}',data.fullWelfare)
+							.replace('#{accountsDate}',getMyDate(data.accountsDate))
+							.replace('#{status}','已打款')
+							.replace('id=""','disabled="disabled"');
+							tbody.append(tr);
+		}else{
+			var tr=template.replace('xzid',data.bookAccountsId)
+							.replace('#{bookAccountsId}',data.bookAccountsId)
+							.replace('#{bookId}',data.bookId)
+							.replace('#{userId}',data.userId)
+							.replace('#{signLevel}',data.signLevel)
+							.replace('#{state}',data.state)
+							.replace('#{drawWelfare}',data.drawWelfare)
+							.replace('#{fullWelfare}',data.fullWelfare)
+							.replace('#{accountsDate}',getMyDate(data.accountsDate))
+							.replace('#{status}','未打款');
+			tbody.append(tr);
+		}
+
+	}
+	
+	$('button:contains("打款")').click(function(){
+		$(this).attr("id","dakuan");
+		tr = $(this).parent().parent();
+		index = tr.index();
+		updateCashAndWelfare(result[index].bookAccountsId);
+		$(this).addClass('disabled'); // Disables visually
+		console.log($(this).parent());
+	});
+	$('#idstj').click(function(){
+		var obj=document.getElementsByName('sc');
+		var result = [];
+		var option = null;
+		for(var i=0;i<obj.length;i++){
+			option=obj[i];
+			if(option.checked){
+				result.push(Number(option.value));
+			}
+		}
+		updateManyCashAndWelfare(result);
+	});
+}
+//单用户打款打款
+updateCashAndWelfare=function(bookAccountsId){
+	console.log(bookAccountsId);
+	var url=PathList.adminRemitBookAccounts;
+	var result = [];
+	result.push(bookAccountsId);
+	var param={"bookAccountsIds":result};
+	$.post(url, param, function(result){
+		alert(result.msg);
+		history.go(0);
+		
+	});
+}
+//批量打款
+updateManyCashAndWelfare=function(result){
+	var url=PathList.adminRemitBookAccounts;
+	var param={"bookAccountsIds":result};
+	$.post(url, param, function(result){
+		alert(result.msg);
+		history.go(0);
+	});
+}
+/*核算统计功能结束*/
+
+
 /*推荐功能开始*/
 function getBookRecomList(pageNum, size){
 	var pageData = {
@@ -250,118 +344,6 @@ updateDaysBookAccountsView = function(result){
 	});
 }
 /*日更统计功能结束*/
-
-
-/*历史核算功能开始*/
-function getAllBookAccountsList() {
-	var pageData = {
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminQueryAllBookAccounts,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			updateBookAccountsView(result);
-		}
-	});
-};
-/*历史核算功能结束*/
-
-
-/*默认显示: 当月核算功能开始*/
-updateBookAccountsView=function(result){
-	var tbody=$('#tbo');
-	tbody.empty();
-	var template=	'<tr>'+
-						'<td><input type="checkbox" name="sc" value="xzid"></td>'+
-						'<td>#{bookAccountsId}</td>'+
-						'<td>#{bookId}</td>'+
-						'<td>#{userId}</td>'+
-						'<td>#{signLevel}</td>'+
-						'<td>#{state}</td>'+
-						'<td>#{drawWelfare}</td>'+
-						'<td>#{fullWelfare}</td>'+
-						'<td>#{accountsDate}</td>'+
-						'<td>#{status}</td>'+
-						'<td><button id="" type="button" class="btn btn-primary btn-check">打款</button></td>'+
-					'</tr>';
-	for(var i=0;i<result.length;i++){
-		var data=result[i];
-		if(data.status==1){
-			var tr=template.replace('xzid',data.bookAccountsId)
-							.replace('#{bookAccountsId}',data.bookAccountsId)
-							.replace('#{bookId}',data.bookId)
-							.replace('#{userId}',data.userId)
-							.replace('#{signLevel}',data.signLevel)
-							.replace('#{state}',data.state)
-							.replace('#{drawWelfare}',data.drawWelfare)
-							.replace('#{fullWelfare}',data.fullWelfare)
-							.replace('#{accountsDate}',getMyDate(data.accountsDate))
-							.replace('#{status}','已打款')
-							.replace('id=""','disabled="disabled"');
-							tbody.append(tr);
-		}else{
-			var tr=template.replace('xzid',data.bookAccountsId)
-							.replace('#{bookAccountsId}',data.bookAccountsId)
-							.replace('#{bookId}',data.bookId)
-							.replace('#{userId}',data.userId)
-							.replace('#{signLevel}',data.signLevel)
-							.replace('#{state}',data.state)
-							.replace('#{drawWelfare}',data.drawWelfare)
-							.replace('#{fullWelfare}',data.fullWelfare)
-							.replace('#{accountsDate}',getMyDate(data.accountsDate))
-							.replace('#{status}','未打款');
-			tbody.append(tr);
-		}
-
-	}
-	
-	$('button:contains("打款")').click(function(){
-		$(this).attr("id","dakuan");
-		tr = $(this).parent().parent();
-		index = tr.index();
-		updateCashAndWelfare(result[index].bookAccountsId);
-		$(this).addClass('disabled'); // Disables visually
-		console.log($(this).parent());
-	});
-	$('#idstj').click(function(){
-		var obj=document.getElementsByName('sc');
-		var result = [];
-		var option = null;
-		for(var i=0;i<obj.length;i++){
-			option=obj[i];
-			if(option.checked){
-				result.push(Number(option.value));
-			}
-		}
-		updateManyCashAndWelfare(result);
-	});
-}
-//单用户打款打款
-updateCashAndWelfare=function(bookAccountsId){
-	console.log(bookAccountsId);
-	var url=PathList.adminRemitBookAccounts;
-	var result = [];
-	result.push(bookAccountsId);
-	var param={"bookAccountsIds":result};
-	$.post(url, param, function(result){
-		alert(result.msg);
-		history.go(0);
-		
-	});
-}
-//批量打款
-updateManyCashAndWelfare=function(result){
-	var url=PathList.adminRemitBookAccounts;
-	var param={"bookAccountsIds":result};
-	$.post(url, param, function(result){
-		alert(result.msg);
-		history.go(0);
-	});
-}
-/*当月核算功能结束*/
 
 /*举报功能开始*/
 function getReportList(pageNum, size) {

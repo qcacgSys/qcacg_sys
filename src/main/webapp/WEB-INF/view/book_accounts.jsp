@@ -56,12 +56,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<div id="fenyed" class="list-page">
-							<span id="fenyes"><input type="hidden" id="pageNum"
-								value="0"> <input type="hidden" id="pageSize" value="10">
-								<span id="fenyes"><a id="lastPage">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-									id="nextPage">下一页</a></span></span>
-						</div>
+						<jsp:include page="/common/fenyed.jsp"></jsp:include>
 					</div>
 				</form>
 			</div>
@@ -72,18 +67,56 @@
 	</div>
 </body>
 <script type="text/javascript">
-$(getBookAccountsList(0, 10));
 
-$("#nextPage").click(function() {
-	$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
-	getBookAccountsList($("#pageNum").val(), $("#pageSize").val());
+//全局变量
+var model={};
+
+//点击日期选择-提交
+$('#year_and_mouth').click(function(){
+	console.log(2);
+	var yearAndMouthStart=$('#datetimeStart').val();
+	var yearAndMouthEnd=$('#datetimeEnd').val();
+	var param = {
+		pageNum : 1,
+		pageSize : 100,
+		yearAndMouthStart:yearAndMouthStart,
+		yearAndMouthEnd:yearAndMouthEnd
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminListBookAccounts,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			//更新视图层
+			updateBookAccountsView(result);
+		}
+	});
 });
 
-$("#lastPage").click(function() {
-	$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
-	getBookAccountsList($("#pageNum").val(), $("#pageSize").val());
+//页面显示完成加载
+$(function(){
+	var param = {
+		pageNum : 1,
+		pageSize : 100
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminListBookAccounts,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			//更新视图层
+			updateBookAccountsView(result);
+			model.result=result;
+			fenyedView();
+		}
+	});
 });
 
+//日期选择控件
 $("#datetimeStart").datetimepicker({
 	language: 'zh-CN',
 	format: 'yyyy-mm',
@@ -95,7 +128,6 @@ $("#datetimeStart").datetimepicker({
 }).on("click",function(){
     $("#datetimeStart").datetimepicker("setEndDate",$("#datetimeEnd").val())
 });
-
 $("#datetimeEnd").datetimepicker({
 	language: 'zh-CN',
 	format: 'yyyy-mm',
@@ -107,5 +139,55 @@ $("#datetimeEnd").datetimepicker({
 }).on("click",function(){
     $("#datetimeEnd").datetimepicker("setStartDate",$("#datetimeStart".val()))
 });
+
+//分页控件
+fenyedView = function(){
+		//console.log(model.result);
+    	var element = $('#bp-3-element-test');//获得数据装配的位置
+    	//初始化所需数据
+    var options = {
+        bootstrapMajorVersion:3,//版本号。3代表的是第三版本
+        currentPage: 1, //当前页数
+        numberOfPages: 5, //显示页码数标个数
+        totalPages:model.result.lastPage, //总共的数据所需要的总页数
+        itemTexts: function (type, page, current) {  
+        		//图标的更改显示可以在这里修改。
+        switch (type) {  
+                case "first":  
+                    return "<<";  
+                case "prev":  
+                    return "<";  
+                case "next":  
+                    return ">";  
+                case "last":  
+                    return ">>";  
+                case "page":  
+                    return  page;  
+            }                 
+        }, 
+        tooltipTitles: function (type, page, current) {
+//如果想要去掉页码数字上面的预览功能，则在此操作。例如：可以直接return。
+            switch (type) {
+          case "first":
+              return "Go to first page";
+          case "prev":
+              return "Go to previous page";
+          case "next":
+              return "Go to next page";
+          case "last":
+              return "Go to last page";
+          case "page":
+              return (page === current) ? "Current page is " + page : "Go to page " + page;
+      }
+        },
+        onPageClicked: function (e, originalEvent, type, page) {  
+             //单击当前页码触发的事件。若需要与后台发生交互事件可在此通过ajax操作。page为目标页数。
+             //console.log(e);
+             //console.log(originalEvent);
+            // console.log(type);
+        }
+    };
+    element.bootstrapPaginator(options);	//进行初始化
+}
 </script>
 </html>

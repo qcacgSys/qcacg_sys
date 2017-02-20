@@ -36,6 +36,8 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/bootstrap.min.js"></script>
 <script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/libs/bootstrap-paginator.js"></script>
+<script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>

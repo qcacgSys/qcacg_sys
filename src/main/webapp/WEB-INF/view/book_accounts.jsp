@@ -102,7 +102,7 @@ fenyedView = function(){
         bootstrapMajorVersion:3,//版本号。3代表的是第三版本
         currentPage: 1, //当前页数
         numberOfPages: 5, //显示页码数标个数
-        totalPages:model.result.lastPage, //总共的数据所需要的总页数
+        totalPages:model.result.pages, //总共的数据所需要的总页数
         itemTexts: function (type, page, current) {  
         		//图标的更改显示可以在这里修改。
         switch (type) {  
@@ -140,12 +140,12 @@ fenyedView = function(){
             //console.log(type);
             //点击页码数发起ajax
             //如果没有选择时间
-            if (model.YMStart == "" || model.YMStart == undefined || model.YMStart == null) {
-            	model.YMStart='0';
-			}
-            if (model.YMEnd == "" || model.YMEnd == undefined || model.YMEnd == null) {
-            	model.YMEnd='0';
-			}
+            //if (model.YMStart == "" || model.YMStart == undefined || model.YMStart == null) {
+            //	model.YMStart='0';
+			//}
+            //if (model.YMEnd == "" || model.YMEnd == undefined || model.YMEnd == null) {
+            //	model.YMEnd='0';
+			//}
         	var param = {
        			pageNum : page,
        			pageSize : 100,
@@ -173,6 +173,11 @@ $('#year_and_mouth').click(function(){
 	//console.log(2);
 	var yearAndMouthStart=$('#datetimeStart').val();
 	var yearAndMouthEnd=$('#datetimeEnd').val();
+	if (yearAndMouthStart=='' || yearAndMouthEnd=='') {
+		alert('轻选择日期!');
+		return;
+	}
+	
 	var param = {
 		pageNum : 1,
 		pageSize : 100,
@@ -218,6 +223,17 @@ $("#datetimeEnd").datetimepicker({
 	maxView:'decade'
 }).on("click",function(){
     $("#datetimeEnd").datetimepicker("setStartDate",$("#datetimeStart".val()))
+});
+
+//显示当月事件
+$('#xianshidangyue').click(function(){
+	history.go(0);
+});
+
+//选择全部未打款多选框
+$('#xuanzhongweidaqian').click(function(){
+	var aa=$('#tbo');
+	console.log(aa);
 });
 </script>
 </html>

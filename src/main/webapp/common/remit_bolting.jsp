@@ -19,13 +19,15 @@
 							<input size="16" type="text" id="datetimeStart" readonly class="form_datetime">
 							--
 							<input size="16" type="text" id="datetimeEnd" readonly class="form_datetime">
-							<button type="button" id="year_and_mouth" class="btn btn-default" value="提交">提交</button>
+							<button type="button" id="year_and_mouth" class="btn btn-default" value="显示历史">显示历史</button>
+							  
+							<button type="button" id="xianshidangyue" class="btn btn-default" value="显示当月">显示当月</button>
+							  
+							<button type="button" id="xuanzhongweidaqian" class="btn btn-default" value="选中未打钱">选择未打钱</button>
 							
+
 						 	
-						 	<!-- 
-								<input id="idstj" type="button" value="批量打款">
-								<a href="${pageContext.request.contextPath}/admin/allLevelAccounts">历史记录</a>
-							-->
+						 	
 						</div>
 					</div>
 					

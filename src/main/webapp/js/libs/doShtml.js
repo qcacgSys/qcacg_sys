@@ -271,33 +271,7 @@ function getAllBookAccountsList() {
 
 
 /*默认显示: 当月核算功能开始*/
-function getBookAccountsList(pageNum, size) {
-	//当月 未打款
-	$('#weidakuan').click(function(){
-		//getMouthAllBookAccountsListNo(0,10);
-	});
-	//当月 已打款
-	$('#yidakuan').click(function(){
-		//getMouthAllBookAccountsListOk(0,10);
-	});
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminListBookAccounts,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			updateBookAccountsView(result);
-		}
-	});
-};
-
 updateBookAccountsView=function(result){
-	//console.log(2);
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -343,14 +317,7 @@ updateBookAccountsView=function(result){
 		}
 
 	}
-	$('#year_and_mouth').click(function(){
-		var yearAndMouthStart=$('#datetimeStart').val();
-		var yearAndMouthEnd=$('#datetimeEnd').val();
-		/////////////////////////////////////////////////////////////////////////////////////////
-		//发送年月时间
-		alert(yearAndMouthStart+","+yearAndMouthEnd);
-		/////////////////////////////////////////////////////////////////////////////////////////
-	});
+	
 	$('button:contains("打款")').click(function(){
 		$(this).attr("id","dakuan");
 		tr = $(this).parent().parent();

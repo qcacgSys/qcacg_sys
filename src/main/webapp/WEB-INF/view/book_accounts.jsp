@@ -71,31 +71,7 @@
 //全局变量
 var model={};
 
-//点击日期选择-提交
-$('#year_and_mouth').click(function(){
-	console.log(2);
-	var yearAndMouthStart=$('#datetimeStart').val();
-	var yearAndMouthEnd=$('#datetimeEnd').val();
-	var param = {
-		pageNum : 1,
-		pageSize : 100,
-		yearAndMouthStart:yearAndMouthStart,
-		yearAndMouthEnd:yearAndMouthEnd
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminListBookAccounts,
-		contentType : "application/json; charset=utf-8",
-		data : param,
-		dataType : "json",
-		success : function(result) {
-			//更新视图层
-			updateBookAccountsView(result);
-		}
-	});
-});
-
-//页面显示完成加载
+//1.页面显示完成加载
 $(function(){
 	var param = {
 		pageNum : 1,
@@ -109,38 +85,15 @@ $(function(){
 		dataType : "json",
 		success : function(result) {
 			//更新视图层
-			updateBookAccountsView(result);
+			updateBookAccountsView(result.list);
+			//返回分页长度并加入model,和加载分页组件
 			model.result=result;
 			fenyedView();
 		}
 	});
 });
 
-//日期选择控件
-$("#datetimeStart").datetimepicker({
-	language: 'zh-CN',
-	format: 'yyyy-mm',
-	autoclose: true,
-	todayBtn: true,
-	startView: 'year',
-	minView:'year',
-	maxView:'decade'
-}).on("click",function(){
-    $("#datetimeStart").datetimepicker("setEndDate",$("#datetimeEnd").val())
-});
-$("#datetimeEnd").datetimepicker({
-	language: 'zh-CN',
-	format: 'yyyy-mm',
-	autoclose: true,
-	todayBtn: true,
-	startView: 'year',
-	minView:'year',
-	maxView:'decade'
-}).on("click",function(){
-    $("#datetimeEnd").datetimepicker("setStartDate",$("#datetimeStart".val()))
-});
-
-//分页控件
+//2.分页控件
 fenyedView = function(){
 		//console.log(model.result);
     	var element = $('#bp-3-element-test');//获得数据装配的位置
@@ -181,13 +134,90 @@ fenyedView = function(){
       }
         },
         onPageClicked: function (e, originalEvent, type, page) {  
-             //单击当前页码触发的事件。若需要与后台发生交互事件可在此通过ajax操作。page为目标页数。
-             //console.log(e);
-             //console.log(originalEvent);
-            // console.log(type);
+            //单击当前页码触发的事件。若需要与后台发生交互事件可在此通过ajax操作。page为目标页数。
+            //console.log(e);
+            //console.log(originalEvent);
+            //console.log(type);
+            //点击页码数发起ajax
+            //如果没有选择时间
+            if (model.YMStart == "" || model.YMStart == undefined || model.YMStart == null) {
+            	model.YMStart='0';
+			}
+            if (model.YMEnd == "" || model.YMEnd == undefined || model.YMEnd == null) {
+            	model.YMEnd='0';
+			}
+        	var param = {
+       			pageNum : page,
+       			pageSize : 100,
+       			yearAndMouthStart:model.YMStart,
+       			yearAndMouthEnd:model.YMEnd
+       		};
+       		$.ajax({
+       			type : "GET",
+       			url : PathList.adminQueryAllBookAccounts,
+       			contentType : "application/json; charset=utf-8",
+       			data : param,
+       			dataType : "json",
+       			success : function(result) {
+       				console.log(param);
+       				adminListBookAccounts(result.list);
+       			}
+       		});
         }
     };
     element.bootstrapPaginator(options);	//进行初始化
 }
+
+//other.点击日期选择-提交
+$('#year_and_mouth').click(function(){
+	//console.log(2);
+	var yearAndMouthStart=$('#datetimeStart').val();
+	var yearAndMouthEnd=$('#datetimeEnd').val();
+	var param = {
+		pageNum : 1,
+		pageSize : 100,
+		yearAndMouthStart:yearAndMouthStart,
+		yearAndMouthEnd:yearAndMouthEnd
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminListBookAccounts,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			//更新视图层
+			updateBookAccountsView(result.list);
+			//保存此次操作,加入model,保存日期选择-start
+			model.YMStart=yearAndMouthStart;
+			//保存此次操作,加入model,保存日期选择-end
+			model.YMEnd=yearAndMouthEnd;
+		}
+	});
+});
+
+//日期选择控件
+$("#datetimeStart").datetimepicker({
+	language: 'zh-CN',
+	format: 'yyyy-mm',
+	autoclose: true,
+	todayBtn: true,
+	startView: 'year',
+	minView:'year',
+	maxView:'decade'
+}).on("click",function(){
+    $("#datetimeStart").datetimepicker("setEndDate",$("#datetimeEnd").val())
+});
+$("#datetimeEnd").datetimepicker({
+	language: 'zh-CN',
+	format: 'yyyy-mm',
+	autoclose: true,
+	todayBtn: true,
+	startView: 'year',
+	minView:'year',
+	maxView:'decade'
+}).on("click",function(){
+    $("#datetimeEnd").datetimepicker("setStartDate",$("#datetimeStart".val()))
+});
 </script>
 </html>

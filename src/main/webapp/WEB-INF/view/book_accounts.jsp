@@ -68,10 +68,7 @@
 </body>
 <script type="text/javascript">
 
-//全局变量
-var model={};
-
-//1.页面显示完成加载
+// 页面显示完成加载
 $(function(){
 	var param = {
 		pageNum : 1,
@@ -85,90 +82,16 @@ $(function(){
 		dataType : "json",
 		success : function(result) {
 			//更新视图层
-			updateBookAccountsView(result.list);
-			//返回分页长度并加入model,和加载分页组件
+			model.updateBookAccountsView(result.list);
+			//返回结果(包含分页长度)加入model,分页组件中取总页
 			model.result=result;
-			fenyedView();
+			//加载分页组件(传入请求url, 更新视图方法名),绑定本页面
+			model.fenyedView(PathList.adminListBookAccounts,model.updateBookAccountsView);
 		}
 	});
 });
 
-//2.分页控件
-fenyedView = function(){
-		//console.log(model.result);
-    	var element = $('#bp-3-element-test');//获得数据装配的位置
-    	//初始化所需数据
-    var options = {
-        bootstrapMajorVersion:3,//版本号。3代表的是第三版本
-        currentPage: 1, //当前页数
-        numberOfPages: 5, //显示页码数标个数
-        totalPages:model.result.pages, //总共的数据所需要的总页数
-        itemTexts: function (type, page, current) {  
-        		//图标的更改显示可以在这里修改。
-        switch (type) {  
-                case "first":  
-                    return "<<";  
-                case "prev":  
-                    return "<";  
-                case "next":  
-                    return ">";  
-                case "last":  
-                    return ">>";  
-                case "page":  
-                    return  page;  
-            }                 
-        }, 
-        tooltipTitles: function (type, page, current) {
-//如果想要去掉页码数字上面的预览功能，则在此操作。例如：可以直接return。
-            switch (type) {
-          case "first":
-              return "Go to first page";
-          case "prev":
-              return "Go to previous page";
-          case "next":
-              return "Go to next page";
-          case "last":
-              return "Go to last page";
-          case "page":
-              return (page === current) ? "Current page is " + page : "Go to page " + page;
-      }
-        },
-        onPageClicked: function (e, originalEvent, type, page) {  
-            //单击当前页码触发的事件。若需要与后台发生交互事件可在此通过ajax操作。page为目标页数。
-            //console.log(e);
-            //console.log(originalEvent);
-            //console.log(type);
-            //点击页码数发起ajax
-            //如果没有选择时间
-            //if (model.YMStart == "" || model.YMStart == undefined || model.YMStart == null) {
-            //	model.YMStart='0';
-			//}
-            //if (model.YMEnd == "" || model.YMEnd == undefined || model.YMEnd == null) {
-            //	model.YMEnd='0';
-			//}
-        	var param = {
-       			pageNum : page,
-       			pageSize : 100,
-       			yearAndMouthStart:model.YMStart,
-       			yearAndMouthEnd:model.YMEnd
-       		};
-       		$.ajax({
-       			type : "GET",
-       			url : PathList.adminQueryAllBookAccounts,
-       			contentType : "application/json; charset=utf-8",
-       			data : param,
-       			dataType : "json",
-       			success : function(result) {
-       				console.log(param);
-       				adminListBookAccounts(result.list);
-       			}
-       		});
-        }
-    };
-    element.bootstrapPaginator(options);	//进行初始化
-}
-
-//other.点击日期选择-提交
+//绑定-日期提交
 $('#year_and_mouth').click(function(){
 	//console.log(2);
 	var yearAndMouthStart=$('#datetimeStart').val();
@@ -177,7 +100,6 @@ $('#year_and_mouth').click(function(){
 		alert('轻选择日期!');
 		return;
 	}
-	
 	var param = {
 		pageNum : 1,
 		pageSize : 100,
@@ -192,16 +114,18 @@ $('#year_and_mouth').click(function(){
 		dataType : "json",
 		success : function(result) {
 			//更新视图层
-			updateBookAccountsView(result.list);
-			//保存此次操作,加入model,保存日期选择-start
-			model.YMStart=yearAndMouthStart;
-			//保存此次操作,加入model,保存日期选择-end
-			model.YMEnd=yearAndMouthEnd;
+			model.updateBookAccountsView(result.list);
+			//返回结果(包含分页长度)加入model,分页组件中取总页
+			model.result=result;
+			//保存日期选择, 分页组件取中日期start
+			model.yearAndMouthStart=yearAndMouthStart;
+			//保存日期选择, 分页组件取中日期end
+			model.yearAndMouthEnd=yearAndMouthEnd;
 		}
 	});
 });
 
-//日期选择控件
+//绑定-日期控件
 $("#datetimeStart").datetimepicker({
 	language: 'zh-CN',
 	format: 'yyyy-mm',
@@ -225,34 +149,38 @@ $("#datetimeEnd").datetimepicker({
     $("#datetimeEnd").datetimepicker("setStartDate",$("#datetimeStart".val()))
 });
 
-//显示当月事件
-$('#xianshidangyue').click(function(){
+//绑定-显示上月核算
+$('#xianshishangyue').click(function(){
 	history.go(0);
 });
 
-//全选
+//绑定-全选
 $('#quanxuan').click(function(){
 	$('input[name="sc"]').attr("checked","checked"); 
 });
 
-//取消全选
+//绑定-取消全选
 $('#quxiaoquanxuan').click(function(){
 	$('input[name="sc"]').removeAttr("checked"); 
 });
 
-//批量打钱
+//绑定-批量打钱
 $('#piliangdaqian').click(function(){
 	var obj=document.getElementsByName('sc');//input集合
-	var result = [];//空集合
+	var resultId = [];//空集合
 	var option = null;
 	for(var i=0;i<obj.length;i++){
 		option=obj[i];//input
-		//console.log(option);
-		if(option.checked){//
-			result.push(Number(option.value));
+		if(option.checked){//input存在选中
+			resultId.push(Number(option.value));
 		}
 	}
-	//updateManyCashAndWelfare(result);
+	if (resultId=="") {
+		alert("禁止提交为空!");
+		return;
+	}
+	model.updateManyCashAndWelfare(resultId);//发送打钱请求
 });
+
 </script>
 </html>

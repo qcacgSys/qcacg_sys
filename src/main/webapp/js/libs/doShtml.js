@@ -1,5 +1,5 @@
-/*核算统计功能开始*/
-updateBookAccountsView=function(result){
+//核算统计-视图更新方法
+model.updateBookAccountsView=function(result){
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -45,19 +45,18 @@ updateBookAccountsView=function(result){
 		}
 
 	}
-	
 	$('button:contains("打款")').click(function(){
 		$(this).attr("id","dakuan");
 		tr = $(this).parent().parent();
 		index = tr.index();
-		updateCashAndWelfare(result[index].bookAccountsId);
-		$(this).addClass('disabled'); // Disables visually
-		console.log($(this).parent());
+		model.updateCashAndWelfare(result[index].bookAccountsId);
+		$(this).addClass('disabled');
+		//未打款改成已打款
 	});
-
 }
-//单用户打款打款
-updateCashAndWelfare=function(bookAccountsId){
+
+//核算统计-单用户打款打款
+model.updateCashAndWelfare=function(bookAccountsId){
 	console.log(bookAccountsId);
 	var url=PathList.adminRemitBookAccounts;
 	var result = [];
@@ -66,19 +65,18 @@ updateCashAndWelfare=function(bookAccountsId){
 	$.post(url, param, function(result){
 		alert(result.msg);
 		history.go(0);
-		
 	});
 }
-//批量打款
-updateManyCashAndWelfare=function(result){
+
+//核算统计-批量打款
+model.updateManyCashAndWelfare=function(resultId){
 	var url=PathList.adminRemitBookAccounts;
-	var param={"bookAccountsIds":result};
+	var param={"bookAccountsIds":resultId};
 	$.post(url, param, function(result){
 		alert(result.msg);
 		history.go(0);
 	});
 }
-/*核算统计功能结束*/
 
 
 /*推荐功能开始*/

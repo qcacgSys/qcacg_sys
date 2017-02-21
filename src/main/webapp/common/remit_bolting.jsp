@@ -21,7 +21,7 @@
 							<input size="16" type="text" id="datetimeEnd" readonly class="form_datetime">
 							<button type="button" id="year_and_mouth" class="btn btn-default" value="显示历史">显示历史</button>
 							  
-							<button type="button" id="xianshidangyue" class="btn btn-default" value="显示当月">显示当月</button>
+							<button type="button" id="xianshishangyue" class="btn btn-default" value="显示当月">显示上月</button>
 							  
 							<button type="button" id="quanxuan" class="btn btn-default" value="全选">全选</button>
 														  

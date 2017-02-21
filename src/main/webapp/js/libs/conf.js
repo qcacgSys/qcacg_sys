@@ -6,8 +6,8 @@ var adminPath ;
 
 //本项目端口路径
 //adminPath = 'http://127.0.0.1:777/qcacg_sys/';
-//adminPath = 'http://127.0.0.1:8090/qcacg_sys/';
-adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
+adminPath = 'http://127.0.0.1:8090/qcacg_sys/';
+//adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
 //adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
 
 //调用跳转项目html域名与端口
@@ -18,8 +18,8 @@ htmlPath = 'http://121.196.194.211:8080/';
 
 //调用shtml域名与端口
 //rootPath = '/Controller';
-//rootPath = 'http://127.0.0.1:8080/';
-rootPath = 'http://121.196.194.211:8080/Controller/';
+rootPath = 'http://127.0.0.1:8080/';
+//rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
@@ -35,8 +35,6 @@ var PathList = {
 		adminQueryMonthUpdateCount : rootPath + 'account/adminQueryMonthUpdateCount.shtml',
 		//签约等级核算界面
 		adminListBookAccounts : rootPath + 'account/adminQueryBookAccounts.shtml',
-		//签约等级核算历史
-		adminQueryAllBookAccounts : rootPath + 'account/adminQueryAllBookAccounts.shtml',
 		//签约等级处理
 		adminUpdateSignLevel : rootPath + 'book/adminUpdateSignLevel.shtml',
 		//管理员签约等级核算打款

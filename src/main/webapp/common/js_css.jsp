@@ -42,12 +42,12 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 <script type="text/javascript"
+	src="${pageContext.request.contextPath }/js/libs/init.js"></script>
+<script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/conf.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/json2.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/js/libs/doShtml.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath }/js/libs/init.js"></script>
 </head>
 </html>

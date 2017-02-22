@@ -32,12 +32,12 @@
 						<table class="result-tab" width="100%">
 							<thead>
 								<tr>
-									<th>用户ID</th>
-									<th>作品ID</th>
-									<th>作品名</th>
-									<th>签约状态</th>
-									<th>推荐状态</th>
-									<th>主页显示</th>
+									<th width="12%">用户ID</th>
+									<th width="13%">作品ID</th>
+									<th width="25%">作品名</th>
+									<th width="13%">签约状态</th>
+									<th width="13%">推荐状态</th>
+									<th width="13%">主页显示</th>
 									<th>操作</th>
 								</tr>
 							</thead>

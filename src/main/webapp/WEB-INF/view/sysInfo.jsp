@@ -58,7 +58,6 @@
 				var ulEle = $("#user");
 				var userList = result.data.list;
 				for (var x = 0; x < userList.length; x++) {
-					console.log(userList[x]);
 					var liEle = '<li><input name="userId" id="checkboxId" type="checkbox" value="' + userList[x].userId + '">用户名:' + userList[x].userName + '</li>';
 					ulEle.append(liEle);
 				}
@@ -165,9 +164,7 @@
 	$("#productionButton").click(function() {
 		userIds = new Array();
 		$('#checkboxId:checked').each(function() {
-			console.log($(this).val());
 			userIds.push($(this).val()); //向数组中添加元素 
-			console.log(userIds);
 		});
 		if (userIds != null && userIds.length > 0) {
 			formData = {
@@ -188,11 +185,9 @@
 			data : data,
 			dataType : "json",
 			success : function(result) {
-				console.log(result);
 				alert(result.msg);
 			},
 			error : function(e) {
-				console.log(e);
 				alert("发送失败");
 			}
 		});
@@ -224,11 +219,9 @@
 			data : data,
 			dataType : "json",
 			success : function(result) {
-				console.log(result);
 				alert(result.msg);
 			},
 			error : function(e) {
-				console.log(e);
 				alert("发送失败");
 			}
 		});
@@ -247,11 +240,9 @@
 			data : data,
 			dataType : "json",
 			success : function(result) {
-				console.log(result);
 				alert(result.msg);
 			},
 			error : function(e) {
-				console.log(e);
 				alert("发送失败");
 			}
 		});

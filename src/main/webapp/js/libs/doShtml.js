@@ -79,25 +79,144 @@ model.updateManyCashAndWelfare=function(resultId){
 }
 
 
-/*推荐功能开始*/
-function getBookRecomList(pageNum, size){
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminQueryBookRecom,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			updateBookRecomView(result);
+//审核管理-查看
+var bookReviewMsg = new Array();
+var bookList = new Array();
+var book = {
+		bookId:null,
+		bookName:null
+};
+
+//审核管理-视图更新方法
+model.updateReviewView = function(review) {
+	var tt = $('#tttt');
+	tt.empty();
+	var tt2 = $('#tttt2');
+	tt2.empty();
+	var template = '<tr>' +
+		'<td class="tc"><input name="name" value="value" type="checkbox"></td>' +
+		'<td>#{reviewId}</td>' +
+		'<td>#{bookId}</td>' +
+		'<td>#{reviewName}</td>' +
+		'<td>#{many}</td>' +
+		'<td>#{lastTime}</td>' +
+		'<td>#{status}</td>' +
+		'<td>' +
+		'<a id="aaaa" href="#1">审核</a>' +
+		"  " +
+		'<input type="button" id="cccc" value="查看" onclick="displayDate()"></input>' +
+		'</td>' +
+		'</tr>';
+	var template2 = '<tr>' +
+		'<td>#{sort}</td>' +
+		'<td>#{message}</td>' +
+		'<td>#{reply}</td>' +
+		'</tr>';
+	for (var i = 0; i < review.length; i++) {
+		var r = review[i];
+		if(r.status == 1){
+			r.status = '申请审核中';
 		}
-	});
+		if(r.status == 2){
+			r.status = '已通过审核';			
+		}
+		if(r.status == 3){
+			r.status = '审核未通过';
+		}
+		if(r.status == 4){
+			r.status = '再次申请审核中';
+		}
+		var tr = template.replace('#{reviewId}', r.reviewId)
+			.replace('#{bookId}', r.bookId)
+			.replace('#{reviewName}', r.reviewName)
+			.replace('#{many}', r.many)
+			.replace('#{lastTime}', getMyDate(r.lastTime))
+			.replace('#{status}', r.status)
+			.replace('href="#1"', 'href="' + adminPath + '/admin/status?bookId=' + r.bookId + '"')
+			.replace('<input type="button" id="cccc" value="查看" onclick="displayDate()"></input>', '<input type="button" id="cccc" value="查看" onclick="displayDate('+i+')"></input>');
+		book = {
+			bookId:null,
+			bookName:null
+		};
+		book.bookId = r.bookId;
+		book.bookName = r.reviewName;
+		bookList[i] = book;
+		bookReviewMsg[i] = r.reviewMSG;
+		tt.append(tr);
+	}
+	console.log(bookReviewMsg);
+	console.log(bookList);
 }
 
-updateBookRecomView = function(result){
+
+//作品签约-更新视图
+model.updateSignView = function(signData) {
+	var tb = $('#tbo').empty();
+	var template = '<tr>' +
+		'<td>#{bookId}</td>' +
+		'<td>#{uname}</td>' +
+		'<td>#{signName}</td>' +
+		'<td>#{many}</td>' +
+		'<td>#{lastTime}</td>' +
+		'<td>#{updateType}</td>' +
+		'<td>#{status}</td>' +
+		'<td>#{signLevel}</td>' +
+		'<td>#{isEntry}</td>' +
+		'<td>#{qq}</td>' +
+		'<td>#{email}</td>' +
+		'<td>#{phone}</td>' +
+		'<td>#{address}</td>' +
+		'<td>#{message}</td>' +
+		'<td><a id="aaaa" href="#">签约操作</a>' +
+		'</tr>';
+	for (var i = 0; i < signData.length; i++) {
+		var s = signData[i];
+		if(s.isEntry == 0){
+			s.isEntry = '未申请';
+		}
+		if(s.isEntry == 1){
+			s.isEntry = '申请中';
+		}
+		if(s.updateType == 1){
+			s.updateType = '日更';
+		}
+		if(s.updateType == 2){
+			s.updateType = '月更';
+		}
+		if(s.status == 0){
+			s.status = '未签约';
+		}
+		if(s.status == 1){
+			s.status = '签约中';
+		}
+		if(s.status == 2){
+			s.status = '已签约';
+		}
+		if(s.status == 3){
+			s.status = '拒绝签约';
+		}
+		tr = template.replace('#{bookId}', s.bookId)
+			.replace('#{uname}', s.uname)
+			.replace('#{signName}', s.signName)
+			.replace('#{many}', s.many)
+			.replace('#{lastTime}', getMyDate(s.lastTime))
+			.replace('#{updateType}', s.updateType)
+			.replace('#{status}', s.status)
+			.replace('#{signLevel}', s.signLevel)
+			.replace('#{isEntry}', s.isEntry)
+			.replace('#{qq}', s.qq)
+			.replace('#{email}', s.email)
+			.replace('#{phone}', s.phone)
+			.replace('#{address}', s.address)
+			.replace('#{message}', s.message)
+			.replace('href="#"', 'href="' + adminPath + 'admin/sign?bookId=' + s.bookId + '"')
+		tb.append(tr);
+	}
+}
+
+
+//作品推荐-视图更新
+model.updateBookRecomView = function(result){
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -216,141 +335,10 @@ updateBookRecomView = function(result){
 		});
 	});
 }
-/*推荐功能结束*/
 
-/*月更统计功能开始*/
-function getMouthBookAccountsList(pageNum, size){
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminQueryMonthUpdateCount,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			updateMouthBookAccountsView(result);
-		}
-	});
-}
 
-updateMouthBookAccountsView = function(result){
-	var tbody=$('#tbo');
-	tbody.empty();
-	var template=	'<tr>'+
-						'<td>#{mouthUpdateCountId}</td>'+
-						'<td>#{userId}</td>'+
-						'<td>#{bookId}</td>'+
-						'<td>#{signLevel}</td>'+
-						'<td>#{totalWords}</td>'+
-						'<td>#{countDay}</td>'+
-						'<td><button id="" name="qxdjy" type="button">取消等级</button></td>'+
-					'</tr>';
-	for(var i=0;i<result.length;i++){
-		var data=result[i];
-		var tr=template.replace('#{mouthUpdateCountId}',data.mouthUpdateCountId)
-					.replace('#{userId}',data.userId)
-					.replace('#{bookId}',data.bookId)
-					.replace('#{signLevel}',data.signLevel)
-					.replace('#{totalWords}',data.totalWords)
-					.replace('#{countDay}',getMyDate(data.countDay));
-		tbody.append(tr);
-	}
-	$('button[name="qxdjy"]').click(function(){
-		tr = $(this).parent().parent();
-		index = tr.index();
-		var id=result[index].bookId;
-		//发送作品ID
-		var url=PathList.adminCancelSignLevel;
-		var param={"bookId":id};
-		$.post(url, param, function(result){
-			alert(result.msg);
-			history.go(0);
-		});
-	});
-}
-/*月更统计功能结束*/
-
-/*日更统计功能开始*/
-function getDaysBookAccountsList(pageNum, size){
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminQueryDaysUpdateCount,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			updateDaysBookAccountsView(result);
-		}
-	});
-}
-
-updateDaysBookAccountsView = function(result){
-	var tbody=$('#tbo');
-	tbody.empty();
-	var template=	'<tr>'+
-						'<td>#{daysUpdateCountId}</td>'+
-						'<td>#{userId}</td>'+
-						'<td>#{bookId}</td>'+
-						'<td>#{signLevel}</td>'+
-						'<td>#{factDaysNum}</td>'+
-						'<td>#{supplementNum}</td>'+
-						'<td>#{totalWords}</td>'+
-						'<td>#{countDay}</td>'+
-						'<td><button id="" name="qxdj" type="button">取消等级</button></td>'+
-					'</tr>';
-	for(var i=0;i<result.length;i++){
-		var data=result[i];
-		var tr=template.replace('#{daysUpdateCountId}',data.daysUpdateCountId)
-					.replace('#{userId}',data.userId)
-					.replace('#{bookId}',data.bookId)
-					.replace('#{signLevel}',data.signLevel)
-					.replace('#{factDaysNum}',data.factDaysNum)
-					.replace('#{supplementNum}',data.supplementNum)
-					.replace('#{totalWords}',data.totalWords)
-					.replace('#{countDay}',getMyDate(data.countDay));
-		tbody.append(tr);
-	}
-	$('button[name="qxdj"]').click(function(){
-		tr = $(this).parent().parent();
-		index = tr.index();
-		var id=result[index].bookId;
-		//发送作品ID
-		var url=PathList.adminCancelSignLevel;
-		var param={"bookId":id};
-		$.post(url, param, function(result){
-			alert(result.msg);
-			history.go(0);
-		});
-	});
-}
-/*日更统计功能结束*/
-
-/*举报功能开始*/
-function getReportList(pageNum, size) {
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminListReport,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			updateReportView(result);
-		}
-	});
-};
-
-updateReportView=function(result){
+//评论举报-更新视图
+model.updateReportView=function(result){
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -406,6 +394,7 @@ updateReportView=function(result){
 	});
 }
 
+//评论举报-操作
 updateReport=function(paramJSON){
 	$.ajax({
 		type : "POST",
@@ -419,7 +408,87 @@ updateReport=function(paramJSON){
 		}
 	});
 }
-/*举报功能结束*/
+
+
+//日更统计-更新视图
+model.updateDaysBookAccountsView = function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{daysUpdateCountId}</td>'+
+						'<td>#{userId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{signLevel}</td>'+
+						'<td>#{factDaysNum}</td>'+
+						'<td>#{supplementNum}</td>'+
+						'<td>#{totalWords}</td>'+
+						'<td>#{countDay}</td>'+
+						'<td><button id="" name="qxdj" type="button">取消等级</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		var tr=template.replace('#{daysUpdateCountId}',data.daysUpdateCountId)
+					.replace('#{userId}',data.userId)
+					.replace('#{bookId}',data.bookId)
+					.replace('#{signLevel}',data.signLevel)
+					.replace('#{factDaysNum}',data.factDaysNum)
+					.replace('#{supplementNum}',data.supplementNum)
+					.replace('#{totalWords}',data.totalWords)
+					.replace('#{countDay}',getMyDate(data.countDay));
+		tbody.append(tr);
+	}
+	$('button[name="qxdj"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		//发送作品ID
+		var url=PathList.adminCancelSignLevel;
+		var param={"bookId":id};
+		$.post(url, param, function(result){
+			alert(result.msg);
+			history.go(0);
+		});
+	});
+}
+
+
+//月更统计-更新视图
+model.updateMouthBookAccountsView = function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{mouthUpdateCountId}</td>'+
+						'<td>#{userId}</td>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{signLevel}</td>'+
+						'<td>#{totalWords}</td>'+
+						'<td>#{countDay}</td>'+
+						'<td><button id="" name="qxdjy" type="button">取消等级</button></td>'+
+					'</tr>';
+	for(var i=0;i<result.length;i++){
+		var data=result[i];
+		var tr=template.replace('#{mouthUpdateCountId}',data.mouthUpdateCountId)
+					.replace('#{userId}',data.userId)
+					.replace('#{bookId}',data.bookId)
+					.replace('#{signLevel}',data.signLevel)
+					.replace('#{totalWords}',data.totalWords)
+					.replace('#{countDay}',getMyDate(data.countDay));
+		tbody.append(tr);
+	}
+	$('button[name="qxdjy"]').click(function(){
+		tr = $(this).parent().parent();
+		index = tr.index();
+		var id=result[index].bookId;
+		//发送作品ID
+		var url=PathList.adminCancelSignLevel;
+		var param={"bookId":id};
+		$.post(url, param, function(result){
+			alert(result.msg);
+			history.go(0);
+		});
+	});
+}
+
 
 displayDate=function(id){
 	localStorage.setItem("bookReviewMsgData", JSON.stringify(bookReviewMsg[id]));
@@ -457,173 +526,8 @@ function getMyDate(str) {
 		oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':' + getzf(oMin) + ':' + getzf(oSen); //最后拼接时间  
 	return oTime;
 };
-var bookReviewMsg = new Array();
-var bookList = new Array();
-var book = {
-		bookId:null,
-		bookName:null
-};
-var updateReviewView = function(review) {
-	var tt = $('#tttt');
-	tt.empty();
-	var tt2 = $('#tttt2');
-	tt2.empty();
-	var template = '<tr>' +
-		'<td class="tc"><input name="name" value="value" type="checkbox"></td>' +
-		'<td>#{reviewId}</td>' +
-		'<td>#{bookId}</td>' +
-		'<td>#{reviewName}</td>' +
-		'<td>#{many}</td>' +
-		'<td>#{lastTime}</td>' +
-		'<td>#{status}</td>' +
-		'<td>' +
-		'<a id="aaaa" href="#1">审核</a>' +
-		"  " +
-		'<input type="button" id="cccc" value="查看" onclick="displayDate()"></input>' +
-		'</td>' +
-		'</tr>';
-	var template2 = '<tr>' +
-		'<td>#{sort}</td>' +
-		'<td>#{message}</td>' +
-		'<td>#{reply}</td>' +
-		'</tr>';
-	for (var i = 0; i < review.length; i++) {
-		var r = review[i];
-		if(r.status == 1){
-			r.status = '申请审核中';
-		}
-		if(r.status == 2){
-			r.status = '已通过审核';			
-		}
-		if(r.status == 3){
-			r.status = '审核未通过';
-		}
-		if(r.status == 4){
-			r.status = '再次申请审核中';
-		}
-		var tr = template.replace('#{reviewId}', r.reviewId)
-			.replace('#{bookId}', r.bookId)
-			.replace('#{reviewName}', r.reviewName)
-			.replace('#{many}', r.many)
-			.replace('#{lastTime}', getMyDate(r.lastTime))
-			.replace('#{status}', r.status)
-			.replace('href="#1"', 'href="' + adminPath + '/admin/status?bookId=' + r.bookId + '"')
-			.replace('<input type="button" id="cccc" value="查看" onclick="displayDate()"></input>', '<input type="button" id="cccc" value="查看" onclick="displayDate('+i+')"></input>');
-		book = {
-			bookId:null,
-			bookName:null
-		};
-		book.bookId = r.bookId;
-		book.bookName = r.reviewName;
-		bookList[i] = book;
-		bookReviewMsg[i] = r.reviewMSG;
-		tt.append(tr);
-	}
-	console.log(bookReviewMsg);
-	console.log(bookList);
-}
 
-var getBookForCheck = function(pageNum, size) {
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.queryBookForCheck,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			review = result.data;
-			updateReviewView(review);
-		}
-	});
-};
 
-/*签约开始*/
-var getBookSign = function(pageNum, size) {
-	var pageData = {
-		pageNum : pageNum,
-		size : size
-	};
-	$.ajax({
-		type : "GET",
-		url : PathList.adminQueryBookSign,
-		contentType : "application/json; charset=utf-8",
-		data : pageData,
-		dataType : "json",
-		success : function(result) {
-			updateSignView(result);
-		}
-	});
-};
-
-var updateSignView = function(signData) {
-	var tb = $('#tbo').empty();
-	var template = '<tr>' +
-		'<td>#{bookId}</td>' +
-		'<td>#{uname}</td>' +
-		'<td>#{signName}</td>' +
-		'<td>#{many}</td>' +
-		'<td>#{lastTime}</td>' +
-		'<td>#{updateType}</td>' +
-		'<td>#{status}</td>' +
-		'<td>#{signLevel}</td>' +
-		'<td>#{isEntry}</td>' +
-		'<td>#{qq}</td>' +
-		'<td>#{email}</td>' +
-		'<td>#{phone}</td>' +
-		'<td>#{address}</td>' +
-		'<td>#{message}</td>' +
-		'<td><a id="aaaa" href="#">签约操作</a>' +
-		'</tr>';
-	for (var i = 0; i < signData.length; i++) {
-		var s = signData[i];
-		if(s.isEntry == 0){
-			s.isEntry = '未申请';
-		}
-		if(s.isEntry == 1){
-			s.isEntry = '申请中';
-		}
-		if(s.updateType == 1){
-			s.updateType = '日更';
-		}
-		if(s.updateType == 2){
-			s.updateType = '月更';
-		}
-		if(s.status == 0){
-			s.status = '未签约';
-		}
-		if(s.status == 1){
-			s.status = '签约中';
-		}
-		if(s.status == 2){
-			s.status = '已签约';
-		}
-		if(s.status == 3){
-			s.status = '拒绝签约';
-		}
-		tr = template.replace('#{bookId}', s.bookId)
-			.replace('#{uname}', s.uname)
-			.replace('#{signName}', s.signName)
-			.replace('#{many}', s.many)
-			.replace('#{lastTime}', getMyDate(s.lastTime))
-			.replace('#{updateType}', s.updateType)
-			.replace('#{status}', s.status)
-			.replace('#{signLevel}', s.signLevel)
-			.replace('#{isEntry}', s.isEntry)
-			.replace('#{qq}', s.qq)
-			.replace('#{email}', s.email)
-			.replace('#{phone}', s.phone)
-			.replace('#{address}', s.address)
-			.replace('#{message}', s.message)
-			.replace('href="#"', 'href="' + adminPath + 'admin/sign?bookId=' + s.bookId + '"')
-		tb.append(tr);
-	}
-}
-
-/*签约结束*/
 var getUserlist = function(pageNum,pageSize){
 	var sendData = {
 		pageNum : pageNum,

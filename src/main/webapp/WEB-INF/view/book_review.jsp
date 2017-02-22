@@ -11,9 +11,6 @@
 <meta charset="UTF-8">
 <title>后台审核管理</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
-<script type="text/javascript">
-	$(getBookForCheck(0, 10));
-</script>
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
@@ -64,14 +61,8 @@
 							</tbody>
 						</table>
 						<div id="review_msg" class="reviewMSG_YC">
-							
 						</div>
-						<div id="fenyed" class="list-page">
-							<input type="hidden" id="pageNum" value="0"> <input
-								type="hidden" id="pageSize" value="10"> <span
-								id="fenyes"><a id="lastPage">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-								id="nextPage">下一页</a></span>
-						</div>
+						<jsp:include page="/common/fenyed.jsp"></jsp:include>
 					</div>
 				</form>
 			</div>
@@ -82,13 +73,34 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$("#nextPage").click(function() {
-		$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
-		getBookForCheck($("#pageNum").val(), $("#pageSize").val());
+
+//页面显示完成加载
+$(function(){
+	loadBookReviewAction(1,100);
+});
+
+//加载本页方法
+var loadBookReviewAction = function(pageNum, pageSize) {
+	var param = {
+		pageNum : pageNum,
+		pageSize : pageSize
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.queryBookForCheck,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			//更新视图层
+			model.updateReviewView(result.data.list);
+			//返回结果(包含分页长度)加入model,分页组件中取总页
+			model.result=result.data;
+			//激活分页组件(传入请求url, 更新视图方法名)
+			model.fenyedView(PathList.queryBookForCheck,model.updateReviewView);
+		}
 	});
-	$("#lastPage").click(function() {
-		$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
-		getBookForCheck($("#pageNum").val(), $("#pageSize").val());
-	});
+};
+
 </script>
 </html>

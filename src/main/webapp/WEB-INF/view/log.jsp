@@ -22,8 +22,245 @@
 		logFirstType : undefined,
 		logSecondType : undefined
 	};
-	$(getLogGrade(undefined));
-	$(getLogList(pageNum, pageSize, logData));
+	var closeBottomNav = function() {
+		$("#tDiv").hide();
+		$("#f").empty();
+		$("#t").empty();
+	}
+	//日志相关
+	var getLogList = function(pageNum, pageSize, logData) {
+		closeBottomNav();
+		var sendData = {
+			pageNum : pageNum,
+			pageSize : pageSize,
+			beginTime : logData.beginTime,
+			endTime : logData.endTime,
+			logFirstType : logData.logFirstType,
+			logSecondType : logData.logSecondType
+		};
+		$.post(PathList.adminQueryLog, sendData, function(result) {
+			var tbo = $("#tbo");
+			tbo.empty();
+			var template = '<tr><td>日志编号</td><td>日志一级分类</td><td>日志二级分类</td><td>日志概述</td><td>时间</td><td>查看</td><td>详情</td></tr>';
+			var list = result.data.list;
+			console.log(list);
+			for (var x = 0; x < list.length; x++) {
+				var s = list[x];
+				var logFirstType = '';
+				if (s.logFirstType == 1) {
+					logFirstType = '系统日志';
+				} else if (s.logFirstType == 2) {
+					logFirstType = '财务日志';
+				} else if (s.logFirstType == 3) {
+					logFirstType = '操作日志';
+				}
+				var logSecondType = '';
+				if (s.logSecondType == 21) {
+					logSecondType = '钱包日志';
+				} else if (s.logSecondType == 22) {
+					logSecondType = '好人卡日志';
+				} else if (s.logSecondType == 23) {
+					logSecondType = '结算日志';
+				} else if (s.logSecondType == 24) {
+					logSecondType = '提现日志';
+				}
+				var typeDescription = '';
+				if (s.typeDescription == 2100) {
+					typeDescription = '用户提现';
+				} else if (s.typeDescription == 2101) {
+					typeDescription = '钱包模块充值';
+				} else if (s.typeDescription == 2102) {
+					typeDescription = '购买好人卡';
+				} else if (s.typeDescription == 2103) {
+					typeDescription = '画师模块充值';
+				} else if (s.typeDescription == 2104) {
+					typeDescription = '清空福利补贴';
+				} else if (s.typeDescription == 2105) {
+					typeDescription = '钱包到账稿费';
+				} else if (s.typeDescription == 2107) {
+					typeDescription = '购买画作';
+				} else if (s.typeDescription == 2109) {
+					typeDescription = '钱包到账福利';
+				} else if (s.typeDescription == 2200) {
+					typeDescription = '用户签到';
+				} else if (s.typeDescription == 2201) {
+					typeDescription = '用户打赏作品';
+				} else if (s.typeDescription == 2202) {
+					typeDescription = '购买好人卡';
+				} else if (s.typeDescription == 2203) {
+					typeDescription = '好人卡提现';
+				} else if (s.typeDescription == 2205) {
+					typeDescription = '改名消耗好人卡';
+				} else if (s.typeDescription == 2111) {
+					typeDescription = '好人卡转化到钱包';
+				} else if (s.typeDescription == 2304) {
+					typeDescription = '系统清空福利补贴';
+				} else if (s.typeDescription == 2305) {
+					typeDescription = '系统结算保底补贴';
+				} else if (s.typeDescription == 2307) {
+					typeDescription = '系统结算福利补贴';
+				} else if (s.typeDescription == 2400) {
+					typeDescription = '用户提现';
+				}
+				console.log(typeof (s.logId));
+				var trtd = template.replace('日志编号', s.logId)
+					.replace('日志一级分类', logFirstType)
+					.replace('日志二级分类', logSecondType)
+					.replace('时间', getMyDate(s.createTime))
+					.replace('日志概述', typeDescription)
+					.replace('查看', s.logExplain)
+					.replace('详情', '<a onclick="getLogDetail(' + '\'' + s.logId + '\'' + ',' + s.logSecondType + ')">查看</a>');
+				tbo.append(trtd);
+			}
+			yPage(result, pageNum);
+		});
+	};
+
+	var getLogGrade = function(firstType) {
+		var sendData = {
+			firstType : firstType
+		};
+		$.post(PathList.findLogGrade, sendData, function(result) {
+			var list = result.data;
+			var secondTypeSelect = $("#secondType");
+			secondTypeSelect.empty();
+			var template = '<option value=0>二级分类</option>';
+			secondTypeSelect.append(template);
+			for (var x = 0; x < list.length; x++) {
+				var s = list[x];
+				var o = template.replace('0', s.secondType)
+					.replace('二级分类', s.logName);
+				secondTypeSelect.append(o);
+			}
+		});
+	}
+
+	var getLogDetail = function(logId, logSecondType) {
+		console.log(typeof (logId));
+		var sendData = {
+			logId : logId
+		};
+		console.log(sendData);
+		$.post(PathList.logDetail, sendData, function(result) {
+			console.log(result);
+			var s = result.data;
+			var t = $("#t");
+			var f = $("#f");
+			t.empty();
+			f.empty();
+			if (logSecondType == 21) {
+				if (s.typeDescription == 2100) {
+					s.typeDescription = '用户提现';
+				} else if (s.typeDescription == 2101) {
+					s.typeDescription = '钱包模块充值';
+					var urlUl;
+					if (s.tradeNo != null) {
+						urlUl = '<ul class="sys-info-list">'
+							+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+							+ '<li><label class="res-lab">交易订单号:' + s.tradeNo + '</label><span class="res-info"></span></li>'
+							+ '<li><label class="res-lab"><a href="' + s.payUrl + '" target="view_window">支付链接</a></label><span class="res-info"></span></li></ul>';
+					} else {
+						urlUl = '<ul class="sys-info-list">'
+							+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+							+ '<li><label class="res-lab">交易订单号:未生成</label><span class="res-info"></span></li>'
+							+ '<li><label class="res-lab"><a href="' + s.payUrl + '" target="view_window">支付链接</a></label><span class="res-info"></span></li></ul>';
+					}
+					f.append(urlUl);
+				} else if (s.typeDescription == 2102) {
+					s.typeDescription = '购买好人卡';
+					var urlUl = '<ul class="sys-info-list">'
+						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
+					f.append(urlUl);
+				} else if (s.typeDescription == 2103) {
+					s.typeDescription = '画师模块充值';
+				} else if (s.typeDescription == 2105) {
+					s.typeDescription = '作者稿费';
+				} else if (s.typeDescription == 2107) {
+					s.typeDescription = '购买画册';
+				} else if (s.typeDescription == 2109) {
+					s.typeDescription = '每月福利补贴';
+				} else if (s.typeDescription == 2111) {
+					s.typeDescription = '好人转换钱包';
+					var urlUl = '<ul class="sys-info-list">'
+						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
+					f.append(urlUl);
+				}
+				if (s.orderStatus == 0) {
+					s.orderStatus = "交易未完成";
+				} else if (s.orderStatus == 1) {
+					s.orderStatus = "交易已完成";
+				} else if (s.orderStatus == 2) {
+					s.orderStatus = "交易已取消";
+				}
+				var trth = '<thead><tr><th>日志编号</th><th>支付用户</th><th>接受支付用户</th><th>可兑换金额</th><th>不可兑换金额</th><th>福利补贴金额</th><th>交易状态</th><th>创建时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+				var template = '<tbody><tr><td>日志编号</td><td>支付用户</td><td>接受支付用户</td><td>可兑换金额</td><td>不可兑换金额</td><td>福利补贴金额</td><td>交易状态</td><td>创建时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+				var trtd = template.replace('日志编号', s.logId)
+					.replace('支付用户', s.payUserName)
+					.replace('接受支付用户', s.paiedUserName)
+					.replace('可兑换金额', s.exchangeableCashAmount)
+					.replace('不可兑换金额', s.unexchangeableCashAmount)
+					.replace('福利补贴金额', s.welfareCashAmount)
+					.replace('交易状态', s.orderStatus)
+					.replace('创建时间', getMyDate(s.createTime))
+					.replace('IP地址', s.ip)
+					.replace('使用详情', s.typeDescription);
+				t.append(trth).append(trtd);
+			} else if (logSecondType == 22) {
+				if (s.typeDescription == 2200) {
+					s.typeDescription = '签到获得好人卡';
+				} else if (s.typeDescription == 2201) {
+					s.typeDescription = '打赏:<a href="'+htmlList.catalog+'?bookId=' + s.bookId + '" target="view_window">作品</a>';
+				} else if (s.typeDescription == 2202) {
+					s.typeDescription = '购买好人卡';
+					var urlUl = '<ul class="sys-info-list">'
+						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+					f.append(urlUl);
+				} else if (s.typeDescription == 2203) {
+					s.typeDescription = '好人卡提现';
+					var urlUl = '<ul class="sys-info-list">'
+						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+					f.append(urlUl);
+				} else if (s.typeDescription == 2205) {
+					s.typeDescription = '改名消耗好人卡';
+				}
+				var trth = '<thead><tr><th>日志编号</th><th>支付好人卡用户</th><th>接受支付好人卡用户</th><th>充值好人卡数</th><th>福利好人卡数</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+				var template = '<tbody><tr><td>日志编号</td><td>支付好人卡用户</td><td>接受支付好人卡用户</td><td>充值好人卡数</td><td>福利好人卡数</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+				var trtd = template.replace('日志编号', s.logId)
+					.replace('支付好人卡用户', s.payUserName)
+					.replace('接受支付好人卡用户', s.paiedUserName)
+					.replace('充值好人卡数', s.payCardAmount)
+					.replace('福利好人卡数', s.welfareCardAmount)
+					.replace('时间', getMyDate(s.createTime))
+					.replace('IP地址', s.ip)
+					.replace('使用详情', s.typeDescription);
+				t.append(trth).append(trtd);
+			} else if (logSecondType == 23) {
+				if (s.typeDescription == 2304) {
+					s.typeDescription = '清空上月福利金额';
+				} else if (s.typeDescription == 2305) {
+					s.typeDescription = '发放稿费';
+				} else if (s.typeDescription == 2307) {
+					s.typeDescription = '发放福利补贴';
+				}
+				var trth = '<thead><tr><th>日志编号</th><th>作品名</th><th>用户名</th><th>稿费金额</th><th>福利金额</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+				var template = '<tbody><tr><td>日志编号</td><td>作品名</td><td>用户名</td><td>稿费金额</td><td>福利金额</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+				var trtd = template.replace('日志编号', s.logId)
+					.replace('作品名', s.bookName)
+					.replace('用户名', s.userName)
+					.replace('稿费金额', s.exchangeableCashAmount)
+					.replace('福利金额', s.welfareCashAmount)
+					.replace('时间', getMyDate(s.createTime))
+					.replace('IP地址', s.ip)
+					.replace('使用详情', s.typeDescription);
+				t.append(trth).append(trtd);
+			}
+		});
+		$("#tDiv").show();
+	};
 </script>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
@@ -145,32 +382,34 @@ body {
 </script>
 <script type="text/javascript">
 	var nextPage = function() {
-		if(pageNum<$("#pages").val()){
+		if (pageNum < $("#pages").val()) {
 			pageNum++;
-			getLogList(pageNum, pageSize, logData);
-			$('body,html').animate({ scrollTop: 0 }, 200);
+			getLogList(this.pageNum, this.pageSize, this.logData);
+			$('body,html').animate({
+				scrollTop : 0
+			}, 200);
 		}
 	};
 	var lastPage = function() {
-		if(pageNum>1){
+		if (pageNum > 1) {
 			pageNum--;
-			getLogList(pageNum, pageSize, logData);
-			$('body,html').animate({ scrollTop: 0 }, 200);
+			getLogList(this.pageNum, this.pageSize, this.logData);
+			$('body,html').animate({
+				scrollTop : 0
+			}, 200);
 		}
 	};
-	var setPageNum = function(s){
+	var setPageNum = function(s) {
 		pageNum = s;
-		getLogList(pageNum, pageSize, logData);
+		getLogList(this.pageNum, this.pageSize, this.logData);
+		$('body,html').animate({
+			scrollTop : 0
+		}, 200);
 	};
 </script>
 <script type="text/javascript">
-	var closeBottomNav = function() {
-		$("#tDiv").hide();
-		$("#f").empty();
-		$("#t").empty();
-	}
-</script>
-<script type="text/javascript">
+	$(getLogGrade(undefined));
+	$(getLogList(pageNum, pageSize, logData));
 	//日期选择控件
 	$("#datetimeStart").datetimepicker({
 		format : 'yyyy-mm-dd',
@@ -190,55 +429,5 @@ body {
 		logData.endTime = $("#datetimeEnd").val();
 		$("#datetimeStart").datetimepicker("setEndDate", $("#datetimeEnd").val());
 	});
-
-	//分页控件
-	fenyedView = function() {
-		//console.log(model.result);
-		var element = $('#bp-3-element-test'); //获得数据装配的位置
-		//初始化所需数据
-		var options = {
-			bootstrapMajorVersion : 3, //版本号。3代表的是第三版本
-			currentPage : 1, //当前页数
-			numberOfPages : 5, //显示页码数标个数
-			totalPages : model.result.lastPage, //总共的数据所需要的总页数
-			itemTexts : function(type, page, current) {
-				//图标的更改显示可以在这里修改。
-				switch (type) {
-				case "first":
-					return "<<";
-				case "prev":
-					return "<";
-				case "next":
-					return ">";
-				case "last":
-					return ">>";
-				case "page":
-					return page;
-				}
-			},
-			tooltipTitles : function(type, page, current) {
-				//如果想要去掉页码数字上面的预览功能，则在此操作。例如：可以直接return。
-				switch (type) {
-				case "first":
-					return "Go to first page";
-				case "prev":
-					return "Go to previous page";
-				case "next":
-					return "Go to next page";
-				case "last":
-					return "Go to last page";
-				case "page":
-					return (page === current) ? "Current page is " + page : "Go to page " + page;
-				}
-			},
-			onPageClicked : function(e, originalEvent, type, page) {
-				//单击当前页码触发的事件。若需要与后台发生交互事件可在此通过ajax操作。page为目标页数。
-				//console.log(e);
-				//console.log(originalEvent);
-				// console.log(type);
-			}
-		};
-		element.bootstrapPaginator(options); //进行初始化
-	}
 </script>
 </html>

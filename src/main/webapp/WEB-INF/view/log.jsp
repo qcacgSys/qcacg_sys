@@ -43,7 +43,6 @@
 			tbo.empty();
 			var template = '<tr><td>日志编号</td><td>日志一级分类</td><td>日志二级分类</td><td>日志概述</td><td>时间</td><td>查看</td><td>详情</td></tr>';
 			var list = result.data.list;
-			console.log(list);
 			for (var x = 0; x < list.length; x++) {
 				var s = list[x];
 				var logFirstType = '';
@@ -102,7 +101,6 @@
 				} else if (s.typeDescription == 2400) {
 					typeDescription = '用户提现';
 				}
-				console.log(typeof (s.logId));
 				var trtd = template.replace('日志编号', s.logId)
 					.replace('日志一级分类', logFirstType)
 					.replace('日志二级分类', logSecondType)
@@ -136,13 +134,10 @@
 	}
 
 	var getLogDetail = function(logId, logSecondType) {
-		console.log(typeof (logId));
 		var sendData = {
 			logId : logId
 		};
-		console.log(sendData);
 		$.post(PathList.logDetail, sendData, function(result) {
-			console.log(result);
 			var s = result.data;
 			var t = $("#t");
 			var f = $("#f");
@@ -157,13 +152,11 @@
 					if (s.tradeNo != null) {
 						urlUl = '<ul class="sys-info-list">'
 							+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-							+ '<li><label class="res-lab">交易订单号:' + s.tradeNo + '</label><span class="res-info"></span></li>'
-							+ '<li><label class="res-lab"><a href="' + s.payUrl + '" target="view_window">支付链接</a></label><span class="res-info"></span></li></ul>';
+							+ '<li>交易订单号:' + s.tradeNo + '<span class="res-info"></span></li>';
 					} else {
 						urlUl = '<ul class="sys-info-list">'
 							+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-							+ '<li><label class="res-lab">交易订单号:未生成</label><span class="res-info"></span></li>'
-							+ '<li><label class="res-lab"><a href="' + s.payUrl + '" target="view_window">支付链接</a></label><span class="res-info"></span></li></ul>';
+							+ '<li><label class="res-lab">交易订单号:未生成</label><span class="res-info"></span></li>';
 					}
 					f.append(urlUl);
 				} else if (s.typeDescription == 2102) {
@@ -345,13 +338,7 @@
 			<!--/main-->
 		</div>
 	</div>
-	<style type="text/css">
-body {
-	background-image: url(text.txt);
-	background-attachment: fixed;
-	height: 1000px;
-}
-
+<style type="text/css">
 #bottomNav {
 	z-index: 999;
 	position: fixed;

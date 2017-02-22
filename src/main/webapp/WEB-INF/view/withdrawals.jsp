@@ -13,7 +13,7 @@
 <jsp:include page="/common/js_css.jsp"></jsp:include>
 <script type="text/javascript">
 	var pageNum = 1;
-	var pageSize = 2;
+	var pageSize = 10;
 	//提现相关
 	var getWithdrawals = function(pageNum, pageSize) {
 		var t = $("#t");
@@ -54,7 +54,6 @@
 			userId : userId
 		};
 		$.post(PathList.sysCashAccount, sendData, function(result) {
-			console.log(result);
 			var s = result.data;
 			var t = $("#t");
 			t.empty();
@@ -81,7 +80,6 @@
 			str : str
 		};
 		$.post(PathList.finishWithdrawals, sendData, function(result) {
-			console.log(result);
 		});
 		location.reload();
 	};

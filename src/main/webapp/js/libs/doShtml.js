@@ -131,7 +131,7 @@ model.updateReviewView = function(review) {
 			.replace('#{lastTime}', getMyDate(r.lastTime))
 			.replace('#{status}', r.status)
 			.replace('href="#1"', 'href="' + adminPath + '/admin/status?bookId=' + r.bookId + '"')
-			.replace('<input type="button" id="cccc" value="查看" onclick="displayDate()"></input>', '<input type="button" id="cccc" value="查看" onclick="displayDate('+i+')"></input>');
+			.replace('onclick="displayDate()"', 'onclick="displayDate('+i+')"');
 		book = {
 			bookId:null,
 			bookName:null
@@ -541,7 +541,7 @@ var yPage = function(result,pageNum){
 		for (var x = 0; x < navigatepageNums.length; x++) {
 			var s = navigatepageNums[x];
 			if(pageNum==s){
-				var pageLi = pageTemplate.replace('onclick="setPageNum(页数)', '').replace('页数', '<font color="black">'+s+'</font>');
+				var pageLi = pageTemplate.replace('<li>','<li class="active">').replace('onclick="setPageNum(页数)', '').replace('页数', s);
 			}else{
 				var pageLi = pageTemplate.replace('页数', s).replace('页数', s);
 			}

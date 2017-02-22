@@ -353,6 +353,9 @@ model.updateReportView=function(result){
 		var data=result[i];
 		//console.log(data);
 		//console.log(tr);
+		if(data.reportStatus=='0'){
+			data.reportStatus='待处理';
+		}
 		var tr=template.replace('#{reportId}',data.reportId)
 		.replace('#{reportTypeName}',data.reportTypeName)
 		.replace('#{reportContent}',data.reportContent)
@@ -489,6 +492,7 @@ model.updateMouthBookAccountsView = function(result){
 
 
 displayDate=function(id){
+	console.log(",,"+id);
 	localStorage.setItem("bookReviewMsgData", JSON.stringify(bookReviewMsg[id]));
 	localStorage.setItem("bookData", JSON.stringify(bookList[id]));
 	window.open(LocalPath.statusDetails);

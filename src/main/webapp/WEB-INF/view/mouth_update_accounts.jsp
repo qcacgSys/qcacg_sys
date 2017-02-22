@@ -28,15 +28,15 @@
 						</div>
 					</div>
 					<div class="result-content">
-						<table class="result-tab" width="100%">
+						<table class="result-tab table table-condensed" width="100%">
 							<thead>
 								<tr>
-									<th>统计ID</th>
-									<th>用户ID</th>
-									<th>作品ID</th>
-									<th>签约等级</th>
-									<th>总字数</th>
-									<th>统计时间</th>
+									<th width="12%">统计ID</th>
+									<th width="12%">用户ID</th>
+									<th width="12%">作品ID</th>
+									<th width="12%">签约等级</th>
+									<th width="15%">总字数</th>
+									<th width="30%">统计时间</th>
 									<th>操作</th>
 								</tr>
 							</thead>

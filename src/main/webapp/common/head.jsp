@@ -8,6 +8,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+<style type="text/css">
+.zidingyi_logo{
+	position: absolute;
+	top: -23px;
+	left:200px;
+}
+</style>
 </head>
 <body>
 	<div class="topbar-wrap white">
@@ -20,6 +27,9 @@
 					<li><a class="on" href="index.jsp">首页</a></li>
 					<li><a href="#" target="_blank">网站首页</a></li>
 				</ul>
+			</div>
+			<div class="zidingyi_logo">
+			<img alt="" src="images/logo_qcacg.png">
 			</div>
 			<div class="top-info-wrap">
 				<ul class="top-info-list clearfix">

@@ -31,21 +31,20 @@
 						</div>
 					</div>
 					<div class="result-content">
-						<table class="result-tab" width="100%">
+						<table class="result-tab table-condensed" width="100%">
 							<thead>
 								<tr>
-									<th class="tc" width="5%"><input class="allChoose" name=""
-										type="checkbox"></th>
-									<th>审核ID</th>
-									<th>作品ID</th>
-									<th>作品名</th>
-									<th>申请次数</th>
-									<th>最后审核时间</th>
-									<th>审核状态</th>
+									<th width="7%" class="tc" width="5%"><input class="allChoose" name="" type="checkbox"></th>
+									<th width="10%">审核ID</th>
+									<th width="10%">作品ID</th>
+									<th width="25%">作品名</th>
+									<th width="7%">申请次数</th>
+									<th width="20%">最后审核时间</th>
+									<th width="12%">审核状态</th>
 									<th>操作</th>
 								</tr>
 							</thead>
-							<tbody id="tttt">
+							<tbody id="tbo">
 								<tr>
 									<td class="tc"><input name="name" value="value"
 										type="checkbox"></td>

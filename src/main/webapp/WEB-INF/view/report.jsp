@@ -34,10 +34,10 @@
 									<th>举报ID</th>
 									<th>举报类型</th>
 									<th>举报内容</th>
-									<th>举报文本</th>
-									<th>举报人ID</th>
-									<th>举报时间</th>
-									<th>状态</th>
+									<th width="35%">举报文本</th>
+									<th width="7%">举报人ID</th>
+									<th width="23%">举报时间</th>
+									<th width="8%">状态</th>
 									<th>操作</th>
 								</tr>
 							</thead>

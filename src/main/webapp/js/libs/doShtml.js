@@ -89,10 +89,8 @@ var book = {
 
 //审核管理-视图更新方法
 model.updateReviewView = function(review) {
-	var tt = $('#tttt');
-	tt.empty();
-	var tt2 = $('#tttt2');
-	tt2.empty();
+	var tbody = $('#tbo');
+	tbody.empty();
 	var template = '<tr>' +
 		'<td class="tc"><input name="name" value="value" type="checkbox"></td>' +
 		'<td>#{reviewId}</td>' +
@@ -102,9 +100,9 @@ model.updateReviewView = function(review) {
 		'<td>#{lastTime}</td>' +
 		'<td>#{status}</td>' +
 		'<td>' +
-		'<a id="aaaa" href="#1">审核</a>' +
+		'<a id="aaaa" class="btn btn-info" href="#1">审核</a>' +
 		"  " +
-		'<input type="button" id="cccc" value="查看" onclick="displayDate()"></input>' +
+		'<input type="button" id="cccc" class="btn btn-info" value="查看" onclick="displayDate()"></input>' +
 		'</td>' +
 		'</tr>';
 	var template2 = '<tr>' +
@@ -142,10 +140,10 @@ model.updateReviewView = function(review) {
 		book.bookName = r.reviewName;
 		bookList[i] = book;
 		bookReviewMsg[i] = r.reviewMSG;
-		tt.append(tr);
+		tbody.append(tr);
 	}
-	console.log(bookReviewMsg);
-	console.log(bookList);
+	//console.log(bookReviewMsg);
+	//console.log(bookList);
 }
 
 
@@ -167,7 +165,7 @@ model.updateSignView = function(signData) {
 		'<td>#{phone}</td>' +
 		'<td>#{address}</td>' +
 		'<td>#{message}</td>' +
-		'<td><a id="aaaa" href="#">签约操作</a>' +
+		'<td><a id="aaaa" class="btn btn-info" href="#">签约操作</a>' +
 		'</tr>';
 	for (var i = 0; i < signData.length; i++) {
 		var s = signData[i];
@@ -226,7 +224,7 @@ model.updateBookRecomView = function(result){
 						'<td>#{bookIsSign}</td>'+
 						'<td>#{isRecommended}</td>'+
 						'<td>#{bookOnIndex}</td>'+
-						'<td><button id="" name="tuijian" type="button">推荐</button> <button id="" name="qxtuijian" type="button">取消推荐</button></td>'+
+						'<td><button id="" name="tuijian" type="button" class="btn btn-info">推荐</button> <button id="" name="qxtuijian" type="button" class="btn btn-info">取消推荐</button></td>'+
 					'</tr>';
 	for(var i=0;i<result.length;i++){
 		var data=result[i];
@@ -349,7 +347,7 @@ model.updateReportView=function(result){
 						'<td>#{reporterId}</td>'+
 						'<td>#{reportDate}</td>'+
 						'<td>#{reportStatus}</td>'+
-						'<td><button type="button">审理</button>&nbsp;&nbsp;<button type="button">不审理</button></td>'+
+						'<td><button type="button" class="btn btn-info">审理</button>&nbsp;&nbsp;<button type="button" class="btn btn-info">不审理</button></td>'+
 					'</tr>';
 	for(var i=0;i<result.length;i++){
 		var data=result[i];
@@ -423,7 +421,7 @@ model.updateDaysBookAccountsView = function(result){
 						'<td>#{supplementNum}</td>'+
 						'<td>#{totalWords}</td>'+
 						'<td>#{countDay}</td>'+
-						'<td><button id="" name="qxdj" type="button">取消等级</button></td>'+
+						'<td><button id="" name="qxdj" type="button" class="btn btn-info">取消等级</button></td>'+
 					'</tr>';
 	for(var i=0;i<result.length;i++){
 		var data=result[i];
@@ -463,7 +461,7 @@ model.updateMouthBookAccountsView = function(result){
 						'<td>#{signLevel}</td>'+
 						'<td>#{totalWords}</td>'+
 						'<td>#{countDay}</td>'+
-						'<td><button id="" name="qxdjy" type="button">取消等级</button></td>'+
+						'<td><button id="" name="qxdjy" type="button" class="btn btn-info">取消等级</button></td>'+
 					'</tr>';
 	for(var i=0;i<result.length;i++){
 		var data=result[i];

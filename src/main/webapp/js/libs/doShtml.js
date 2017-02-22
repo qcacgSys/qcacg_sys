@@ -131,7 +131,7 @@ model.updateReviewView = function(review) {
 			.replace('#{lastTime}', getMyDate(r.lastTime))
 			.replace('#{status}', r.status)
 			.replace('href="#1"', 'href="' + adminPath + '/admin/status?bookId=' + r.bookId + '"')
-			.replace('<input type="button" id="cccc" value="查看" onclick="displayDate()"></input>', '<input type="button" id="cccc" value="查看" onclick="displayDate('+i+')"></input>');
+			.replace('onclick="displayDate()"', 'onclick="displayDate('+i+')"');
 		book = {
 			bookId:null,
 			bookName:null

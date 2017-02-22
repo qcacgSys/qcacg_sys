@@ -68,11 +68,16 @@
 </body>
 <script type="text/javascript">
 
-// 页面显示完成加载
+//页面显示完成加载
 $(function(){
+	loadBookAccountsAction(1,100);
+});
+
+//加载本页方法
+var loadBookAccountsAction = function(pageNum, pageSize){
 	var param = {
-		pageNum : 1,
-		pageSize : 100
+		pageNum : pageNum,
+		pageSize : pageSize
 	};
 	$.ajax({
 		type : "GET",
@@ -85,11 +90,11 @@ $(function(){
 			model.updateBookAccountsView(result.list);
 			//返回结果(包含分页长度)加入model,分页组件中取总页
 			model.result=result;
-			//加载分页组件(传入请求url, 更新视图方法名),绑定本页面
+			//激活分页组件(传入请求url, 更新视图方法名)
 			model.fenyedView(PathList.adminListBookAccounts,model.updateBookAccountsView);
 		}
 	});
-});
+};
 
 //绑定-日期提交
 $('#year_and_mouth').click(function(){

@@ -64,14 +64,34 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$(getBookRecomList(0, 10));
-	$("#nextPage").click(function() {
-		$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
-		getBookRecomList($("#pageNum").val(), $("#pageSize").val());
+
+//页面显示完成加载
+$(function(){
+	loadBookRecomAction(1,100);
+});
+
+//加载本页方法
+var loadBookRecomAction = function(pageNum, pageSize) {
+	var param = {
+		pageNum : pageNum,
+		pageSize : pageSize
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryBookRecom,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			//更新视图层
+			model.updateBookRecomView(result.list);
+			//返回结果(包含分页长度)加入model,分页组件中取总页
+			model.result=result;
+			//激活分页组件(传入请求url, 更新视图方法名)
+			model.fenyedView(PathList.adminQueryBookRecom,model.updateBookRecomView);
+		}
 	});
-	$("#lastPage").click(function() {
-		$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
-		getBookRecomList($("#pageNum").val(), $("#pageSize").val());
-	});
+};
+
 </script>
 </html>

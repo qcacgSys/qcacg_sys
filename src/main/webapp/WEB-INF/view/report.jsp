@@ -54,12 +54,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<div id="fenyed" class="list-page">
-							<span id="fenyes"><input type="hidden" id="pageNum"
-								value="0"> <input type="hidden" id="pageSize" value="10">
-								<span id="fenyes"><a id="lastPage">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-									id="nextPage">下一页</a></span></span>
-						</div>
+						<jsp:include page="/common/fenyed.jsp"></jsp:include>
 					</div>
 				</form>
 			</div>
@@ -70,16 +65,34 @@
 	</div>
 </body>
 <script type="text/javascript">
-$(getReportList(0, 10));
 
-$("#nextPage").click(function() {
-	$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
-	getReportList($("#pageNum").val(), $("#pageSize").val());
+//页面显示完成加载
+$(function(){
+	loadReportAction(1,100);
 });
 
-$("#lastPage").click(function() {
-	$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
-	getReportList($("#pageNum").val(), $("#pageSize").val());
-});
+//加载本页方法
+var loadReportAction = function(pageNum, pageSize) {
+	var param = {
+		pageNum : pageNum,
+		pageSize : pageSize
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminListReport,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			//更新视图层
+			model.updateReportView(result.list);
+			//返回结果(包含分页长度)加入model,分页组件中取总页
+			model.result=result;
+			//激活分页组件(传入请求url, 更新视图方法名)
+			model.fenyedView(PathList.adminListReport,model.updateReportView);
+		}
+	});
+};
+
 </script>
 </html>

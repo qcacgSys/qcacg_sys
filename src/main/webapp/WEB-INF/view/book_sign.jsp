@@ -11,9 +11,6 @@
 <meta charset="UTF-8">
 <title>后台签约管理</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
-<script type="text/javascript">
-	$(getBookSign(0, 10));
-</script>
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
@@ -71,12 +68,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<div id="fenyed" class="list-page">
-							<span id="fenyes"><input type="hidden" id="pageNum"
-								value="0"> <input type="hidden" id="pageSize" value="10">
-								<span id="fenyes"><a id="lastPage">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-									id="nextPage">下一页</a></span></span>
-						</div>
+						<jsp:include page="/common/fenyed.jsp"></jsp:include>
 					</div>
 				</form>
 			</div>
@@ -87,13 +79,34 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$("#nextPage").click(function() {
-		$("#pageNum").val(parseInt($("#pageNum").val()) + 1);
-		getBookSign($("#pageNum").val(), $("#pageSize").val());
+
+//页面显示完成加载
+$(function(){
+	loadBookSignAction(1,100);
+});
+
+//加载本页方法
+var loadBookSignAction = function(pageNum, pageSize) {
+	var param = {
+		pageNum : pageNum,
+		pageSize : pageSize
+	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryBookSign,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			//更新视图层
+			model.updateSignView(result.list);
+			//返回结果(包含分页长度)加入model,分页组件中取总页
+			model.result=result;
+			//激活分页组件(传入请求url, 更新视图方法名)
+			model.fenyedView(PathList.adminQueryBookSign,model.updateSignView);
+		}
 	});
-	$("#lastPage").click(function() {
-		$("#pageNum").val(parseInt($("#pageNum").val()) - 1);
-		getBookSign($("#pageNum").val(), $("#pageSize").val());
-	});
+};
+
 </script>
 </html>

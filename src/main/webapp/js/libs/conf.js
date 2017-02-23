@@ -18,8 +18,8 @@ htmlPath = 'http://121.196.194.211:8080/';
 
 //调用shtml域名与端口
 //rootPath = '/Controller';
-rootPath = 'http://127.0.0.1:8080/';
-//rootPath = 'http://121.196.194.211:8080/Controller/';
+//rootPath = 'http://127.0.0.1:8080/';
+rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {

@@ -231,7 +231,7 @@
 					.replace('IP地址', s.ip)
 					.replace('使用详情', s.typeDescription);
 				t.append(trth).append(trtd);
-			} else if (logSecondType == 23) {
+			}else if (logSecondType == 23) {
 				if (s.typeDescription == 2304) {
 					s.typeDescription = '清空上月福利金额';
 				} else if (s.typeDescription == 2305) {
@@ -245,6 +245,39 @@
 					.replace('作品名', s.bookName)
 					.replace('用户名', s.userName)
 					.replace('稿费金额', s.exchangeableCashAmount)
+					.replace('福利金额', s.welfareCashAmount)
+					.replace('时间', getMyDate(s.createTime))
+					.replace('IP地址', s.ip)
+					.replace('使用详情', s.typeDescription);
+				t.append(trth).append(trtd);
+			}else if (logSecondType == 24) {
+				if (s.typeDescription == 2400) {
+					s.typeDescription = '用户提现';
+				}
+				if(s.orderStatus == 1){
+					s.orderStatus = '交易已完成';
+				}else if(s.orderStatus == 2){
+					s.orderStatus = '交易已失效';
+				}else if(s.orderStatus == 0){
+					s.orderStatus = '交易未完成';
+				}
+				if(s.infCardLogId!=null){
+					var urlUl = '<ul class="sys-info-list">'
+						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
+					f.append(urlUl);
+				}
+				if(s.infCashLogId!=null){
+					var urlUl = '<ul class="sys-info-list">'
+						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21' + ')">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+					f.append(urlUl);
+				}
+				var trth = '<thead><tr><th>日志编号</th><th>提现金额</th><th>用户名</th><th>交易状态</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+				var template = '<tbody><tr><td>日志编号</td><td>提现金额</td><td>用户名</td><td>交易状态</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+				var trtd = template.replace('日志编号', s.logId)
+					.replace('提现金额', s.cashAmount)
+					.replace('交易状态', s.orderStatus)
 					.replace('福利金额', s.welfareCashAmount)
 					.replace('时间', getMyDate(s.createTime))
 					.replace('IP地址', s.ip)
@@ -356,6 +389,7 @@
 	var setFirstType = function() {
 		var firstTypeSelect = $("#firstType");
 		logData.logFirstType = firstTypeSelect.val();
+		logData.logSecondType = 0;
 		pageNum = 1;
 		getLogGrade(logData.logFirstType);
 		getLogList(pageNum, pageSize, logData);

@@ -75,7 +75,7 @@ var htmlList = {
 		catalog : htmlPath + 'view/catalog.html'
 };
 var LocalPath = {
-		statusDetails : adminPath + 'admin/statusDetails',
+		statusDetails : adminPath + 'admin/statusDetails'
 };
 $.fn.serializeObject = function()  
 {  

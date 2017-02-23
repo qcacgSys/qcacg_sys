@@ -347,12 +347,18 @@ model.updateReportView=function(result){
 						'<td>#{reporterId}</td>'+
 						'<td>#{reportDate}</td>'+
 						'<td>#{reportStatus}</td>'+
-						'<td><button type="button" class="btn btn-info">审理</button>&nbsp;&nbsp;<button type="button" class="btn btn-info">不审理</button></td>'+
+						'<td><button type="button" class="btn btn-info" onclick="shenliAction(this);">审理</button>&nbsp;&nbsp;<button type="button" class="btn btn-info" onclick="bushenliAction(this);">不审理</button></td>'+
 					'</tr>';
 	for(var i=0;i<result.length;i++){
 		var data=result[i];
 		//console.log(data);
 		//console.log(tr);
+		if(data.reportStatus=='0'){
+			data.reportStatus='待处理';
+		}
+		if(data.reportContent == "" || data.reportContent == undefined || data.reportContent == null){
+			data.reportContent='';
+		}
 		var tr=template.replace('#{reportId}',data.reportId)
 		.replace('#{reportTypeName}',data.reportTypeName)
 		.replace('#{reportContent}',data.reportContent)
@@ -362,49 +368,6 @@ model.updateReportView=function(result){
 		.replace('#{reportStatus}',data.reportStatus);
 		tbody.append(tr);
 	}
-	//处理审理
-	$('button:contains("审理")').click(function() {
-		// 获取父元素取下标
-		tr = $(this).parent().parent();
-		index = tr.index();
-		reportId = result[index].reportId;
-		console.log(reportId);
-		var param = {
-			reportId : Number(reportId),
-			status : Number(1)
-		};
-		var paramJSON = JSON.stringify(param);
-		updateReport(paramJSON);
-	});
-	//不处理审理
-	$('button:contains("不审理")').click(function() {
-		// 获取父元素取下标
-		tr = $(this).parent().parent();
-		index = tr.index();
-		reportId = result[index].reportId;
-		console.log(reportId);
-		var param = {
-			reportId : Number(reportId),
-			status : Number(2)
-		};
-		var paramJSON = JSON.stringify(param);
-		updateReport(paramJSON);
-	});
-}
-
-//评论举报-操作
-updateReport=function(paramJSON){
-	$.ajax({
-		type : "POST",
-		data : paramJSON,
-		contentType : 'application/json',
-		dataType : 'json',
-		url : PathList.adminUpdateReport,
-		success : function(result) {
-			console.log(result.msg);
-			history.go(0);
-		}
-	});
 }
 
 
@@ -489,6 +452,7 @@ model.updateMouthBookAccountsView = function(result){
 
 
 displayDate=function(id){
+	console.log(",,"+id);
 	localStorage.setItem("bookReviewMsgData", JSON.stringify(bookReviewMsg[id]));
 	localStorage.setItem("bookData", JSON.stringify(bookList[id]));
 	window.open(LocalPath.statusDetails);

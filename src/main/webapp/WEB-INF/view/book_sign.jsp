@@ -75,32 +75,33 @@
 </body>
 <script type="text/javascript">
 
-	//页面显示完成加载
-	$(function() {
-		loadBookSignAction(1, 100);
-	});
+//页面显示完成加载
+$(function() {
+	loadBookSignAction(1, 100);
+});
 
-	//加载本页方法
-	var loadBookSignAction = function(pageNum, pageSize) {
-		var param = {
-			pageNum : pageNum,
-			pageSize : pageSize
-		};
-		$.ajax({
-			type : "GET",
-			url : PathList.adminQueryBookSign,
-			contentType : "application/json; charset=utf-8",
-			data : param,
-			dataType : "json",
-			success : function(result) {
-				//更新视图层
-				model.updateSignView(result.list);
-				//返回结果(包含分页长度)加入model,分页组件中取总页
-				model.result = result;
-				//激活分页组件(传入请求url, 更新视图方法名)
-				model.fenyedView(PathList.adminQueryBookSign, model.updateSignView);
-			}
-		});
+//加载本页方法
+var loadBookSignAction = function(pageNum, pageSize) {
+	var param = {
+		pageNum : pageNum,
+		pageSize : pageSize
 	};
+	$.ajax({
+		type : "GET",
+		url : PathList.adminQueryBookSign,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			//更新视图层
+			model.updateSignView(result.list);
+			//返回结果(包含分页长度)加入model,分页组件中取总页
+			model.result = result;
+			//激活分页组件(传入请求url, 更新视图方法名)
+			model.fenyedView(PathList.adminQueryBookSign, model.updateSignView);
+		}
+	});
+};
+	
 </script>
 </html>

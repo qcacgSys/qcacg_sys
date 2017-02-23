@@ -17,7 +17,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/libs/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/libs/conf.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/libs/json2.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/libs/doShtml.js"></script>
 </head>
 <body>
 	<div class="admin_login_wrap">

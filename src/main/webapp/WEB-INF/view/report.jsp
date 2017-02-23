@@ -94,5 +94,43 @@ var loadReportAction = function(pageNum, pageSize) {
 	});
 };
 
+//审理按钮-事件
+var shenliAction = function (thisObj) {
+	var tr = $(thisObj).parent().parent();
+	var index = tr.index();//tr下标
+	var reportId = model.result.list[index].reportId;
+	console.log(reportId);
+	model.updateReport(reportId,1);
+};
+
+//不审理按钮-事件
+var bushenliAction = function (thisObj) {
+	var tr = $(thisObj).parent().parent();
+	var index = tr.index();//tr下标
+	var reportId = model.result.list[index].reportId;
+	console.log(reportId);
+	model.updateReport(reportId,2);
+};
+
+//事件-操作
+model.updateReport=function(id,status){
+	var param = {
+		reportId : Number(id),
+		status : Number(status)
+	};
+	var paramJSON = JSON.stringify(param);
+	$.ajax({
+		type : "POST",
+		data : paramJSON,
+		contentType : 'application/json',
+		dataType : 'json',
+		url : PathList.adminUpdateReport,
+		success : function(result) {
+			alert(result.msg);
+			history.go(0);
+		}
+	});
+}
+
 </script>
 </html>

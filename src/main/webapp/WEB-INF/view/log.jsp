@@ -356,6 +356,7 @@
 	var setFirstType = function() {
 		var firstTypeSelect = $("#firstType");
 		logData.logFirstType = firstTypeSelect.val();
+		logData.logSecondType = 0;
 		pageNum = 1;
 		getLogGrade(logData.logFirstType);
 		getLogList(pageNum, pageSize, logData);

@@ -11,6 +11,12 @@
 <meta charset="UTF-8">
 <title>作品推荐管理</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
+<style type="text/css">
+.dropdown{
+	position:relative;
+	z-index:19999;
+}
+</style>
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
@@ -27,6 +33,21 @@
 							<!--  主页显示状态: 1? 2? 3? 4? 5? 6? -->
 							说明: 界面为已通过审核的!<a href="#"><i class="icon-font"></i></a>
 						</div>
+						
+<div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Dropdown
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="#">Action</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+</div>
+						
 					</div>
 					<div class="result-content">
 						<table class="result-tab" width="100%">

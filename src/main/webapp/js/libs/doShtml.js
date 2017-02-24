@@ -79,7 +79,7 @@ model.updateReviewView = function() {
 			r.status = '申请审核中';
 		}
 		if(r.status == 2){
-			r.status = '已通过审核';			
+			r.status = '已通过审核';
 		}
 		if(r.status == 3){
 			r.status = '审核未通过';
@@ -105,6 +105,19 @@ model.updateReviewView = function() {
 		bookReviewMsg[i] = r.reviewMSG;
 		tbody.append(tr);
 	}
+	var a = $('a:contains(审核)');
+	for(var i=0;i<a.length;i++){
+		var a_one = a[i];
+		var td_status= $(a_one).parent().prev().text();
+		if(td_status=='已通过审核'){
+			$(a_one).attr('disabled',"true");
+			$(a_one).removeAttr('href');//去掉a标签中的href属性
+			console.log($(a_one));
+		}
+		console.log(td_status);
+	}
+
+	
 	//console.log(bookReviewMsg);
 	//console.log(bookList);
 }
@@ -174,6 +187,26 @@ model.updateSignView = function() {
 		tr.data('index',i);
 		tb.append(tr);
 	}
+	//更改签约状态按钮
+	var a = $('a:contains(签约操作)');
+	
+	for(var i=0;i<a.length;i++){
+		var a_one = a[i];
+		var td_status= $(a_one).parent().prev().prev().prev().prev().prev().prev().prev().prev().text();
+		if(td_status=='已签约'){
+			$(a_one).text('取消签约');
+			$(a_one).removeAttr('href');//去掉a标签中的href属性
+			$(a_one).attr('onclick','quxiaoqianyue(this)');
+
+		}
+	}
+}
+//取消签约
+var quxiaoqianyue = function(thisObj){
+	var tr = $(thisObj).parent().parent();
+	var index = tr.data('index');
+	model.index = index;
+	console.log(model.result.list[model.index].bookId);
 }
 
 

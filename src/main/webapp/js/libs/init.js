@@ -71,9 +71,13 @@ model.fenyedView = function(url,method){
        			data : param,
        			dataType : "json",
        			success : function(result) {
-					//加入模型
-					model.result=result;
-	       			method(model.result.list);
+       				if(result.data!=null){//加入模型
+       					model.result=result.data;
+	       				method(model.result.list);
+       				}else{
+						model.result=result;
+	       				method(model.result.list);
+       				}
        			}
        		});
         }

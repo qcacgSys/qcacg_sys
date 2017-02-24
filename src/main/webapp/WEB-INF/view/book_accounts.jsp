@@ -172,19 +172,23 @@ $('#quxiaoquanxuan').click(function(){
 //绑定-批量打钱
 $('#piliangdaqian').click(function(){
 	var obj=document.getElementsByName('sc');//input集合
+	model.checksIndexs = [];
 	var resultList = [];//空集合
 	var option = null;
 	for(var i=0;i<obj.length;i++){
 		option=obj[i];//input
 		if(option.checked){//input存在选中
 			resultList.push(Number(option.value));
+			var tr = $(option).parent().parent();
+			var index = tr.data('index');
+			model.checksIndexs.push(index);
 		}
 	}
 	if (resultList=="") {
 		alert("禁止提交为空!");
 		return;
 	}
-	model.updateManyCashAndWelfare(resultList);//发送打钱请求
+	var n = model.updateManyCashAndWelfare(resultList);//发送批量打钱请求
 });
 
 

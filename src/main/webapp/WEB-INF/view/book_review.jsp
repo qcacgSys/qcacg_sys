@@ -91,10 +91,10 @@ var loadBookReviewAction = function(pageNum, pageSize) {
 		data : param,
 		dataType : "json",
 		success : function(result) {
-			//更新视图层
-			model.updateReviewView(result.data.list);
-			//返回结果(包含分页长度)加入model,分页组件中取总页
+			//加入模型
 			model.result=result.data;
+			//更新视图层
+			model.updateReviewView();
 			//激活分页组件(传入请求url, 更新视图方法名)
 			model.fenyedView(PathList.queryBookForCheck,model.updateReviewView);
 		}

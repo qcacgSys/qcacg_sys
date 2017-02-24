@@ -51,7 +51,7 @@ var book = {
 };
 
 //审核管理-视图更新方法
-model.updateReviewView = function(review) {
+model.updateReviewView = function() {
 	var tbody = $('#tbo');
 	tbody.empty();
 	var template = '<tr>' +
@@ -73,8 +73,8 @@ model.updateReviewView = function(review) {
 		'<td>#{message}</td>' +
 		'<td>#{reply}</td>' +
 		'</tr>';
-	for (var i = 0; i < review.length; i++) {
-		var r = review[i];
+	for (var i = 0; i < model.result.list.length; i++) {
+		var r = model.result.list[i];
 		if(r.status == 1){
 			r.status = '申请审核中';
 		}
@@ -87,14 +87,14 @@ model.updateReviewView = function(review) {
 		if(r.status == 4){
 			r.status = '再次申请审核中';
 		}
-		var tr = template.replace('#{reviewId}', r.reviewId)
+		var tr = $(template.replace('#{reviewId}', r.reviewId)
 			.replace('#{bookId}', r.bookId)
 			.replace('#{reviewName}', r.reviewName)
 			.replace('#{many}', r.many)
 			.replace('#{lastTime}', getMyDate(r.lastTime))
 			.replace('#{status}', r.status)
 			.replace('href="#1"', 'href="' + adminPath + '/admin/status?bookId=' + r.bookId + '"')
-			.replace('onclick="displayDate()"', 'onclick="displayDate('+i+')"');
+			.replace('onclick="displayDate()"', 'onclick="displayDate('+i+')"'));
 		book = {
 			bookId:null,
 			bookName:null
@@ -111,7 +111,7 @@ model.updateReviewView = function(review) {
 
 
 //作品签约-更新视图
-model.updateSignView = function(signData) {
+model.updateSignView = function() {
 	var tb = $('#tbo').empty();
 	var template = '<tr>' +
 		'<td>#{bookId}</td>' +
@@ -130,8 +130,8 @@ model.updateSignView = function(signData) {
 		'<td>#{message}</td>' +
 		'<td><a id="aaaa" class="btn btn-info" href="#">签约操作</a>' +
 		'</tr>';
-	for (var i = 0; i < signData.length; i++) {
-		var s = signData[i];
+	for (var i = 0; i < model.result.list.length; i++) {
+		var s = model.result.list[i];
 		if(s.isEntry == 0){
 			s.isEntry = '未申请';
 		}
@@ -156,7 +156,7 @@ model.updateSignView = function(signData) {
 		if(s.status == 3){
 			s.status = '拒绝签约';
 		}
-		tr = template.replace('#{bookId}', s.bookId)
+		tr = $(template.replace('#{bookId}', s.bookId)
 			.replace('#{uname}', s.uname)
 			.replace('#{signName}', s.signName)
 			.replace('#{many}', s.many)
@@ -170,7 +170,8 @@ model.updateSignView = function(signData) {
 			.replace('#{phone}', s.phone)
 			.replace('#{address}', s.address)
 			.replace('#{message}', s.message)
-			.replace('href="#"', 'href="' + adminPath + 'admin/sign?bookId=' + s.bookId + '"')
+			.replace('href="#"', 'href="' + adminPath + 'admin/sign?bookId=' + s.bookId + '"'));
+		tr.data('index',i);
 		tb.append(tr);
 	}
 }

@@ -93,10 +93,10 @@ var loadBookSignAction = function(pageNum, pageSize) {
 		data : param,
 		dataType : "json",
 		success : function(result) {
+			//加入模型
+			model.result=result;
 			//更新视图层
-			model.updateSignView(result.list);
-			//返回结果(包含分页长度)加入model,分页组件中取总页
-			model.result = result;
+			model.updateSignView();
 			//激活分页组件(传入请求url, 更新视图方法名)
 			model.fenyedView(PathList.adminQueryBookSign, model.updateSignView);
 		}

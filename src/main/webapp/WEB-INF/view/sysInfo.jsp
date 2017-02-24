@@ -58,6 +58,9 @@
 				var ulEle = $("#user");
 				var userList = result.data.list;
 				for (var x = 0; x < userList.length; x++) {
+					if(userList[x].userId==0){
+						continue;
+					}
 					var liEle = '<li><input name="userId" id="checkboxId" type="checkbox" value="' + userList[x].userId + '">用户名:' + userList[x].userName + '</li>';
 					ulEle.append(liEle);
 				}

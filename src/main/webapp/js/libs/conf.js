@@ -15,8 +15,8 @@ htmlPath = 'http://121.196.194.211:8080/';
 //htmlPath = 'http://www.qcacg.com:8080/';
 
 //调用shtml域名与端口
-rootPath = 'http://127.0.0.1:8080/';
-//rootPath = 'http://121.196.194.211:8080/Controller/';
+//rootPath = 'http://127.0.0.1:8080/';
+rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
@@ -73,20 +73,4 @@ var htmlList = {
 };
 var LocalPath = {
 		statusDetails : adminPath + 'admin/statusDetails'
-};
-$.fn.serializeObject = function()  
-{  
-   var o = {};  
-   var a = this.serializeArray();  
-   $.each(a, function() {  
-       if (o[this.name]) {  
-           if (!o[this.name].push) {  
-               o[this.name] = [o[this.name]];  
-           }  
-           o[this.name].push(this.value || '');  
-       } else {  
-           o[this.name] = this.value || '';  
-       }  
-   });  
-   return o;  
 };

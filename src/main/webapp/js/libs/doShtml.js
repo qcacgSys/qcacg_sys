@@ -1,3 +1,20 @@
+//生成json格式
+$.fn.serializeObject = function()  
+{  
+   var o = {};  
+   var a = this.serializeArray();  
+   $.each(a, function() {  
+       if (o[this.name]) {  
+           if (!o[this.name].push) {  
+               o[this.name] = [o[this.name]];  
+           }  
+           o[this.name].push(this.value || '');  
+       } else {  
+           o[this.name] = this.value || '';  
+       }  
+   });  
+   return o;  
+};
 //核算统计-视图更新方法
 model.updateBookAccountsView=function(){
 	var tbody=$('#tbo');

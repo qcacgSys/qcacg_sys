@@ -71,15 +71,9 @@ model.fenyedView = function(url,method){
        			data : param,
        			dataType : "json",
        			success : function(result) {
-       				if(result.data=='undefined'){
-	       				//console.log(param);
-						//返回结果(包含分页长度)加入model,分页组件中取总页
-						model.result=result;
-	       				method(result.list);
-       				}else{
-       					model.result=result.data;
-	       				method(result.data.list);
-       				}
+					//加入模型
+					model.result=result;
+	       			method(model.result.list);
        			}
        		});
         }

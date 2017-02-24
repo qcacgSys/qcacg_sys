@@ -86,15 +86,29 @@ var loadDaysBookAccountsAction = function(pageNum, pageSize) {
 		data : param,
 		dataType : "json",
 		success : function(result) {
-			//更新视图层
-			model.updateDaysBookAccountsView(result.list);
-			//返回结果(包含分页长度)加入model,分页组件中取总页
+			//加入模型
 			model.result=result;
+			//更新视图层
+			model.updateDaysBookAccountsView();
 			//激活分页组件(传入请求url, 更新视图方法名)
 			model.fenyedView(PathList.adminQueryDaysUpdateCount,model.updateDaysBookAccountsView);
 		}
 	});
 };
 
+//日更取消签约等级
+var rigengquxiaodengji = function (thisObj) {
+	var tr = $(thisObj).parent().parent();
+	var index = tr.data('index');
+	model.index = index;
+	var id=model.result.list[index].bookId;
+	var url=PathList.adminCancelSignLevel;
+	var param={"bookId":id};
+	$.post(url, param, function(result){
+		model.result.list[model.index].signLevel = 0;
+		model.updateDaysBookAccountsView();
+		alert(result.msg);
+	});
+};
 </script>
 </html>

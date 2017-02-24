@@ -83,15 +83,66 @@ var loadBookRecomAction = function(pageNum, pageSize) {
 		data : param,
 		dataType : "json",
 		success : function(result) {
-			//更新视图层
-			model.updateBookRecomView(result.list);
-			//返回结果(包含分页长度)加入model,分页组件中取总页
+			//加入模型
 			model.result=result;
+			//更新视图层
+			model.updateBookRecomView();
 			//激活分页组件(传入请求url, 更新视图方法名)
 			model.fenyedView(PathList.adminQueryBookRecom,model.updateBookRecomView);
 		}
 	});
 };
 
+//推荐-按钮
+var tuijian = function(thisObj){
+	tr = $(thisObj).parent().parent();
+	var index = tr.data('index');
+	model.index = index;
+	var id=model.result.list[model.index].bookId;
+	console.log(id);
+	var param={
+		"bookId":Number(id),
+		"isRecommended":'1'
+		};
+	var param=JSON.stringify(param);
+	$.ajax({
+		type : "POST",
+		url : PathList.adminUpdateBookRecom,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			model.result.list[model.index].isRecommended = 1;
+			model.updateBookRecomView();
+			alert(result.msg);
+		}
+	});
+};
+	
+//不推荐-按钮
+var butuijian = function(thisObj){
+	var tr = $(thisObj).parent().parent();
+	var index = tr.data('index');
+	model.index = index;
+	var id=model.result.list[model.index].bookId;
+	var param={
+		"bookId":Number(id),
+		"isRecommended":'0'
+		};
+	var param=JSON.stringify(param);
+	$.ajax({
+		type : "POST",
+		url : PathList.adminUpdateBookRecom,
+		contentType : "application/json; charset=utf-8",
+		data : param,
+		dataType : "json",
+		success : function(result) {
+			model.result.list[model.index].isRecommended = 0;
+			model.updateBookRecomView();
+			alert(result.msg);
+		}
+	});
+};
+	
 </script>
 </html>

@@ -82,13 +82,28 @@ var loadMouthBookAccountsAction = function(pageNum, pageSize) {
 		data : param,
 		dataType : "json",
 		success : function(result) {
-			//更新视图层
-			model.updateMouthBookAccountsView(result.list);
-			//返回结果(包含分页长度)加入model,分页组件中取总页
+			//加入模型
 			model.result=result;
+			//更新视图层
+			model.updateMouthBookAccountsView();
 			//激活分页组件(传入请求url, 更新视图方法名)
 			model.fenyedView(PathList.adminQueryMonthUpdateCount,model.updateMouthBookAccountsView);
 		}
+	});
+};
+
+//月更取消签约等级
+var yuegengquxiaodengji = function(thisObj){
+	tr = $(thisObj).parent().parent();
+	var index = tr.data('index');
+	model.index = index;
+	var id=model.result.list[model.index].bookId;
+	var url=PathList.adminCancelSignLevel;
+	var param={"bookId":id};
+	$.post(url, param, function(result){
+		model.result.list[model.index].signLevel = 0;
+		model.updateMouthBookAccountsView();
+		alert(result.msg);
 	});
 };
 

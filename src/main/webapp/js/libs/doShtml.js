@@ -1,5 +1,5 @@
 //核算统计-视图更新方法
-model.updateBookAccountsView=function(result){
+model.updateBookAccountsView=function(){
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -13,69 +13,32 @@ model.updateBookAccountsView=function(result){
 						'<td>#{fullWelfare}</td>'+
 						'<td>#{accountsDate}</td>'+
 						'<td>#{status}</td>'+
-						'<td><button id="" type="button" class="btn btn-primary btn-check">打款</button></td>'+
+						'<td><button type="button" id="" class="btn btn-primary btn-check" onclick="dakuan(this)">打款</button></td>'+
 					'</tr>';
-	for(var i=0;i<result.length;i++){
-		var data=result[i];
-		if(data.status==1){
-			var tr=template.replace('xzid',data.bookAccountsId)
-							.replace('#{bookAccountsId}',data.bookAccountsId)
-							.replace('#{bookId}',data.bookId)
-							.replace('#{userId}',data.userId)
-							.replace('#{signLevel}',data.signLevel)
-							.replace('#{state}',data.state)
-							.replace('#{drawWelfare}',data.drawWelfare)
-							.replace('#{fullWelfare}',data.fullWelfare)
-							.replace('#{accountsDate}',getMyDate(data.accountsDate))
-							.replace('#{status}','已打款')
-							.replace('id=""','disabled="disabled"');
-							tbody.append(tr);
-		}else{
-			var tr=template.replace('xzid',data.bookAccountsId)
-							.replace('#{bookAccountsId}',data.bookAccountsId)
-							.replace('#{bookId}',data.bookId)
-							.replace('#{userId}',data.userId)
-							.replace('#{signLevel}',data.signLevel)
-							.replace('#{state}',data.state)
-							.replace('#{drawWelfare}',data.drawWelfare)
-							.replace('#{fullWelfare}',data.fullWelfare)
-							.replace('#{accountsDate}',getMyDate(data.accountsDate))
-							.replace('#{status}','未打款');
-			tbody.append(tr);
+	for(var i=0;i<model.result.list.length;i++){
+		var data=model.result.list[i];
+		if(data.status==0){
+			data.status='未打款';
+			model.buttonStatus='';
 		}
-
+		if(data.status==1){
+			data.status='已打款';
+			model.buttonStatus='disabled = "disabled"';
+		}
+		var tr=$(template.replace('xzid',data.bookAccountsId)
+							.replace('#{bookAccountsId}',data.bookAccountsId)
+							.replace('#{bookId}',data.bookId)
+							.replace('#{userId}',data.userId)
+							.replace('#{signLevel}',data.signLevel)
+							.replace('#{state}',data.state)
+							.replace('#{drawWelfare}',data.drawWelfare)
+							.replace('#{fullWelfare}',data.fullWelfare)
+							.replace('#{accountsDate}',getMyDate(data.accountsDate))
+							.replace('#{status}',data.status)
+							.replace('id=""',model.buttonStatus));
+		tr.data('index',i);
+		tbody.append(tr);
 	}
-	$('button:contains("打款")').click(function(){
-		$(this).attr("id","dakuan");
-		tr = $(this).parent().parent();
-		index = tr.index();
-		model.updateCashAndWelfare(result[index].bookAccountsId);
-		$(this).addClass('disabled');
-		//未打款改成已打款
-	});
-}
-
-//核算统计-单用户打款打款
-model.updateCashAndWelfare=function(bookAccountsId){
-	console.log(bookAccountsId);
-	var url=PathList.adminRemitBookAccounts;
-	var result = [];
-	result.push(bookAccountsId);
-	var param={"bookAccountsIds":result};
-	$.post(url, param, function(result){
-		alert(result.msg);
-		history.go(0);
-	});
-}
-
-//核算统计-批量打款
-model.updateManyCashAndWelfare=function(resultId){
-	var url=PathList.adminRemitBookAccounts;
-	var param={"bookAccountsIds":resultId};
-	$.post(url, param, function(result){
-		alert(result.msg);
-		history.go(0);
-	});
 }
 
 
@@ -214,7 +177,7 @@ model.updateSignView = function(signData) {
 
 
 //作品推荐-视图更新
-model.updateBookRecomView = function(result){
+model.updateBookRecomView = function(){
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -224,10 +187,10 @@ model.updateBookRecomView = function(result){
 						'<td>#{bookIsSign}</td>'+
 						'<td>#{isRecommended}</td>'+
 						'<td>#{bookOnIndex}</td>'+
-						'<td><button id="" name="tuijian" type="button" class="btn btn-info">推荐</button> <button id="" name="qxtuijian" type="button" class="btn btn-info">取消推荐</button></td>'+
+						'<td><button id="" onclick="tuijian(this)" type="button" class="btn btn-info">推荐</button> <button id="" onclick="butuijian(this)" type="button" class="btn btn-info">取消推荐</button></td>'+
 					'</tr>';
-	for(var i=0;i<result.length;i++){
-		var data=result[i];
+	for(var i=0;i<model.result.list.length;i++){
+		var data=model.result.list[i];
 		if(data.bookIsSign==1){
 			data.bookIsSign='已签约';
 		}
@@ -240,103 +203,20 @@ model.updateBookRecomView = function(result){
 		if(data.isRecommended==0){
 			data.isRecommended='未推荐';
 		}
-		var tr=template.replace('#{userId}',data.userId)
+		var tr=$(template.replace('#{userId}',data.userId)
 					.replace('#{bookId}',data.bookId)
 					.replace('#{bookName}',data.bookName)
 					.replace('#{bookIsSign}',data.bookIsSign)
 					.replace('#{isRecommended}',data.isRecommended)
-					.replace('#{bookOnIndex}',data.bookOnIndex);
+					.replace('#{bookOnIndex}',data.bookOnIndex));
+		tr.data('index',i);
 		tbody.append(tr);
 	}
-	$('button[name="tuijian"]').click(function(){
-		tr = $(this).parent().parent();
-		index = tr.index();
-		var id=result[index].bookId;
-		var param={
-			"bookId":Number(id),
-			"isRecommended":'1'
-			};
-		var param=JSON.stringify(param);
-		$.ajax({
-			type : "POST",
-			url : PathList.adminUpdateBookRecom,
-			contentType : "application/json; charset=utf-8",
-			data : param,
-			dataType : "json",
-			success : function(result) {
-				alert(result.msg);
-				history.go(0);
-			}
-		});
-	});
-	$('button[name="qxtuijian"]').click(function(){
-		tr = $(this).parent().parent();
-		index = tr.index();
-		var id=result[index].bookId;
-		var param={
-			"bookId":Number(id),
-			"isRecommended":'0'
-			};
-		var param=JSON.stringify(param);
-		$.ajax({
-			type : "POST",
-			url : PathList.adminUpdateBookRecom,
-			contentType : "application/json; charset=utf-8",
-			data : param,
-			dataType : "json",
-			success : function(result) {
-				alert(result.msg);
-				history.go(0);
-			}
-		});
-	});
-	$('button[name="xianshi"]').click(function(){
-		tr = $(this).parent().parent();
-		index = tr.index();
-		var id=result[index].bookId;
-		var param={
-			"bookId":Number(id),
-			"bookOnIndex":'1'
-			};
-		var param=JSON.stringify(param);
-		$.ajax({
-			type : "POST",
-			url : PathList.adminUpdateBookRecom,
-			contentType : "application/json; charset=utf-8",
-			data : param,
-			dataType : "json",
-			success : function(result) {
-				alert(result.msg);
-				history.go(0);
-			}
-		});
-	});
-	$('button[name="buxianshi"]').click(function(){
-		tr = $(this).parent().parent();
-		index = tr.index();
-		var id=result[index].bookId;
-		var param={
-			"bookId":Number(id),
-			"bookOnIndex":'0'
-			};
-		var param=JSON.stringify(param);
-		$.ajax({
-			type : "POST",
-			url : PathList.adminUpdateBookRecom,
-			contentType : "application/json; charset=utf-8",
-			data : param,
-			dataType : "json",
-			success : function(result) {
-				alert(result.msg);
-				history.go(0);
-			}
-		});
-	});
 }
 
 
 //评论举报-更新视图
-model.updateReportView=function(result){
+model.updateReportView=function(){
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -349,8 +229,8 @@ model.updateReportView=function(result){
 						'<td>#{reportStatus}</td>'+
 						'<td><button type="button" class="btn btn-info" onclick="shenliAction(this);">审理</button>&nbsp;&nbsp;<button type="button" class="btn btn-info" onclick="bushenliAction(this);">不审理</button></td>'+
 					'</tr>';
-	for(var i=0;i<result.length;i++){
-		var data=result[i];
+	for(var i=0;i<model.result.list.length;i++){
+		var data=model.result.list[i];
 		//console.log(data);
 		//console.log(tr);
 		if(data.reportStatus=='0'){
@@ -359,20 +239,21 @@ model.updateReportView=function(result){
 		if(data.reportContent == "" || data.reportContent == undefined || data.reportContent == null){
 			data.reportContent='';
 		}
-		var tr=template.replace('#{reportId}',data.reportId)
+		var tr=$(template.replace('#{reportId}',data.reportId)
 		.replace('#{reportTypeName}',data.reportTypeName)
 		.replace('#{reportContent}',data.reportContent)
 		.replace('#{reportText}',data.reportText)
 		.replace('#{reporterId}',data.reporterId)
 		.replace('#{reportDate}',getMyDate(data.reportDate))
-		.replace('#{reportStatus}',data.reportStatus);
+		.replace('#{reportStatus}',data.reportStatus));
+		tr.data('index',i);
 		tbody.append(tr);
 	}
 }
 
 
 //日更统计-更新视图
-model.updateDaysBookAccountsView = function(result){
+model.updateDaysBookAccountsView = function(){
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -384,37 +265,26 @@ model.updateDaysBookAccountsView = function(result){
 						'<td>#{supplementNum}</td>'+
 						'<td>#{totalWords}</td>'+
 						'<td>#{countDay}</td>'+
-						'<td><button id="" name="qxdj" type="button" class="btn btn-info">取消等级</button></td>'+
+						'<td><button type="button" class="btn btn-info" onclick="rigengquxiaodengji(this)">取消等级</button></td>'+
 					'</tr>';
-	for(var i=0;i<result.length;i++){
-		var data=result[i];
-		var tr=template.replace('#{daysUpdateCountId}',data.daysUpdateCountId)
+	for(var i=0;i<model.result.list.length;i++){
+		var data=model.result.list[i];
+		var tr=$(template.replace('#{daysUpdateCountId}',data.daysUpdateCountId)
 					.replace('#{userId}',data.userId)
 					.replace('#{bookId}',data.bookId)
 					.replace('#{signLevel}',data.signLevel)
 					.replace('#{factDaysNum}',data.factDaysNum)
 					.replace('#{supplementNum}',data.supplementNum)
 					.replace('#{totalWords}',data.totalWords)
-					.replace('#{countDay}',getMyDate(data.countDay));
+					.replace('#{countDay}',getMyDate(data.countDay)));
+		tr.data('index',i);
 		tbody.append(tr);
 	}
-	$('button[name="qxdj"]').click(function(){
-		tr = $(this).parent().parent();
-		index = tr.index();
-		var id=result[index].bookId;
-		//发送作品ID
-		var url=PathList.adminCancelSignLevel;
-		var param={"bookId":id};
-		$.post(url, param, function(result){
-			alert(result.msg);
-			history.go(0);
-		});
-	});
 }
 
 
 //月更统计-更新视图
-model.updateMouthBookAccountsView = function(result){
+model.updateMouthBookAccountsView = function(){
 	var tbody=$('#tbo');
 	tbody.empty();
 	var template=	'<tr>'+
@@ -424,33 +294,23 @@ model.updateMouthBookAccountsView = function(result){
 						'<td>#{signLevel}</td>'+
 						'<td>#{totalWords}</td>'+
 						'<td>#{countDay}</td>'+
-						'<td><button id="" name="qxdjy" type="button" class="btn btn-info">取消等级</button></td>'+
+						'<td><button type="button" class="btn btn-info" onclick="yuegengquxiaodengji(this)">取消等级</button></td>'+
 					'</tr>';
-	for(var i=0;i<result.length;i++){
-		var data=result[i];
-		var tr=template.replace('#{mouthUpdateCountId}',data.mouthUpdateCountId)
+	for(var i=0;i<model.result.list.length;i++){
+		var data=model.result.list[i];
+		var tr=$(template.replace('#{mouthUpdateCountId}',data.mouthUpdateCountId)
 					.replace('#{userId}',data.userId)
 					.replace('#{bookId}',data.bookId)
 					.replace('#{signLevel}',data.signLevel)
 					.replace('#{totalWords}',data.totalWords)
-					.replace('#{countDay}',getMyDate(data.countDay));
+					.replace('#{countDay}',getMyDate(data.countDay)));
+		tr.data('index',i);
 		tbody.append(tr);
 	}
-	$('button[name="qxdjy"]').click(function(){
-		tr = $(this).parent().parent();
-		index = tr.index();
-		var id=result[index].bookId;
-		//发送作品ID
-		var url=PathList.adminCancelSignLevel;
-		var param={"bookId":id};
-		$.post(url, param, function(result){
-			alert(result.msg);
-			history.go(0);
-		});
-	});
 }
 
 
+//审核查看详情
 displayDate=function(id){
 	console.log(",,"+id);
 	localStorage.setItem("bookReviewMsgData", JSON.stringify(bookReviewMsg[id]));

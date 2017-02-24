@@ -84,10 +84,10 @@ var loadReportAction = function(pageNum, pageSize) {
 		data : param,
 		dataType : "json",
 		success : function(result) {
-			//更新视图层
-			model.updateReportView(result.list);
-			//返回结果(包含分页长度)加入model,分页组件中取总页
+			//加入模型
 			model.result=result;
+			//更新视图层
+			model.updateReportView();
 			//激活分页组件(传入请求url, 更新视图方法名)
 			model.fenyedView(PathList.adminListReport,model.updateReportView);
 		}
@@ -97,8 +97,9 @@ var loadReportAction = function(pageNum, pageSize) {
 //审理按钮-事件
 var shenliAction = function (thisObj) {
 	var tr = $(thisObj).parent().parent();
-	var index = tr.index();//tr下标
-	var reportId = model.result.list[index].reportId;
+	var index = tr.data('index');
+	model.index = index;
+	var reportId = model.result.list[model.index].reportId;
 	console.log(reportId);
 	model.updateReport(reportId,1);
 };
@@ -106,8 +107,9 @@ var shenliAction = function (thisObj) {
 //不审理按钮-事件
 var bushenliAction = function (thisObj) {
 	var tr = $(thisObj).parent().parent();
-	var index = tr.index();//tr下标
-	var reportId = model.result.list[index].reportId;
+	var index = tr.data('index');
+	model.index = index;
+	var reportId = model.result.list[model.index].reportId;
 	console.log(reportId);
 	model.updateReport(reportId,2);
 };

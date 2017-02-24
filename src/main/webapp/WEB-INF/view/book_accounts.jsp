@@ -86,10 +86,10 @@ var loadBookAccountsAction = function(pageNum, pageSize){
 		data : param,
 		dataType : "json",
 		success : function(result) {
-			//更新视图层
-			model.updateBookAccountsView(result.list);
-			//返回结果(包含分页长度)加入model,分页组件中取总页
+			//加入模型
 			model.result=result;
+			//更新视图层
+			model.updateBookAccountsView();
 			//激活分页组件(传入请求url, 更新视图方法名)
 			model.fenyedView(PathList.adminListBookAccounts,model.updateBookAccountsView);
 		}
@@ -118,14 +118,14 @@ $('#year_and_mouth').click(function(){
 		data : param,
 		dataType : "json",
 		success : function(result) {
-			//更新视图层
-			model.updateBookAccountsView(result.list);
-			//返回结果(包含分页长度)加入model,分页组件中取总页
+			//替换模型
 			model.result=result;
 			//保存日期选择, 分页组件取中日期start
 			model.yearAndMouthStart=yearAndMouthStart;
 			//保存日期选择, 分页组件取中日期end
 			model.yearAndMouthEnd=yearAndMouthEnd;
+			//更新视图层
+			model.updateBookAccountsView();
 		}
 	});
 });
@@ -172,20 +172,55 @@ $('#quxiaoquanxuan').click(function(){
 //绑定-批量打钱
 $('#piliangdaqian').click(function(){
 	var obj=document.getElementsByName('sc');//input集合
-	var resultId = [];//空集合
+	var resultList = [];//空集合
 	var option = null;
 	for(var i=0;i<obj.length;i++){
 		option=obj[i];//input
 		if(option.checked){//input存在选中
-			resultId.push(Number(option.value));
+			resultList.push(Number(option.value));
 		}
 	}
-	if (resultId=="") {
+	if (resultList=="") {
 		alert("禁止提交为空!");
 		return;
 	}
-	model.updateManyCashAndWelfare(resultId);//发送打钱请求
+	model.updateManyCashAndWelfare(resultList);//发送打钱请求
 });
+
+
+//绑定-打款
+var dakuan = function(thisObj){
+	var tr = $(thisObj).parent().parent();
+	var index = tr.data('index');
+	model.index = index;
+	var id = model.result.list[model.index].bookAccountsId;
+	console.log(id);
+	model.updateCashAndWelfare(id);//发起打款请求
+	$(thisObj).attr('disabled','disabled');//按钮变灰
+	tr.children('td:contains(未打款)').text('已打款');//改变状态
+};
+
+//单用户打款方法
+model.updateCashAndWelfare=function(bookAccountsId){
+	//console.log(bookAccountsId);
+	var url=PathList.adminRemitBookAccounts;
+	var result = [];
+	result.push(bookAccountsId);
+	var param={"bookAccountsIds":result};
+	$.post(url, param, function(result){
+		alert(result.msg);
+	});
+}
+
+//多用户打款方法
+model.updateManyCashAndWelfare=function(resultIdList){
+	var url=PathList.adminRemitBookAccounts;
+	var param={"bookAccountsIds":resultIdList};
+	$.post(url, param, function(result){
+		alert(result.msg);
+		history.go(0);
+	});
+}
 
 </script>
 </html>

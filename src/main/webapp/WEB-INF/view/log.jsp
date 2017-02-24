@@ -15,12 +15,11 @@
 <script type="text/javascript">
 	var pageNum = 1;
 	var pageSize = 100;
-	var clear = undefined;
 	var logData = {
-		beginTime : undefined,
-		endTime : undefined,
-		logFirstType : undefined,
-		logSecondType : undefined
+		beginTime : '',
+		endTime : '',
+		logFirstType : '',
+		logSecondType : ''
 	};
 	var closeBottomNav = function() {
 		$("#tDiv").hide();
@@ -33,11 +32,11 @@
 		var sendData = {
 			pageNum : pageNum,
 			pageSize : pageSize,
-			beginTime : logData.beginTime,
-			endTime : logData.endTime,
-			logFirstType : logData.logFirstType,
-			logSecondType : logData.logSecondType
 		};
+		sendData.beginTime = logData.beginTime;
+		sendData.endTime = logData.endTime;
+		sendData.logFirstType = logData.logFirstType;
+		sendData.logSecondType = logData.logSecondType;
 		$.post(PathList.adminQueryLog, sendData, function(result) {
 			var tbo = $("#tbo");
 			tbo.empty();
@@ -122,167 +121,199 @@
 			var list = result.data;
 			var secondTypeSelect = $("#secondType");
 			secondTypeSelect.empty();
-			var template = '<option value=0>二级分类</option>';
-			secondTypeSelect.append(template);
+			var template = '<option value=null>二级分类</option>';
+			secondTypeSelect.append(template.replace('null', ''));
 			for (var x = 0; x < list.length; x++) {
 				var s = list[x];
-				var o = template.replace('0', s.secondType)
+				var o = template.replace('null', '"' + s.secondType + '"')
 					.replace('二级分类', s.logName);
 				secondTypeSelect.append(o);
 			}
 		});
 	}
 
+	var detail_21 = function(result) {
+		var s = result.data;
+		var t = $("#t");
+		var f = $("#f");
+		t.empty();
+		f.empty();
+		if (s.typeDescription == 2100) {
+			s.typeDescription = '用户提现';
+		} else if (s.typeDescription == 2101) {
+			s.typeDescription = '钱包模块充值';
+			var urlUl;
+			if (s.tradeNo != null) {
+				urlUl = '<ul class="sys-info-list">'
+					+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+					+ '<li>交易订单号:' + s.tradeNo + '<span class="res-info"></span></li>';
+			} else {
+				urlUl = '<ul class="sys-info-list">'
+					+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+					+ '<li><label class="res-lab">交易订单号:未生成</label><span class="res-info"></span></li>';
+			}
+			f.append(urlUl);
+		} else if (s.typeDescription == 2102) {
+			s.typeDescription = '购买好人卡';
+			var urlUl = '<ul class="sys-info-list">'
+				+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+				+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
+			f.append(urlUl);
+		} else if (s.typeDescription == 2103) {
+			s.typeDescription = '画师模块充值';
+		} else if (s.typeDescription == 2105) {
+			s.typeDescription = '作者稿费';
+		} else if (s.typeDescription == 2107) {
+			s.typeDescription = '购买画册';
+		} else if (s.typeDescription == 2109) {
+			s.typeDescription = '每月福利补贴';
+		} else if (s.typeDescription == 2111) {
+			s.typeDescription = '好人转换钱包';
+			var urlUl = '<ul class="sys-info-list">'
+				+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+				+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
+			f.append(urlUl);
+		}
+		if (s.orderStatus == 0) {
+			s.orderStatus = "交易未完成";
+		} else if (s.orderStatus == 1) {
+			s.orderStatus = "交易已完成";
+		} else if (s.orderStatus == 2) {
+			s.orderStatus = "交易已取消";
+		}
+		var trth = '<thead><tr><th>日志编号</th><th>支付用户</th><th>接受支付用户</th><th>可兑换金额</th><th>不可兑换金额</th><th>福利补贴金额</th><th>交易状态</th><th>创建时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+		var template = '<tbody><tr><td>日志编号</td><td>支付用户</td><td>接受支付用户</td><td>可兑换金额</td><td>不可兑换金额</td><td>福利补贴金额</td><td>交易状态</td><td>创建时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+		var trtd = template.replace('日志编号', s.logId)
+			.replace('支付用户', s.payUserName)
+			.replace('接受支付用户', s.paiedUserName)
+			.replace('可兑换金额', s.exchangeableCashAmount)
+			.replace('不可兑换金额', s.unexchangeableCashAmount)
+			.replace('福利补贴金额', s.welfareCashAmount)
+			.replace('交易状态', s.orderStatus)
+			.replace('创建时间', getMyDate(s.createTime))
+			.replace('IP地址', s.ip)
+			.replace('使用详情', s.typeDescription);
+		t.append(trth).append(trtd);
+	};
+
+	var detail_22 = function(result) {
+		var s = result.data;
+		var t = $("#t");
+		var f = $("#f");
+		t.empty();
+		f.empty();
+		if (s.typeDescription == 2200) {
+			s.typeDescription = '签到获得好人卡';
+		} else if (s.typeDescription == 2201) {
+			s.typeDescription = '打赏:<a href="' + htmlList.catalog + '?bookId=' + s.bookId + '" target="view_window">作品</a>';
+		} else if (s.typeDescription == 2202) {
+			s.typeDescription = '购买好人卡';
+			var urlUl = '<ul class="sys-info-list">'
+				+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+				+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+			f.append(urlUl);
+		} else if (s.typeDescription == 2203) {
+			s.typeDescription = '好人卡提现';
+			var urlUl = '<ul class="sys-info-list">'
+				+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+				+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+			f.append(urlUl);
+		} else if (s.typeDescription == 2205) {
+			s.typeDescription = '改名消耗好人卡';
+		}
+		var trth = '<thead><tr><th>日志编号</th><th>支付好人卡用户</th><th>接受支付好人卡用户</th><th>充值好人卡数</th><th>福利好人卡数</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+		var template = '<tbody><tr><td>日志编号</td><td>支付好人卡用户</td><td>接受支付好人卡用户</td><td>充值好人卡数</td><td>福利好人卡数</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+		var trtd = template.replace('日志编号', s.logId)
+			.replace('支付好人卡用户', s.payUserName)
+			.replace('接受支付好人卡用户', s.paiedUserName)
+			.replace('充值好人卡数', s.payCardAmount)
+			.replace('福利好人卡数', s.welfareCardAmount)
+			.replace('时间', getMyDate(s.createTime))
+			.replace('IP地址', s.ip)
+			.replace('使用详情', s.typeDescription);
+		t.append(trth).append(trtd);
+	};
+
+	var detail_23 = function(result) {
+		var s = result.data;
+		var t = $("#t");
+		var f = $("#f");
+		t.empty();
+		f.empty();
+		if (s.typeDescription == 2304) {
+			s.typeDescription = '清空上月福利金额';
+		} else if (s.typeDescription == 2305) {
+			s.typeDescription = '发放稿费';
+		} else if (s.typeDescription == 2307) {
+			s.typeDescription = '发放福利补贴';
+		}
+		var trth = '<thead><tr><th>日志编号</th><th>作品名</th><th>用户名</th><th>稿费金额</th><th>福利金额</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+		var template = '<tbody><tr><td>日志编号</td><td>作品名</td><td>用户名</td><td>稿费金额</td><td>福利金额</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+		var trtd = template.replace('日志编号', s.logId)
+			.replace('作品名', s.bookName)
+			.replace('用户名', s.userName)
+			.replace('稿费金额', s.exchangeableCashAmount)
+			.replace('福利金额', s.welfareCashAmount)
+			.replace('时间', getMyDate(s.createTime))
+			.replace('IP地址', s.ip)
+			.replace('使用详情', s.typeDescription);
+		t.append(trth).append(trtd);
+	};
+
+	var detail_24 = function(result) {
+		var s = result.data;
+		var t = $("#t");
+		var f = $("#f");
+		t.empty();
+		f.empty();
+		if (s.typeDescription == 2400) {
+			s.typeDescription = '用户提现';
+		}
+		if (s.orderStatus == 1) {
+			s.orderStatus = '交易已完成';
+		} else if (s.orderStatus == 2) {
+			s.orderStatus = '交易已失效';
+		} else if (s.orderStatus == 0) {
+			s.orderStatus = '交易未完成';
+		}
+		if (s.infCardLogId != null) {
+			var urlUl = '<ul class="sys-info-list">'
+				+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+				+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
+			f.append(urlUl);
+		}
+		if (s.infCashLogId != null) {
+			var urlUl = '<ul class="sys-info-list">'
+				+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
+				+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21' + ')">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+			f.append(urlUl);
+		}
+		var trth = '<thead><tr><th>日志编号</th><th>提现金额</th><th>用户名</th><th>交易状态</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
+		var template = '<tbody><tr><td>日志编号</td><td>提现金额</td><td>用户名</td><td>交易状态</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
+		var trtd = template.replace('日志编号', s.logId)
+			.replace('提现金额', s.cashAmount)
+			.replace('交易状态', s.orderStatus)
+			.replace('福利金额', s.welfareCashAmount)
+			.replace('时间', getMyDate(s.createTime))
+			.replace('IP地址', s.ip)
+			.replace('使用详情', s.typeDescription);
+		t.append(trth).append(trtd);
+	};
+
 	var getLogDetail = function(logId, logSecondType) {
 		var sendData = {
 			logId : logId
 		};
-		$.post(PathList.logDetail, sendData, function(result) {
-			var s = result.data;
-			var t = $("#t");
-			var f = $("#f");
-			t.empty();
-			f.empty();
+		var url = (PathList.logDetail.split('.shtml'))[0] + '_' + logSecondType + '.shtml';
+		$.post(url, sendData, function(result) {
 			if (logSecondType == 21) {
-				if (s.typeDescription == 2100) {
-					s.typeDescription = '用户提现';
-				} else if (s.typeDescription == 2101) {
-					s.typeDescription = '钱包模块充值';
-					var urlUl;
-					if (s.tradeNo != null) {
-						urlUl = '<ul class="sys-info-list">'
-							+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-							+ '<li>交易订单号:' + s.tradeNo + '<span class="res-info"></span></li>';
-					} else {
-						urlUl = '<ul class="sys-info-list">'
-							+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-							+ '<li><label class="res-lab">交易订单号:未生成</label><span class="res-info"></span></li>';
-					}
-					f.append(urlUl);
-				} else if (s.typeDescription == 2102) {
-					s.typeDescription = '购买好人卡';
-					var urlUl = '<ul class="sys-info-list">'
-						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
-					f.append(urlUl);
-				} else if (s.typeDescription == 2103) {
-					s.typeDescription = '画师模块充值';
-				} else if (s.typeDescription == 2105) {
-					s.typeDescription = '作者稿费';
-				} else if (s.typeDescription == 2107) {
-					s.typeDescription = '购买画册';
-				} else if (s.typeDescription == 2109) {
-					s.typeDescription = '每月福利补贴';
-				} else if (s.typeDescription == 2111) {
-					s.typeDescription = '好人转换钱包';
-					var urlUl = '<ul class="sys-info-list">'
-						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
-					f.append(urlUl);
-				}
-				if (s.orderStatus == 0) {
-					s.orderStatus = "交易未完成";
-				} else if (s.orderStatus == 1) {
-					s.orderStatus = "交易已完成";
-				} else if (s.orderStatus == 2) {
-					s.orderStatus = "交易已取消";
-				}
-				var trth = '<thead><tr><th>日志编号</th><th>支付用户</th><th>接受支付用户</th><th>可兑换金额</th><th>不可兑换金额</th><th>福利补贴金额</th><th>交易状态</th><th>创建时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
-				var template = '<tbody><tr><td>日志编号</td><td>支付用户</td><td>接受支付用户</td><td>可兑换金额</td><td>不可兑换金额</td><td>福利补贴金额</td><td>交易状态</td><td>创建时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
-				var trtd = template.replace('日志编号', s.logId)
-					.replace('支付用户', s.payUserName)
-					.replace('接受支付用户', s.paiedUserName)
-					.replace('可兑换金额', s.exchangeableCashAmount)
-					.replace('不可兑换金额', s.unexchangeableCashAmount)
-					.replace('福利补贴金额', s.welfareCashAmount)
-					.replace('交易状态', s.orderStatus)
-					.replace('创建时间', getMyDate(s.createTime))
-					.replace('IP地址', s.ip)
-					.replace('使用详情', s.typeDescription);
-				t.append(trth).append(trtd);
+				detail_21(result);
 			} else if (logSecondType == 22) {
-				if (s.typeDescription == 2200) {
-					s.typeDescription = '签到获得好人卡';
-				} else if (s.typeDescription == 2201) {
-					s.typeDescription = '打赏:<a href="'+htmlList.catalog+'?bookId=' + s.bookId + '" target="view_window">作品</a>';
-				} else if (s.typeDescription == 2202) {
-					s.typeDescription = '购买好人卡';
-					var urlUl = '<ul class="sys-info-list">'
-						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
-					f.append(urlUl);
-				} else if (s.typeDescription == 2203) {
-					s.typeDescription = '好人卡提现';
-					var urlUl = '<ul class="sys-info-list">'
-						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
-					f.append(urlUl);
-				} else if (s.typeDescription == 2205) {
-					s.typeDescription = '改名消耗好人卡';
-				}
-				var trth = '<thead><tr><th>日志编号</th><th>支付好人卡用户</th><th>接受支付好人卡用户</th><th>充值好人卡数</th><th>福利好人卡数</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
-				var template = '<tbody><tr><td>日志编号</td><td>支付好人卡用户</td><td>接受支付好人卡用户</td><td>充值好人卡数</td><td>福利好人卡数</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
-				var trtd = template.replace('日志编号', s.logId)
-					.replace('支付好人卡用户', s.payUserName)
-					.replace('接受支付好人卡用户', s.paiedUserName)
-					.replace('充值好人卡数', s.payCardAmount)
-					.replace('福利好人卡数', s.welfareCardAmount)
-					.replace('时间', getMyDate(s.createTime))
-					.replace('IP地址', s.ip)
-					.replace('使用详情', s.typeDescription);
-				t.append(trth).append(trtd);
-			}else if (logSecondType == 23) {
-				if (s.typeDescription == 2304) {
-					s.typeDescription = '清空上月福利金额';
-				} else if (s.typeDescription == 2305) {
-					s.typeDescription = '发放稿费';
-				} else if (s.typeDescription == 2307) {
-					s.typeDescription = '发放福利补贴';
-				}
-				var trth = '<thead><tr><th>日志编号</th><th>作品名</th><th>用户名</th><th>稿费金额</th><th>福利金额</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
-				var template = '<tbody><tr><td>日志编号</td><td>作品名</td><td>用户名</td><td>稿费金额</td><td>福利金额</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
-				var trtd = template.replace('日志编号', s.logId)
-					.replace('作品名', s.bookName)
-					.replace('用户名', s.userName)
-					.replace('稿费金额', s.exchangeableCashAmount)
-					.replace('福利金额', s.welfareCashAmount)
-					.replace('时间', getMyDate(s.createTime))
-					.replace('IP地址', s.ip)
-					.replace('使用详情', s.typeDescription);
-				t.append(trth).append(trtd);
-			}else if (logSecondType == 24) {
-				if (s.typeDescription == 2400) {
-					s.typeDescription = '用户提现';
-				}
-				if(s.orderStatus == 1){
-					s.orderStatus = '交易已完成';
-				}else if(s.orderStatus == 2){
-					s.orderStatus = '交易已失效';
-				}else if(s.orderStatus == 0){
-					s.orderStatus = '交易未完成';
-				}
-				if(s.infCardLogId!=null){
-					var urlUl = '<ul class="sys-info-list">'
-						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCardLogId + '\'' + ',22' + ')">好人卡日志链接</a></label><span class="res-info"></span></li></ul>';
-					f.append(urlUl);
-				}
-				if(s.infCashLogId!=null){
-					var urlUl = '<ul class="sys-info-list">'
-						+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-						+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21' + ')">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
-					f.append(urlUl);
-				}
-				var trth = '<thead><tr><th>日志编号</th><th>提现金额</th><th>用户名</th><th>交易状态</th><th>时间</th><th>IP地址</th><th>使用详情</th></tr></thead>';
-				var template = '<tbody><tr><td>日志编号</td><td>提现金额</td><td>用户名</td><td>交易状态</td><td>时间</td><td>IP地址</td><td>使用详情</td></tr></tbody>';
-				var trtd = template.replace('日志编号', s.logId)
-					.replace('提现金额', s.cashAmount)
-					.replace('交易状态', s.orderStatus)
-					.replace('福利金额', s.welfareCashAmount)
-					.replace('时间', getMyDate(s.createTime))
-					.replace('IP地址', s.ip)
-					.replace('使用详情', s.typeDescription);
-				t.append(trth).append(trtd);
+				detail_22(result);
+			} else if (logSecondType == 23) {
+				detail_23(result);
+			} else if (logSecondType == 24) {
+				detail_24(result);
 			}
 		});
 		$("#tDiv").show();
@@ -319,7 +350,7 @@
 									<th>日志编号</th>
 									<th><div class="btn-group">
 											<select id="firstType" onchange="setFirstType()">
-												<option value=0>一级分类</option>
+												<option value="">一级分类</option>
 												<option value=1>系统日志</option>
 												<option value=2>财务日志</option>
 												<option value=3>操作日志</option>
@@ -371,7 +402,7 @@
 			<!--/main-->
 		</div>
 	</div>
-<style type="text/css">
+	<style type="text/css">
 #bottomNav {
 	z-index: 999;
 	position: fixed;
@@ -389,7 +420,7 @@
 	var setFirstType = function() {
 		var firstTypeSelect = $("#firstType");
 		logData.logFirstType = firstTypeSelect.val();
-		logData.logSecondType = 0;
+		logData.logSecondType = null;
 		pageNum = 1;
 		getLogGrade(logData.logFirstType);
 		getLogList(pageNum, pageSize, logData);

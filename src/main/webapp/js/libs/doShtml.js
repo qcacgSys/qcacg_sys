@@ -140,25 +140,18 @@ model.updateReviewView = function() {
 }
 
 
-//作品签约-更新视图
-model.updateSignView = function() {
+//作品签约等级-更新视图
+model.updateSignLevelView = function() {
 	var tb = $('#tbo').empty();
 	var template = '<tr>' +
+		'<td>#{signId}</td>' +
 		'<td>#{bookId}</td>' +
-		'<td>#{uname}</td>' +
 		'<td>#{signName}</td>' +
-		'<td>#{many}</td>' +
-		'<td>#{lastTime}</td>' +
 		'<td>#{updateType}</td>' +
 		'<td>#{status}</td>' +
 		'<td>#{signLevel}</td>' +
 		'<td>#{isEntry}</td>' +
-		'<td>#{qq}</td>' +
-		'<td>#{email}</td>' +
-		'<td>#{phone}</td>' +
-		'<td>#{address}</td>' +
-		'<td>#{message}</td>' +
-		'<td><a id="aaaa" class="btn btn-info" href="#">签约操作</a>' +
+		'<td><button type="button" class="btn btn-info" onclick="tongguodengji(this);">通过</button>&nbsp;&nbsp;<button type="button" class="btn btn-info" onclick="butongguodengji(this);">不通过</button>&nbsp;&nbsp;<input type="button" value="降级" class="btn btn-info" onclick="jiangji(this);"/></td>'+
 		'</tr>';
 	for (var i = 0; i < model.result.list.length; i++) {
 		var s = model.result.list[i];
@@ -167,6 +160,9 @@ model.updateSignView = function() {
 		}
 		if(s.isEntry == 1){
 			s.isEntry = '申请中';
+		}
+		if(s.isEntry == 2){
+			s.isEntry = '每月申请过了';
 		}
 		if(s.updateType == 1){
 			s.updateType = '日更';
@@ -185,6 +181,86 @@ model.updateSignView = function() {
 		}
 		if(s.status == 3){
 			s.status = '拒绝签约';
+		}	
+		if(s.status == 4){
+			s.status = '解除签约';
+		}
+		if(s.status == 5){
+			s.status = '恢复签约中';
+		}
+		if(s.status == 6){
+			s.status = '每月申请过了';
+		}
+		tr = $(template.replace('#{signId}', s.signId)
+			.replace('#{bookId}', s.bookId)
+			.replace('#{signName}', s.signName)
+			.replace('#{updateType}', s.updateType)
+			.replace('#{status}', s.status)
+			.replace('#{signLevel}', s.signLevel)
+			.replace('#{isEntry}', s.isEntry)
+			.replace('href="#"', 'href="' + adminPath + 'admin/sign?bookId=' + s.bookId + '"'));
+		tr.data('index',i);
+		tb.append(tr);
+	}
+	//更改按钮样式
+	var a = $('td button');
+	for(var i=0;i<a.length;i++){
+		var a_one = a[i];
+		var td_status= $(a_one).parent().prev().text();
+		console.log(s.isEntry);
+		if(td_status=='未申请' || td_status=='每月申请过了'){
+			$(a_one).attr('disabled','disabled');
+		}
+	}
+}
+
+
+//作品签约-更新视图
+model.updateSignView = function() {
+	var tb = $('#tbo').empty();
+	var template = '<tr>' +
+		'<td>#{bookId}</td>' +
+		'<td>#{uname}</td>' +
+		'<td>#{signName}</td>' +
+		'<td>#{many}</td>' +
+		'<td>#{lastTime}</td>' +
+		'<td>#{updateType}</td>' +
+		'<td>#{status}</td>' +
+		'<td>#{qq}</td>' +
+		'<td>#{email}</td>' +
+		'<td>#{phone}</td>' +
+		'<td>#{address}</td>' +
+		'<td>#{message}</td>' +
+		'<td><a id="aaaa" class="btn btn-info" href="#">签约操作</a>' +
+		'</tr>';
+	for (var i = 0; i < model.result.list.length; i++) {
+		var s = model.result.list[i];
+		if(s.updateType == 1){
+			s.updateType = '日更';
+		}
+		if(s.updateType == 2){
+			s.updateType = '月更';
+		}
+		if(s.status == 0){
+			s.status = '未签约';
+		}
+		if(s.status == 1){
+			s.status = '签约中';
+		}
+		if(s.status == 2){
+			s.status = '已签约';
+		}
+		if(s.status == 3){
+			s.status = '拒绝签约';
+		}
+		if(s.status == 4){
+			s.status = '解除签约';
+		}
+		if(s.status == 5){
+			s.status = '恢复签约中';
+		}
+		if(s.status == 6){
+			s.status = '每月恢复过了';
 		}
 		tr = $(template.replace('#{bookId}', s.bookId)
 			.replace('#{uname}', s.uname)
@@ -193,8 +269,6 @@ model.updateSignView = function() {
 			.replace('#{lastTime}', getMyDate(s.lastTime))
 			.replace('#{updateType}', s.updateType)
 			.replace('#{status}', s.status)
-			.replace('#{signLevel}', s.signLevel)
-			.replace('#{isEntry}', s.isEntry)
 			.replace('#{qq}', s.qq)
 			.replace('#{email}', s.email)
 			.replace('#{phone}', s.phone)
@@ -204,26 +278,56 @@ model.updateSignView = function() {
 		tr.data('index',i);
 		tb.append(tr);
 	}
-	//更改签约状态按钮
+	//更改按钮状态
 	var a = $('a:contains(签约操作)');
-	
 	for(var i=0;i<a.length;i++){
 		var a_one = a[i];
-		var td_status= $(a_one).parent().prev().prev().prev().prev().prev().prev().prev().prev().text();
+		var td_status= $(a_one).parent().prev().prev().prev().prev().prev().prev().text();
+		console.log(td_status);
 		if(td_status=='已签约'){
 			$(a_one).text('取消签约');
 			$(a_one).removeAttr('href');//去掉a标签中的href属性
 			$(a_one).attr('onclick','quxiaoqianyue(this)');
-
 		}
 	}
-}
-//取消签约
-var quxiaoqianyue = function(thisObj){
-	var tr = $(thisObj).parent().parent();
-	var index = tr.data('index');
-	model.index = index;
-	console.log(model.result.list[model.index].bookId);
+	//更改按钮状态
+	var a = $('a:contains(签约操作)');
+	for(var i=0;i<a.length;i++){
+		var a_one = a[i];
+		var td_status= $(a_one).parent().prev().prev().prev().prev().prev().prev().text();
+		console.log(td_status);
+		if(td_status=='解除签约'){
+			$(a_one).text('等待申请');
+			$(a_one).removeAttr('href');//去掉a标签中的href属性
+			$(a_one).attr("disabled","disabled");
+		}
+	}
+	//更改按钮状态
+	var a = $('a:contains(签约操作)');
+	for(var i=0;i<a.length;i++){
+		var a_one = a[i];
+		var td_status= $(a_one).parent().prev().prev().prev().prev().prev().prev().text();
+		console.log(td_status);
+		if(td_status=='恢复签约中'){
+			$(a_one).text('通过');
+			$(a_one).removeAttr('href');//去掉a标签中的href属性
+			$(a_one).attr("onclick","tongguohuifu(this)");
+			var btn=$("<input type='button' value='不通过' class='btn btn-info' onclick='butongguo(this)'>");
+			$(a_one).parent().append(btn);
+		}
+	}
+	//更改按钮状态
+	var a = $('a:contains(签约操作)');
+	for(var i=0;i<a.length;i++){
+		var a_one = a[i];
+		var td_status= $(a_one).parent().prev().prev().prev().prev().prev().prev().text();
+		console.log(td_status);
+		if(td_status=='每月恢复过了'){
+			$(a_one).text('签约操作');
+			$(a_one).removeAttr('href');//去掉a标签中的href属性
+			$(a_one).attr("disabled","disabled");
+		}
+	}
 }
 
 

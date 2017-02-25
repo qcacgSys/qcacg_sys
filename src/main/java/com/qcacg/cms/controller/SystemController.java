@@ -66,6 +66,15 @@ public class SystemController {
 	}
 	
 	/**
+	 * 查看所有签约等级数据
+	 * @return
+	 */
+	@RequestMapping("/allSignLevel")
+	public String allSignLevelView(){
+		return "/WEB-INF/view/book_sign_level.jsp";
+	}
+	
+	/**
 	 * 查看所有签约数据
 	 * @return
 	 */
@@ -73,6 +82,7 @@ public class SystemController {
 	public String allSignView(){
 		return "/WEB-INF/view/book_sign.jsp";
 	}
+	
 	/**
 	 * 查看所有审核数据
 	 * @return

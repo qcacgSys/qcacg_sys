@@ -15,11 +15,15 @@ htmlPath = 'http://121.196.194.211:8080/';
 //htmlPath = 'http://www.qcacg.com:8080/';
 
 //调用shtml域名与端口
-//rootPath = 'http://127.0.0.1:8080/';
-rootPath = 'http://121.196.194.211:8080/Controller/';
+rootPath = 'http://127.0.0.1:8080/';
+//rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
+		//管理员降签约等级
+		adminDownBookSignLevel : rootPath + 'book/adminDownBookSignLevel.shtml',
+		//管理员解除签约
+		adminRemoveBookSign : rootPath + 'book/adminRemoveBookSign.shtml',
 		//推荐作品界面
 		adminQueryBookRecom : rootPath + 'book/adminQueryBookRecom.shtml',
 		//推荐操作
@@ -34,6 +38,8 @@ var PathList = {
 		adminListBookAccounts : rootPath + 'account/adminQueryBookAccounts.shtml',
 		//签约等级处理
 		adminUpdateSignLevel : rootPath + 'book/adminUpdateSignLevel.shtml',
+		//管理员查看签约等级
+		adminQueryBookSignLevel : rootPath + 'book/adminQueryBookSignLevel.shtml',
 		//管理员签约等级核算打款
 		adminRemitBookAccounts : rootPath + 'account/adminRemitBookAccounts.shtml',
 		//评论操作界面

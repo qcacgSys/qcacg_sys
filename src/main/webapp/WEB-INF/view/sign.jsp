@@ -36,9 +36,7 @@
 											style="width: 400" rows="5" name="reply"></textarea></span></li>
 								<li><label class="res-lab">是否签约</label><span
 									class="res-info"><input type="radio" id="status0" name="status" value="2">签约通过&nbsp;&nbsp;&nbsp;&nbsp;
-													<input type="radio" id="status1" name="status" value="3">拒绝签约&nbsp;&nbsp;&nbsp;&nbsp;
-													<input type="radio" id="status2" name="status" value="1">申请通过&nbsp;&nbsp;&nbsp;&nbsp;
-													<input type="radio" id="status3" name="status" value="5">申请拒绝</span></li>
+													<input type="radio" id="status1" name="status" value="3">拒绝签约&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
 								<li><label class="res-lab">操作</label><span class="res-info"><input
 										type="button" id="submitId" value="提交保存">&nbsp;&nbsp;&nbsp;&nbsp;<input
 										type="reset" value="重置"></span></li>

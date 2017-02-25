@@ -26,30 +26,18 @@
 							<table class="result-tab" width="100%">
 								<thead>
 									<tr>
-										<th>作品ID</th>
-										<th>姓名</th>
-										<th>作品名</th>
-										<th>申请次数</th>
-										<th>最后申请时间</th>
-										<th>签约方式</th>
-										<th>签约状态</th>
-										<th>QQ</th>
-										<th>邮箱</th>
-										<th>手机</th>
-										<th>地址</th>
-										<th>申请原因</th>
-										<th>操作</th>
+										<th width="10%">签约ID</th>
+										<th width="10%">作品ID</th>
+										<th width="12%">作品名</th>
+										<th width="12%">签约方式</th>
+										<th width="12%">签约状态</th>
+										<th width="10%">签约等级</th>
+										<th width="10%">等级申请</th>
+										<th width="15%">操作</th>
 									</tr>
 								</thead>
 								<tbody id="tbo">
 									<tr>
-										<td>aaaa</td>
-										<td>aaaa</td>
-										<td>aaaa</td>
-										<td>aaaa</td>
-										<td>aaaa</td>
-										<td>aaaa</td>
-										<td>aaaa</td>
 										<td>aaaa</td>
 										<td>aaaa</td>
 										<td>aaaa</td>
@@ -75,18 +63,18 @@
 
 //页面显示完成加载
 $(function() {
-	loadBookSignAction(1, 100);
+	loadBookSignLevelAction(1, 100);
 });
 
 //加载本页方法
-var loadBookSignAction = function(pageNum, pageSize) {
+var loadBookSignLevelAction = function(pageNum, pageSize) {
 	var param = {
 		pageNum : pageNum,
 		pageSize : pageSize
 	};
 	$.ajax({
 		type : "GET",
-		url : PathList.adminQueryBookSign,
+		url : PathList.adminQueryBookSignLevel,
 		contentType : "application/json; charset=utf-8",
 		data : param,
 		dataType : "json",
@@ -94,50 +82,60 @@ var loadBookSignAction = function(pageNum, pageSize) {
 			//加入模型
 			model.result=result;
 			//更新视图层
-			model.updateSignView();
+			model.updateSignLevelView();
 			//激活分页组件(传入请求url, 更新视图方法名)
-			model.fenyedView(PathList.adminQueryBookSign, model.updateSignView);
+			model.fenyedView(PathList.adminQueryBookSignLevel, model.updateSignLevelView);
 		}
 	});
 };
 
-//取消签约
-var quxiaoqianyue = function(thisObj){
+//等级申请通过
+var tongguodengji = function(thisObj){
 	var tr = $(thisObj).parent().parent();
 	var index = tr.data('index');
 	model.index = index;
 	model.bookId =  model.result.list[model.index].bookId;
-	model.status = 0;
-	model.updateSign();
+	model.status = 1;
+	model.updateSignLevel();
 }
 
-//恢复签约通过
-var tongguohuifu = function(thisObj){
+//等级申请不通过
+var butongguodengji = function(thisObj){
 	var tr = $(thisObj).parent().parent();
 	var index = tr.data('index');
 	model.index = index;
 	model.bookId =  model.result.list[model.index].bookId;
-	model.status = 2;
-	model.updateSign();
+	model.status = 5;
+	model.updateSignLevel();
 }
 
-//恢复签约不通过
-var butongguo = function(thisObj){
+//降等级
+var jiangji = function(thisObj){
 	var tr = $(thisObj).parent().parent();
 	var index = tr.data('index');
 	model.index = index;
 	model.bookId =  model.result.list[model.index].bookId;
-	model.status = 6;
-	model.updateSign();
-};
+	model.downSignLevel();
+}
 
-//管理员解除签约
-model.updateSign=function(id,status){
+//管理员-降级
+model.downSignLevel = function(){
+	var param = {
+		bookId : model.bookId
+	};
+	$.post(PathList.adminDownBookSignLevel, param, function(result){
+		alert(result.msg);
+		history.go(0);
+	});
+}
+
+//管理员-操作
+model.updateSignLevel = function(){
 	var param = {
 		bookId : model.bookId,
 		status : model.status
 	};
-	$.post(PathList.adminRemoveBookSign, param, function(result){
+	$.post(PathList.adminUpdateSignLevel, param, function(result){
 		alert(result.msg);
 		history.go(0);
 	});

@@ -30,6 +30,9 @@
 							href="${pageContext.request.contextPath}/admin/allSign"><i
 								class="icon-font">&#xe006;</i>作品签约</a></li>
 						<li><a
+							href="${pageContext.request.contextPath}/admin/allSignLevel"><i
+								class="icon-font">&#xe006;</i>签约等级</a></li>
+						<li><a
 							href="${pageContext.request.contextPath}/admin/allRecom"><i
 								class="icon-font">&#xe006;</i>推荐管理</a></li>
 						<li><a

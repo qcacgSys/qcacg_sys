@@ -27,28 +27,30 @@
 							<!--  主页显示状态: 1? 2? 3? 4? 5? 6? -->
 							说明: 界面为已通过审核的!<a href="#"><i class="icon-font"></i></a>
 						</div>
-						
-<div class="dropdown">
-    <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown">主题
-        <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-        <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">Java</a>
-        </li>
-        <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">数据挖掘</a>
-        </li>
-        <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">数据通信/网络</a>
-        </li>
-        <li role="presentation" class="divider"></li>
-        <li role="presentation">
-            <a role="menuitem" tabindex="-1" href="#">分离的链接</a>
-        </li>
-    </ul>
-</div>
-						
+
+
+
+
+
+    <div class="control-group">
+        <!-- Select Basic -->
+        <label class="control-label">Select - Basic</label>
+        <div class="controls">
+          <select onchange="func()" class="input-xlarge">
+            <option value="0">未签约</option>
+            <option value="1">已签约</option>
+            <option value="2">未推荐</option>
+            <option value="3">已推荐</option>
+          </select>
+        </div>
+    </div>
+
+
+
+
+
+
+
 					</div>
 					<div class="result-content">
 						<table class="result-tab" width="100%">
@@ -165,6 +167,13 @@ var butuijian = function(thisObj){
 		}
 	});
 };
+	
+//下拉框
+function func(){
+	var vs = $('select  option:selected').val();
+	console.log(vs);
+}  
+	
 	
 </script>
 </html>

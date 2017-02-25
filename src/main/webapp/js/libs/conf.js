@@ -5,8 +5,8 @@ var htmlPath ;
 var adminPath ;
 
 //本项目端口路径
-adminPath = 'http://127.0.0.1:777/qcacg_sys/';
-//adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
+//adminPath = 'http://127.0.0.1:777/qcacg_sys/';
+adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
 //adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
 
 //调用跳转项目html域名与端口
@@ -66,6 +66,8 @@ var PathList = {
 		findLogGrade : rootPath + 'log/grade.shtml',
 		//获取日志等级分类
 		userlist : rootPath + 'user/userIdAndUsernameList.shtml',
+		//获取日志概述分类
+		findLogDescription : rootPath + 'log/description.shtml'
 };
 var htmlList = {
 		//跳转到书页面

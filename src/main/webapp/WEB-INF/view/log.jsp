@@ -19,7 +19,8 @@
 		beginTime : '',
 		endTime : '',
 		logFirstType : '',
-		logSecondType : ''
+		logSecondType : '',
+		typeDescription : ''
 	};
 	var closeBottomNav = function() {
 		$("#tDiv").hide();
@@ -37,6 +38,7 @@
 		sendData.endTime = logData.endTime;
 		sendData.logFirstType = logData.logFirstType;
 		sendData.logSecondType = logData.logSecondType;
+		sendData.typeDescription = logData.typeDescription;
 		$.post(PathList.adminQueryLog, sendData, function(result) {
 			var tbo = $("#tbo");
 			tbo.empty();
@@ -128,6 +130,25 @@
 				var o = template.replace('null', '"' + s.secondType + '"')
 					.replace('二级分类', s.logName);
 				secondTypeSelect.append(o);
+			}
+		});
+	}
+	
+	var getLogDescription = function(logSecondType){
+		var sendData = {
+			secondType : logSecondType
+		};
+		$.post(PathList.findLogDescription, sendData, function(result) {
+			var list = result.data;
+			var typeDescriptionSelect = $("#typeDescription");
+			typeDescriptionSelect.empty();
+			var template = '<option value=null>日志概述</option>';
+			typeDescriptionSelect.append(template.replace('null', ''));
+			for (var x = 0; x < list.length; x++) {
+				var s = list[x];
+				var o = template.replace('null', '"' + s.typeDescription + '"')
+					.replace('日志概述', s.description);
+				typeDescriptionSelect.append(o);
 			}
 		});
 	}
@@ -360,7 +381,11 @@
 											<select id="secondType" onchange="setSecondType()">
 											</select>
 										</div></th>
-									<th>日志概述</th>
+									<th><div class="btn-group">
+											<select id="typeDescription" onchange="setTypeDescription()">
+												<option value="">日志概述</option>
+											</select>
+										</div></th>
 									<th>时间</th>
 									<th>详情</th>
 									<th>查看</th>
@@ -420,17 +445,31 @@
 	var setFirstType = function() {
 		var firstTypeSelect = $("#firstType");
 		logData.logFirstType = firstTypeSelect.val();
-		logData.logSecondType = null;
+		logData.logSecondType = '';
+		logData.typeDescription = '';
+		pageNum = 1;
+		getLogGrade(logData.logFirstType);
+		getLogDescription(logData.logSecondType);
+		getLogList(pageNum, pageSize, logData);
+	};
+	var setSecondType = function() {
+		var secondTypeSelect = $("#secondType");
+		logData.logSecondType = secondTypeSelect.val();
+		logData.logFirstType = '';
+		logData.typeDescription = '';
+		pageNum = 1;
+		getLogDescription(logData.logSecondType);
+		getLogList(pageNum, pageSize, logData);
+	};
+	var setTypeDescription = function(s){
+		var typeDescriptionSelect = $("#typeDescription");
+		logData.typeDescription = typeDescriptionSelect.val();
+		logData.logFirstType = '';
+		logData.logSecondType = '';
 		pageNum = 1;
 		getLogGrade(logData.logFirstType);
 		getLogList(pageNum, pageSize, logData);
-	};
-	var setSecondType = function(s) {
-		var secondTypeSelect = $("#secondType");
-		logData.logSecondType = secondTypeSelect.val();
-		pageNum = 1;
-		getLogList(pageNum, pageSize, logData);
-	};
+	}
 </script>
 <script type="text/javascript">
 	var nextPage = function() {
@@ -461,6 +500,7 @@
 </script>
 <script type="text/javascript">
 	$(getLogGrade(undefined));
+	$(getLogDescription(undefined));
 	$(getLogList(pageNum, pageSize, logData));
 	//日期选择控件
 	$("#datetimeStart").datetimepicker({

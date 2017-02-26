@@ -61,8 +61,10 @@ model.fenyedView = function(url,method){
         	var param = {
        			pageNum : page,
        			pageSize : 100,
-       			yearAndMouthStart:model.yearAndMouthStart,
-       			yearAndMouthEnd:model.yearAndMouthEnd
+       			yearAndMouthStart : model.yearAndMouthStart,
+       			yearAndMouthEnd : model.yearAndMouthEnd,
+       			bookIsSign : model.bookIsSign,
+       			isRecommended : model.isRecommended
        		};
        		$.ajax({
        			type : "GET",

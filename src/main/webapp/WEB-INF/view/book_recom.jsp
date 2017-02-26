@@ -11,6 +11,14 @@
 <meta charset="UTF-8">
 <title>作品推荐管理</title>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
+<style type="text/css">
+#xialakuangqy{
+	float:left;
+}
+#xialakuangtj{
+	float:left;
+}
+</style>
 </head>
 <body>
 	<jsp:include page="/common/head.jsp"></jsp:include>
@@ -33,14 +41,19 @@
 
 
     <div class="control-group">
-        <!-- Select Basic -->
-        <label class="control-label">Select - Basic</label>
-        <div class="controls">
-          <select onchange="func()" class="input-xlarge">
+        <div id="xialakuangqy" class="controls">
+          <select id="1" onchange="funcqy()" class="input-xlarge">
+            <option value="">签约状态选择</option>
             <option value="0">未签约</option>
             <option value="1">已签约</option>
-            <option value="2">未推荐</option>
-            <option value="3">已推荐</option>
+          </select>
+        </div>
+		<span>&nbsp;</span>
+        <div id="xialakuangtj" class="controls">
+          <select id="2" onchange="functj()" class="input-xlarge">
+            <option value="">推荐状态选择</option>
+            <option value="0">未推荐</option>
+            <option value="1">已推荐</option>
           </select>
         </div>
     </div>
@@ -168,12 +181,33 @@ var butuijian = function(thisObj){
 	});
 };
 	
-//下拉框
-function func(){
-	var vs = $('select  option:selected').val();
-	console.log(vs);
+//下拉框-签约选择
+function funcqy(){
+	var vsqy = $('select[id=1]  option:selected').val();
+	var url = PathList.adminQueryBookRecom;
+	var dataqy = {};
+	dataqy.bookIsSign = vsqy;
+	console.log(vsqy);
+	$.getJSON(url, dataqy, function(result){
+		model.bookIsSign = dataqy.bookIsSign;
+		model.result=result;
+		model.updateBookRecomView();
+	});
 }  
-	
+
+//下拉框-推荐选择
+function functj(){
+	var vstj = $('select[id=2]  option:selected').val();
+	var url = PathList.adminQueryBookRecom;
+	var datatj = {};
+	datatj.isRecommended = vstj;
+	console.log(vstj);
+	$.getJSON(url, datatj, function(result){
+		model.isRecommended = datatj.isRecommended;
+		model.result=result;
+		model.updateBookRecomView();
+	});
+}  
 	
 </script>
 </html>

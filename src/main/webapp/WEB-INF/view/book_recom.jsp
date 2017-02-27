@@ -14,9 +14,11 @@
 <style type="text/css">
 #xialakuangqy{
 	float:left;
+	width: 120px;
 }
 #xialakuangtj{
 	float:left;
+	width: 120px;
 }
 </style>
 </head>
@@ -184,9 +186,13 @@ var butuijian = function(thisObj){
 //下拉框-签约选择
 function funcqy(){
 	var vsqy = $('select[id=1]  option:selected').val();
+	if (vsqy=="") {
+		return;
+	}
 	var url = PathList.adminQueryBookRecom;
 	var dataqy = {};
 	dataqy.bookIsSign = vsqy;
+	dataqy.isRecommended = model.isRecommended;
 	console.log(vsqy);
 	$.getJSON(url, dataqy, function(result){
 		model.bookIsSign = dataqy.bookIsSign;
@@ -198,9 +204,13 @@ function funcqy(){
 //下拉框-推荐选择
 function functj(){
 	var vstj = $('select[id=2]  option:selected').val();
+	if (vstj=="") {
+		return;
+	}
 	var url = PathList.adminQueryBookRecom;
 	var datatj = {};
 	datatj.isRecommended = vstj;
+	datatj.bookIsSign = model.bookIsSign;
 	console.log(vstj);
 	$.getJSON(url, datatj, function(result){
 		model.isRecommended = datatj.isRecommended;

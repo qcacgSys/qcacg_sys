@@ -62,9 +62,9 @@
 	$("#submitId").click(function() {
 		var statusMessage = '';
 		if(status==2){
-			statusMessage = '(审核已通过)';
+			statusMessage = '审核已通过: ';
 		}else if(status==3){
-			statusMessage = '(审核未通过)';
+			statusMessage = '审核未通过: ';
 		}else{
 			alert('填选择审核结果');
 			return;

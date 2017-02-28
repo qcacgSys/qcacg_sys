@@ -162,7 +162,7 @@ model.updateSignLevelView = function() {
 			s.isEntry = '申请中';
 		}
 		if(s.isEntry == 2){
-			s.isEntry = '每月申请过了';
+			s.isEntry = '已申请过';
 		}
 		if(s.updateType == 1){
 			s.updateType = '日更';
@@ -181,7 +181,7 @@ model.updateSignLevelView = function() {
 		}
 		if(s.status == 3){
 			s.status = '拒绝签约';
-		}	
+		}
 		if(s.status == 4){
 			s.status = '解除签约';
 		}
@@ -189,7 +189,7 @@ model.updateSignLevelView = function() {
 			s.status = '恢复签约中';
 		}
 		if(s.status == 6){
-			s.status = '每月申请过了';
+			s.status = '签约恢复拒绝';
 		}
 		tr = $(template.replace('#{signId}', s.signId)
 			.replace('#{bookId}', s.bookId)
@@ -207,7 +207,6 @@ model.updateSignLevelView = function() {
 	for(var i=0;i<a.length;i++){
 		var a_one = a[i];
 		var td_status= $(a_one).parent().prev().text();
-		console.log(s.isEntry);
 		if(td_status=='未申请' || td_status=='每月申请过了'){
 			$(a_one).attr('disabled','disabled');
 		}
@@ -260,7 +259,7 @@ model.updateSignView = function() {
 			s.status = '恢复签约中';
 		}
 		if(s.status == 6){
-			s.status = '每月恢复过了';
+			s.status = '签约恢复拒绝';
 		}
 		tr = $(template.replace('#{bookId}', s.bookId)
 			.replace('#{uname}', s.uname)
@@ -322,7 +321,7 @@ model.updateSignView = function() {
 		var a_one = a[i];
 		var td_status= $(a_one).parent().prev().prev().prev().prev().prev().prev().text();
 		console.log(td_status);
-		if(td_status=='每月恢复过了'){
+		if(td_status=='签约恢复拒绝'){
 			$(a_one).text('签约操作');
 			$(a_one).removeAttr('href');//去掉a标签中的href属性
 			$(a_one).attr("disabled","disabled");
@@ -346,17 +345,20 @@ model.updateBookRecomView = function(){
 					'</tr>';
 	for(var i=0;i<model.result.list.length;i++){
 		var data=model.result.list[i];
-		if(data.bookIsSign==1){
-			data.bookIsSign='已签约';
-		}
-		if(data.bookIsSign==0){
+		if(data.bookIsSign=='0'){
 			data.bookIsSign='未签约';
 		}
-		if(data.isRecommended==1){
-			data.isRecommended='已推荐';
+		if(data.bookIsSign=='1'){
+			data.bookIsSign='已签约';
 		}
-		if(data.isRecommended==0){
+		if(data.bookIsSign=='2'){
+			data.bookIsSign='签约失效';
+		}
+		if(data.isRecommended=='0'){
 			data.isRecommended='未推荐';
+		}
+		if(data.isRecommended=='1'){
+			data.isRecommended='已推荐';
 		}
 		var tr=$(template.replace('#{userId}',data.userId)
 					.replace('#{bookId}',data.bookId)
@@ -377,7 +379,6 @@ model.updateReportView=function(){
 	var template=	'<tr>'+
 						'<td>#{reportId}</td>'+
 						'<td>#{reportTypeName}</td>'+
-						'<td>#{reportContent}</td>'+
 						'<td>#{reportText}</td>'+
 						'<td>#{reporterId}</td>'+
 						'<td>#{reportDate}</td>'+
@@ -386,23 +387,35 @@ model.updateReportView=function(){
 					'</tr>';
 	for(var i=0;i<model.result.list.length;i++){
 		var data=model.result.list[i];
-		//console.log(data);
-		//console.log(tr);
 		if(data.reportStatus=='0'){
-			data.reportStatus='待处理';
+			data.reportStatus='待审理';
 		}
-		if(data.reportContent == "" || data.reportContent == undefined || data.reportContent == null){
-			data.reportContent='';
+		if(data.reportStatus=='1'){
+			data.reportStatus='已审理';
+		}
+		if(data.reportStatus=='2'){
+			data.reportStatus='不审理';
+		}
+		if(data.reportText=='您的内容中存在违规信息!'){
+			data.reportText='内容已进行过滤!';
 		}
 		var tr=$(template.replace('#{reportId}',data.reportId)
 		.replace('#{reportTypeName}',data.reportTypeName)
-		.replace('#{reportContent}',data.reportContent)
 		.replace('#{reportText}',data.reportText)
 		.replace('#{reporterId}',data.reporterId)
 		.replace('#{reportDate}',getMyDate(data.reportDate))
 		.replace('#{reportStatus}',data.reportStatus));
 		tr.data('index',i);
 		tbody.append(tr);
+	}
+	//更改按钮样式
+	var a = $('td button');
+	for(var i=0;i<a.length;i++){
+		var a_one = a[i];
+		var td_status= $(a_one).parent().prev().text();
+		if(td_status=='不审理' || td_status=='已审理'){
+			$(a_one).attr('disabled','disabled');
+		}
 	}
 }
 

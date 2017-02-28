@@ -33,9 +33,8 @@
 								<tr>
 									<th>举报ID</th>
 									<th>举报类型</th>
-									<th>举报内容</th>
-									<th width="35%">举报文本</th>
-									<th width="7%">举报人ID</th>
+									<th width="39%">页面显示</th>
+									<th width="9%">举报人ID</th>
 									<th width="23%">举报时间</th>
 									<th width="8%">状态</th>
 									<th>操作</th>
@@ -43,7 +42,6 @@
 							</thead>
 							<tbody id="tbo">
 								<tr>
-									<td>aaaa</td>
 									<td>aaaa</td>
 									<td>aaaa</td>
 									<td>aaaa</td>

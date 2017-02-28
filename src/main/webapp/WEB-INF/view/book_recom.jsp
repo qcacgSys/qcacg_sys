@@ -14,11 +14,11 @@
 <style type="text/css">
 #xialakuangqy{
 	float:left;
-	width: 120px;
+	width: 125px;
 }
 #xialakuangtj{
 	float:left;
-	width: 120px;
+	width: 125px;
 }
 </style>
 </head>
@@ -46,14 +46,17 @@
         <div id="xialakuangqy" class="controls">
           <select id="1" onchange="funcqy()" class="input-xlarge">
             <option value="">签约状态选择</option>
+            <option value="5">所有签约状态</option>
             <option value="0">未签约</option>
             <option value="1">已签约</option>
+            <option value="2">签约失效</option>
           </select>
         </div>
 		<span>&nbsp;</span>
         <div id="xialakuangtj" class="controls">
           <select id="2" onchange="functj()" class="input-xlarge">
             <option value="">推荐状态选择</option>
+            <option value="5">所有推荐状态</option>
             <option value="0">未推荐</option>
             <option value="1">已推荐</option>
           </select>

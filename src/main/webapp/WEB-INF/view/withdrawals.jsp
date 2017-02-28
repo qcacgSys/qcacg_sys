@@ -36,6 +36,9 @@
 				} else if (s.orderStatus == 2) {
 					s.orderStatus = '已拒绝';
 				}
+				if(s.email == null){
+					s.email = '无';
+				}
 				var trtd = template.replace('提现申请编号', s.logId)
 					.replace('提现金额', s.cashAmount)
 					.replace('用户名', s.username)

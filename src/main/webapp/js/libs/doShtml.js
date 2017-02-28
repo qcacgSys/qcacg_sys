@@ -162,7 +162,7 @@ model.updateSignLevelView = function() {
 			s.isEntry = '申请中';
 		}
 		if(s.isEntry == 2){
-			s.isEntry = '每月申请过了';
+			s.isEntry = '已申请过';
 		}
 		if(s.updateType == 1){
 			s.updateType = '日更';
@@ -181,7 +181,7 @@ model.updateSignLevelView = function() {
 		}
 		if(s.status == 3){
 			s.status = '拒绝签约';
-		}	
+		}
 		if(s.status == 4){
 			s.status = '解除签约';
 		}
@@ -189,7 +189,7 @@ model.updateSignLevelView = function() {
 			s.status = '恢复签约中';
 		}
 		if(s.status == 6){
-			s.status = '每月申请过了';
+			s.status = '签约恢复拒绝';
 		}
 		tr = $(template.replace('#{signId}', s.signId)
 			.replace('#{bookId}', s.bookId)

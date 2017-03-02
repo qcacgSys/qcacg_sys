@@ -162,7 +162,7 @@ model.updateSignLevelView = function() {
 			s.isEntry = '申请中';
 		}
 		if(s.isEntry == 2){
-			s.isEntry = '已申请过';
+			s.isEntry = '每月已申请';
 		}
 		if(s.updateType == 1){
 			s.updateType = '日更';
@@ -207,7 +207,7 @@ model.updateSignLevelView = function() {
 	for(var i=0;i<a.length;i++){
 		var a_one = a[i];
 		var td_status= $(a_one).parent().prev().text();
-		if(td_status=='未申请' || td_status=='每月申请过了'){
+		if(td_status=='未申请' || td_status=='每月已申请'){
 			$(a_one).attr('disabled','disabled');
 		}
 	}

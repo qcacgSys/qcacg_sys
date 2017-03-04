@@ -237,7 +237,7 @@
 			s.typeDescription = '好人卡提现';
 			var urlUl = '<ul class="sys-info-list">'
 				+ '<li><label class="res-lab"></label><span class="res-info"></span></li>'
-				+ '<li><label class="res-lab"><a onclick="getLogDetail(' + '\'' + s.infCashLogId + '\'' + ',21)">钱包日志链接</a></label><span class="res-info"></span></li></ul>';
+				+'</ul>';
 			f.append(urlUl);
 		} else if (s.typeDescription == 2205) {
 			s.typeDescription = '改名消耗好人卡';

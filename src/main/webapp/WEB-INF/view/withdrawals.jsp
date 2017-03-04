@@ -32,7 +32,7 @@
 				if (s.orderStatus == 0) {
 					s.orderStatus = '<a onclick="getSysCashAccount(' + s.userId + ',' + s.cashAmount + ',' + '\'' + s.logId + '\'' + ')">处理<a>';
 				} else if (s.orderStatus == 1) {
-					s.orderStatus = '已处理';
+					s.orderStatus = '<a onclick="showTradeNo('+'\''+s.tradeNo+'\''+')">已处理</a>';
 				} else if (s.orderStatus == 2) {
 					s.orderStatus = '已拒绝';
 				}
@@ -52,6 +52,10 @@
 		});
 	};
 
+	var showTradeNo = function(tradeNo){
+		$("#zfbli").empty().append('支付宝订单号：'+tradeNo);
+	};
+
 	var getSysCashAccount = function(userId, exchangeableCashAmount, logId) {
 		var sendData = {
 			userId : userId
@@ -60,6 +64,7 @@
 			var s = result.data;
 			var t = $("#t");
 			t.empty();
+			$("#zfbli").empty().append('支付宝订单号：<input id="zfbtext" size="50">');
 			var trth = '<thead><tr><th>用户编号</th><th>用户名</th><th>支付宝账号</th><th>真实姓名</th><th>提现金额</th><th>处理结果</th></tr></thead>';
 			t.append(trth);
 			var template = '<tbody><tr><td>用户编号</td><td>用户名</td><td>支付宝账号</td><td>真实姓名</td><td>提现金额</td><td>处理结果</td></tr></tbody>';
@@ -68,19 +73,19 @@
 				.replace('支付宝账号', s.alipayAccount)
 				.replace('真实姓名', s.realName)
 				.replace('提现金额', exchangeableCashAmount)
-				.replace('处理结果', '<a onclick="finishWithdrawals(' + '\'' + logId + '\'' + ',1,null)">完成打款</a>');
-			t.append(trtd);
+				.replace('处理结果', '<a onclick="finishWithdrawals(' + '\'' + logId + '\'' + ',1)">完成打款</a>');
+			t.append(trtd)
 		});
 
 	};
 
-	var finishWithdrawals = function(logId, flag, str) {
+	var finishWithdrawals = function(logId, flag) {
 		var f = $("#f");
 		f.empty();
 		var sendData = {
 			logId : logId,
 			flag : flag,
-			str : str
+			str : $("#zfbtext").val()
 		};
 		$.post(PathList.finishWithdrawals, sendData, function(result) {
 		});
@@ -145,6 +150,8 @@
 							</ul></span>
 					</div>
 					<div class="result-content">
+						<ul class="sys-info-list">
+							<div align="center"><li id="zfbli" class="result-tab" width="100%"></li></div></ul><br>
 						<table class="result-tab" id="t" width="100%">
 						</table>
 						<div id="f" class="list-page"></div>

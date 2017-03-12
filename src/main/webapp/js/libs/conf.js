@@ -5,8 +5,8 @@ var htmlPath ;
 var adminPath ;
 
 //本项目端口路径
-//adminPath = 'http://127.0.0.1:777/qcacg_sys/';
-adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
+adminPath = 'http://127.0.0.1:777/qcacg_sys/';
+//adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
 //adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
 
 //调用跳转项目html域名与端口
@@ -15,11 +15,15 @@ htmlPath = 'http://121.196.194.211:8080/';
 //htmlPath = 'http://www.qcacg.com:8080/';
 
 //调用shtml域名与端口
-//rootPath = 'http://127.0.0.1:8080/';
-rootPath = 'http://121.196.194.211:8080/Controller/';
+rootPath = 'http://127.0.0.1:8080/';
+//rootPath = 'http://121.196.194.211:8080/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
+		//管理员查询用户详细
+		adminQueryDetailUserForUser : rootPath + 'user/adminQueryDetailUserForUser.shtml',
+		//管理员查询用户界面
+		adminQuerySimpleUsers : rootPath + 'user/adminQuerySimpleUsers.shtml',
 		//管理员降签约等级
 		adminDownBookSignLevel : rootPath + 'book/adminDownBookSignLevel.shtml',
 		//管理员解除签约

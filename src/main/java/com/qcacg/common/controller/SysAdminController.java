@@ -1,6 +1,9 @@
 package com.qcacg.common.controller;
 
+import java.util.UUID;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -9,10 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.qcacg.common.entity.SysAdmin;
 import com.qcacg.common.service.SysAdminService;
+import com.qcacg.common.util.AESEncrypt;
+import com.qcacg.common.util.CommonUtil;
+import com.qcacg.common.util.JedisUtil;
 import com.qcacg.common.util.MD5Util;
+
+import redis.clients.jedis.Jedis;
 
 @Controller
 public class SysAdminController {
+	private final static String key = "7bdecd4da0ea2e82f7c6acdeb43337d2";
 	@Resource
 	private SysAdminService sysAdminServiceImpl;
 	/**
@@ -33,7 +42,7 @@ public class SysAdminController {
 	 * @return
 	 */
 	@PostMapping("/login")
-	public String login(SysAdmin sysAdmin,HttpSession session){
+	public String login(SysAdmin sysAdmin,HttpSession session,HttpServletRequest request){
 		if(sysAdmin.getAdminName()==null||"".equals(sysAdmin.getAdminName())){
 			session.setAttribute("message", "请填写用户名");
 			return "redirect:/loginView";
@@ -47,6 +56,15 @@ public class SysAdminController {
 		if(checkSysAdmin!=null){
 			session.setAttribute("message","登录成功");
 			session.setAttribute("sysAdmin", sysAdmin);
+			String ip = CommonUtil.toIpAddr(request);
+			String value = MD5Util.encrypt32(ip);
+			Jedis jedis = null;
+			try {
+				jedis = JedisUtil.getJedis();
+				jedis.setex(key, 86400, value);
+			} finally {
+				JedisUtil.close(jedis);
+			}
 			return "redirect:/admin/adminView";
 		}else {
 			session.setAttribute("message", "用户名或者密码错误");
@@ -62,6 +80,13 @@ public class SysAdminController {
 	public String logout(HttpSession session){
 		session.removeAttribute("sysAdmin");
 		session.setAttribute("message","未登录");
+		Jedis jedis = null;
+		try {
+			jedis = JedisUtil.getJedis();
+			jedis.del(key);
+		} finally {
+			jedis.close();
+		}
 		return "redirect:/loginView";
 	}
 	/**

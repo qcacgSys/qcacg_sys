@@ -13,6 +13,15 @@ import com.qcacg.cms.dto.BookDTO;
 public class SystemController {
 	
 	/**
+	 * 用户管理
+	 * @return
+	 */
+	@RequestMapping("/allUser")
+	public String allUser(){
+		return "/WEB-INF/view/users.jsp";
+	}
+	
+	/**
 	 * 推荐管理
 	 * @return
 	 */

@@ -15,6 +15,74 @@ $.fn.serializeObject = function()
    });  
    return o;  
 };
+
+
+//详细用户信息-视图更新方法
+updateDetailUserView=function(result){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{telephone}</td>'+
+						'<td>#{email}</td>'+
+						'<td>#{sex}</td>'+
+						'<td>#{birthday}</td>'+
+						'<td>#{userAttention}</td>'+
+						'<td>#{invitePeople}</td>'+
+					'</tr>';
+	if(result['telephone'] == "" || result['telephone'] == undefined || result['telephone'] == null){
+		result.telephone = "";
+	}
+	if(result.email == "" || result.email == undefined || result.email == null){
+		result.email = "";
+	}
+	if(result.sex == "" || result.sex == undefined || result.sex == null){
+		result.sex = "";
+	}
+	if(result.birthday == "" || result.birthday == undefined || result.birthday == null){
+		result.birthday = "";
+	}
+	if(result.userAttention == "" || result.userAttention == undefined || result.userAttention == null){
+		result.userAttention = "";
+	}
+	if(result.invitePeople == "" || result.invitePeople == undefined || result.invitePeople == null){
+		result.invitePeople = "";
+	}
+	var tr = template.replace('#{telephone}',result['telephone'])
+			.replace('#{email}',result.email)
+			.replace('#{sex}',result.sex)
+			.replace('#{birthday}',result.birthday)
+			.replace('#{userAttention}',result.userAttention)
+			.replace('#{invitePeople}',result.invitePeople);
+	tbody.append(tr);
+}
+
+//简单用户信息-视图更新方法
+model.updateSimpleUsersView=function(){
+	var tbody=$('#tbo');
+	tbody.empty();
+	var template=	'<tr>'+
+						'<td>#{userId}</td>'+
+						'<td>#{userName}</td>'+
+						'<td>#{createDate}</td>'+
+						'<td>#{lastLoginDate}</td>'+
+						'<td>#{userStatus}</td>'+
+						'<td>#{ip}</td>'+
+						'<td><button type="button" id="" class="btn btn-primary btn-check" onclick="queryUserDetailByUser(this)">查看</button>&nbsp;&nbsp;<button type="button" id="" class="btn btn-primary btn-check" onclick="xx(this)">发信息</button></td>'+
+					'</tr>';
+	for(var i=0;i<model.result.list.length;i++){
+		var data=model.result.list[i];
+		var tr=$(template.replace('#{userId}',data.userId)
+							.replace('#{userName}',data.userName)
+							.replace('#{createDate}',getMyDate(data.createDate))
+							.replace('#{lastLoginDate}',data.lastLoginDate)
+							.replace('#{userStatus}',data.userStatus)
+							.replace('#{ip}',data.ip));
+		tr.data('index',i);
+		tbody.append(tr);
+	}
+}
+
+
 //核算统计-视图更新方法
 model.updateBookAccountsView=function(){
 	var tbody=$('#tbo');

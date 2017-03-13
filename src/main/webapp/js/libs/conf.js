@@ -20,6 +20,10 @@ rootPath = 'http://127.0.0.1:8080/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
+		//管理员查询用户详细
+		adminQueryDetailUserForUser : rootPath + 'user/adminQueryDetailUserForUser.shtml',
+		//管理员查询用户界面
+		adminQuerySimpleUsers : rootPath + 'user/adminQuerySimpleUsers.shtml',
 		//管理员降签约等级
 		adminDownBookSignLevel : rootPath + 'book/adminDownBookSignLevel.shtml',
 		//管理员解除签约

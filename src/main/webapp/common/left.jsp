@@ -21,6 +21,9 @@
 				<li><a href="#"><i class="icon-font">&#xe003;</i>常用操作</a>
 					<ul class="sub-menu">
 						<li><a
+							href="${pageContext.request.contextPath}/admin/allUser"><i
+								class="icon-font">&#xe008;</i>用户管理</a></li>
+						<li><a
 							href="${pageContext.request.contextPath}/admin/sysInfo"><i
 								class="icon-font">&#xe008;</i>公告管理</a></li>
 						<li><a

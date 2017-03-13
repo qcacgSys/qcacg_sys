@@ -54,6 +54,9 @@ public class SysAdminController {
 			session.setAttribute("message","登录成功");
 			session.setAttribute("sysAdmin", sysAdmin);
 			String ip = CommonUtil.toIpAddr(request);
+			if("0:0:0:0:0:0:0:1".equals(ip)){
+				ip = "127.0.0.1";
+			}
 			String value = MD5Util.encrypt32(ip);
 			Jedis jedis = null;
 			try {

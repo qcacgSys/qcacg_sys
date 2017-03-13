@@ -22,6 +22,15 @@ public class SystemController {
 	}
 	
 	/**
+	 * 作品管理
+	 * @return
+	 */
+	@RequestMapping("/allBookCore")
+	public String allBookCore(){
+		return "/WEB-INF/view/book_core.jsp";
+	}
+	
+	/**
 	 * 推荐管理
 	 * @return
 	 */

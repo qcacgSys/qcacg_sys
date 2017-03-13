@@ -27,8 +27,11 @@
 							href="${pageContext.request.contextPath}/admin/sysInfo"><i
 								class="icon-font">&#xe008;</i>公告管理</a></li>
 						<li><a
-							href="${pageContext.request.contextPath}/admin/allStatus"><i
+							href="${pageContext.request.contextPath}/admin/allBookCore"><i
 								class="icon-font">&#xe005;</i>作品管理</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/admin/allStatus"><i
+								class="icon-font">&#xe005;</i>作品审核</a></li>
 						<li><a
 							href="${pageContext.request.contextPath}/admin/allSign"><i
 								class="icon-font">&#xe006;</i>作品签约</a></li>

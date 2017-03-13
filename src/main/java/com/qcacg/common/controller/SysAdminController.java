@@ -1,7 +1,5 @@
 package com.qcacg.common.controller;
 
-import java.util.UUID;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.qcacg.common.entity.SysAdmin;
 import com.qcacg.common.service.SysAdminService;
-import com.qcacg.common.util.AESEncrypt;
 import com.qcacg.common.util.CommonUtil;
 import com.qcacg.common.util.JedisUtil;
 import com.qcacg.common.util.MD5Util;

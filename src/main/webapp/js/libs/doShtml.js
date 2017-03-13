@@ -17,44 +17,33 @@ $.fn.serializeObject = function()
 };
 
 
-//详细用户信息-视图更新方法
-updateDetailUserView=function(result){
+//作品管理-视图更新方法
+model.updateBookCoreView = function(){
 	var tbody=$('#tbo');
 	tbody.empty();
-	var template=	'<tr>'+
-						'<td>#{telephone}</td>'+
-						'<td>#{email}</td>'+
-						'<td>#{sex}</td>'+
-						'<td>#{birthday}</td>'+
-						'<td>#{userAttention}</td>'+
-						'<td>#{invitePeople}</td>'+
+	var template =	'<tr>'+
+						'<td>#{bookId}</td>'+
+						'<td>#{bookName}</td>'+
+						'<td>#{bookIsSign}</td>'+
+						'<td>#{updateCycle}</td>'+
+						'<td>#{bookReviewStatus}</td>'+
+						'<td><button type="button" id="" class="btn btn-primary btn-check" onclick="chakanxiangxi(this)">查看详细</button>&nbsp;&nbsp;<button type="button" id="" class="btn btn-primary btn-check" onclick="shangjia(this)">上架</button>&nbsp;&nbsp;<button type="button" id="" class="btn btn-primary btn-check" onclick="xiajia(this)">下架</button></td>'+
 					'</tr>';
-	if(result['telephone'] == "" || result['telephone'] == undefined || result['telephone'] == null){
-		result.telephone = "";
-	}
-	if(result.email == "" || result.email == undefined || result.email == null){
-		result.email = "";
-	}
-	if(result.sex == "" || result.sex == undefined || result.sex == null){
-		result.sex = "";
-	}
-	if(result.birthday == "" || result.birthday == undefined || result.birthday == null){
-		result.birthday = "";
-	}
-	if(result.userAttention == "" || result.userAttention == undefined || result.userAttention == null){
-		result.userAttention = "";
-	}
-	if(result.invitePeople == "" || result.invitePeople == undefined || result.invitePeople == null){
-		result.invitePeople = "";
-	}
-	var tr = template.replace('#{telephone}',result['telephone'])
-			.replace('#{email}',result.email)
-			.replace('#{sex}',result.sex)
-			.replace('#{birthday}',result.birthday)
-			.replace('#{userAttention}',result.userAttention)
-			.replace('#{invitePeople}',result.invitePeople);
-	tbody.append(tr);
+	for(var i=0;i<model.result.list.length;i++){
+		var data=model.result.list[i];
+		if(data.bookReviewStatus=='已审核'){
+			data.bookReviewStatus='上架中';
+		}
+		var tr=$(template.replace('#{bookId}',data.bookId)
+						.replace('#{bookName}',data.bookName)
+						.replace('#{bookIsSign}',data.bookIsSign)
+						.replace('#{updateCycle}',data.updateCycle)
+						.replace('#{bookReviewStatus}',data.bookReviewStatus));
+		tr.data('index',i);
+		tbody.append(tr);
+	};
 }
+
 
 //简单用户信息-视图更新方法
 model.updateSimpleUsersView=function(){
@@ -67,7 +56,7 @@ model.updateSimpleUsersView=function(){
 						'<td>#{lastLoginDate}</td>'+
 						'<td>#{userStatus}</td>'+
 						'<td>#{ip}</td>'+
-						'<td><button type="button" id="" class="btn btn-primary btn-check" onclick="queryUserDetailByUser(this)">查看</button>&nbsp;&nbsp;<button type="button" id="" class="btn btn-primary btn-check" onclick="xx(this)">发信息</button></td>'+
+						'<td><button type="button" id="" class="btn btn-primary btn-check" onclick="queryUserDetailByUser(this)">查看</button>&nbsp;&nbsp;<button type="button" id="" class="btn btn-primary btn-check" onclick="sendMessageForUser(this)">发信息</button></td>'+
 					'</tr>';
 	for(var i=0;i<model.result.list.length;i++){
 		var data=model.result.list[i];

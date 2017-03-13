@@ -20,6 +20,7 @@
 						</div>
 					</div>
 					<div class="result-content">
+					  <div id="fanhui" style="margin-bottom: 10px;"></div>
 						<table class="result-tab" width="100%">
 							<thead>
 								<tr>

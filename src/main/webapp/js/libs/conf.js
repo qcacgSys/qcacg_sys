@@ -5,21 +5,30 @@ var htmlPath ;
 var adminPath ;
 
 //本项目端口路径
-adminPath = 'http://127.0.0.1:777/qcacg_sys/';
-//adminPath = 'http://121.196.194.211:8080/qcacg_sys/';
-//adminPath = 'http://www.qcacg.com:8080/qcacg_sys/';
+//adminPath = 'http://127.0.0.1:777/qcacg_sys/';
+adminPath = 'http://121.196.194.211:80/qcacg_sys/';
+//adminPath = 'http://www.qcacg.com/qcacg_sys/';
 
 //调用跳转项目html域名与端口
 //htmlPath = 'http://127.0.0.1:3000/';
-htmlPath = 'http://121.196.194.211:8080/';
+htmlPath = 'http://121.196.194.211:80/';
 //htmlPath = 'http://www.qcacg.com:8080/';
 
 //调用shtml域名与端口
-rootPath = 'http://127.0.0.1:8080/';
-//rootPath = 'http://121.196.194.211:8080/Controller/';
+//rootPath = 'http://127.0.0.1:8080/';
+//rootPath = 'http://192.168.126.40:8080/';
+rootPath = 'http://121.196.194.211:80/Controller/';
 //rootPath = 'http://www.qcacg.com/Controller/';
 
 var PathList = {
+		//管理员查询作品详细
+		adminQueryDetailBook : rootPath + 'book/adminQueryDetailBook.shtml',
+		//管理员操作作品
+		adminUpdateBookCore : rootPath + 'book/adminUpdateBookCore.shtml',
+		//管理员查询作品信息
+		adminQueryBookCore : rootPath + 'book/adminQueryBookCore.shtml',
+		//管理员发送用户消息
+		adminSendMessageForUser : rootPath + 'info/adminSaveInfo.shtml',
 		//管理员查询用户详细
 		adminQueryDetailUserForUser : rootPath + 'user/adminQueryDetailUserForUser.shtml',
 		//管理员查询用户界面
@@ -51,7 +60,7 @@ var PathList = {
 		//评论操作
 		adminUpdateReport : rootPath + 'report/adminUpdateReport.shtml',
 		//审核操作界面
-		queryBookForCheck : rootPath + 'book/queryBookForCheck.shtml',
+		queryBookForCheck : rootPath + 'book/adminQueryBookForCheck.shtml',
 		//编辑操作审核
 		adminUpdateBookStatus : rootPath + 'book/adminUpdateBookStatus.shtml',
 		//管理员查看签约
@@ -59,25 +68,25 @@ var PathList = {
 		//管理员操作签约
 		adminUpdateBookSign : rootPath + 'book/adminUpdateBookSign.shtml',
 		//管理员发送系统消息或者官方公告
-		saveInfo : rootPath + 'info/saveInfo.shtml',
+		saveInfo : rootPath + 'info/adminSaveInfo.shtml',
 		//管理员撤销系统消息或者官方公告
-		cancelSend : rootPath + 'info/cancelSend.shtml',
+		cancelSend : rootPath + 'info/adminCancelSend.shtml',
 		//管理员查看日志
-		adminQueryLog : rootPath + 'log/list.shtml',
+		adminQueryLog : rootPath + 'log/adminList.shtml',
 		//查看日志详情
-		logDetail : rootPath + 'log/detail.shtml',
+		logDetail : rootPath + 'log/adminDetail.shtml',
 		//管理员查看提现
-		withdrawals : rootPath + 'pay/findWithdrawals.shtml',
+		withdrawals : rootPath + 'pay/adminFindWithdrawals.shtml',
 		//管理员查看单个用户账户信息
-		sysCashAccount : rootPath + 'pay/findSysCashAccount.shtml',
+		sysCashAccount : rootPath + 'pay/adminFindSysCashAccount.shtml',
 		//管理员处理提现结果
-		finishWithdrawals : rootPath + 'pay/finishWithdrawals.shtml',
+		finishWithdrawals : rootPath + 'pay/adminFinishWithdrawals.shtml',
 		//获取日志等级分类
-		findLogGrade : rootPath + 'log/grade.shtml',
+		findLogGrade : rootPath + 'log/adminGrade.shtml',
 		//获取日志等级分类
-		userlist : rootPath + 'user/userIdAndUsernameList.shtml',
+		userlist : rootPath + 'user/adminUserIdAndUsernameList.shtml',
 		//获取日志概述分类
-		findLogDescription : rootPath + 'log/description.shtml'
+		findLogDescription : rootPath + 'log/adminDescription.shtml'
 };
 var htmlList = {
 		//跳转到书页面

@@ -10,6 +10,16 @@
 <head>
 <meta charset="UTF-8">
 <title>后台用户管理</title>
+<style type="text/css">
+#sendMessage{
+	border:1px solid red;
+	text-align:center;
+	position: absolute; 
+	left: 670px; 
+	top: 250px; 
+	background: #FFFFFF;
+}
+</style>
 <jsp:include page="/common/js_css.jsp"></jsp:include>
 </head>
 <body>
@@ -27,15 +37,16 @@
 							<i class="icon-font"></i>--
 						</div>
 					</div>
+					<div id="sendMessage"></div>
 					<div id="oneUser" class="result-content">
 						<table class="result-tab" width="100%">
 							<thead>
 								<tr>
-									<th width="12%">用户ID</th>
-									<th width="19%">用户名</th>
-									<th>注册时间</th>
-									<th>最后一次登录时间</th>
-									<th>用户状态</th>
+									<th width="11%">用户ID</th>
+									<th width="13%">用户名</th>
+									<th width="15%">注册时间</th>
+									<th width="15%">最后一次登录时间</th>
+									<th width="9%">用户状态</th>
 									<th width="25%">IP地址</th>
 									<th>操作</th>
 								</tr>
@@ -130,6 +141,9 @@ var queryUserDetailByUser = function(thisObj){
 			}
 			var tr = template.replace('telephone',one.telephone).replace('email',one.email).replace('sex',one.sex).replace('birthday',one.birthday).replace('userAttention',one.userAttention).replace('invitePeople',one.invitePeople);
 			$('#tbo2').empty().append(tr);
+			//绑定 返回
+			var btn=$("<input type='button' value='返回' class='btn btn-info' onclick='fanhui()'>");
+			$('#fanhui').append(btn);
 		});
 	});
 	
@@ -149,6 +163,48 @@ var queryDetailUser = function(userId,fn){
 		success : function(result) {
 			fn(result);
 		}
+	});
+}
+
+//返回界面
+var fanhui = function(){
+	history.go(0);
+}
+
+//绑定 发送信息
+var sendMessageForUser = function(thisObj){
+	var tr = $(thisObj).parent().parent();
+	var index = tr.data('index');
+	model.index = index;
+	var userId = model.result.list[model.index].userId;
+	model.userId = userId;
+	$('#sendMessage').load('load/sendMeaasge.jsp',function(){
+		$('#user_id').text(model.userId);
+		$('#sendGO').click(function(){
+			var div = $(this).parent().parent().attr("style","display:none;");
+			console.log(div);
+			var shuzu = [];
+			var userId = model.userId;
+			shuzu.push(userId);
+			var param = {
+					userId:shuzu,
+					messageTitle:$('input[name="messagetitle"]').val(),
+					message:$('#desc').val(),
+					messageType:'1'
+			};
+			var param = JSON.stringify(param);
+			$.ajax({
+				type : "POST",
+				url : PathList.adminSendMessageForUser,
+				contentType : "application/json; charset=utf-8",
+				data : param,
+				dataType : "json",
+				success : function(result) {
+					alert(result.msg);
+					
+				}
+			});
+		});
 	});
 }
 
